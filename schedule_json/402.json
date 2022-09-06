@@ -1,0 +1,84 @@
+{
+    "degree": "bachelor",
+    "activities": [
+        {
+            "group": "402",
+            "week_activities": [    
+                {   
+                    "title": "Понедельник",
+                    "activities": [
+                        {
+                            "starts": "10:00", 
+                            "lasts": "1.5", 
+                            "name": "Английский", 
+                            "auditory": "442, 507 ФТШ", 
+                            "professor": "не знаю..."
+                        },
+                        {
+                            "starts": "12:00", 
+                            "lasts": "3", 
+                            "name": "Анализ изображений", 
+                            "auditory": "433 СЛК", 
+                            "professor": "Андреев Ю.А."
+                        }
+                    ]
+                },
+                {
+                    "title": "Вторник",
+                    "activities": [
+                        {   
+                            "starts": "10:00",
+                            "lasts": "1.5", 
+                            "name": "БСтат", 
+                            "auditory": "523 СЛК", 
+                            "professor": "Малов С.В."
+                        },
+                        {
+                            "starts": "12:00", 
+                            "lasts": "3", 
+                            "name": "Системная биология", 
+                            "auditory": "--", 
+                            "professor": "--"
+                        }
+                    ]
+                },
+                {
+                    "title": "Среда",
+                    "activities": [
+                        {   
+                            "starts": "10:00", 
+                            "lasts": "9.5", 
+                            "name": "НИР", 
+                            "auditory": "--", 
+                            "professor": "--"
+                        }
+                    ]
+                },
+                {
+                    "title": "Четверг",
+                    "activities": [
+                        {   
+                            "starts": "10:00", 
+                            "lasts": "9.5", 
+                            "name": "НИР", 
+                            "auditory": "--", 
+                            "professor": "--"
+                        }
+                    ]
+                },
+                {
+                    "title": "Пятница",
+                    "activities": [
+                        {   
+                            "starts": "10:00", 
+                            "lasts": "9.5", 
+                            "name": "НИР", 
+                            "auditory": "--", 
+                            "professor": "--"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

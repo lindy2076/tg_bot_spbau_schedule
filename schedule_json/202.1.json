@@ -1,0 +1,145 @@
+{
+    "degree": "bachelor",
+    "activities": [
+        {
+            "group": "202.1",
+            "week_activities": [    
+                {   
+                    "title": "Понедельник",
+                    "activities": [                        
+                        {
+                            "starts": "12:00", 
+                            "lasts": "1.5", 
+                            "name": "Английский", 
+                            "auditory": "442, 445 ФТШ , 518 СЛК", 
+                            "professor": "Разные всякие.."
+                        },
+                        {
+                            "starts": "14:00", 
+                            "lasts": "2.25", 
+                            "name": "Матан", 
+                            "auditory": "208 СЛК", 
+                            "professor": "Симонов Сергей Александрович"
+                        }
+                    ]
+                },
+                {
+                    "title": "Вторник",
+                    "activities": [
+                        {   
+                            "starts": "10:00",
+                            "lasts": "1.5", 
+                            "name": "Алгебра", 
+                            "auditory": "422 ФТШ", 
+                            "professor": "Всемирнов Максим Александрович"
+                        },
+                        {   
+                            "starts": "12:00",
+                            "lasts": "1.5", 
+                            "name": "Физкультура", 
+                            "auditory": "Спорткомплекс ФТШ", 
+                            "professor": "Разные всякие.."
+                        },
+                        {
+                            "starts": "14:00", 
+                            "lasts": "1.5", 
+                            "name": "Алгебра (практика)", 
+                            "auditory": "432 СЛК", 
+                            "professor": "Антипов Михаил Александрович"
+                        },
+                        {
+                            "starts": "16:00", 
+                            "lasts": "1.5", 
+                            "name": "Диффуры", 
+                            "auditory": "522 СЛК", 
+                            "professor": "Платонова М.В."
+                        }
+                    ]
+                },
+                {
+                    "title": "Среда",
+                    "activities": [                        
+                        {
+                            "starts": "12:00", 
+                            "lasts": "1.5", 
+                            "name": "UNIX", 
+                            "auditory": "433 СЛК", 
+                            "professor": "краш серг вен"
+                        },
+                        {
+                            "starts": "14:00", 
+                            "lasts": "1.5", 
+                            "name": "UNIX", 
+                            "auditory": "305 СЛК", 
+                            "professor": "краш серг вен"
+                        }
+                    ]
+                },
+                {
+                    "title": "Четверг",
+                    "activities": [
+                        {   
+                            "starts": "10:00", 
+                            "lasts": "1.5", 
+                            "name": "Физкультура", 
+                            "auditory": "Спорткомплекс ФТШ", 
+                            "professor": "Разные всякие.."
+                        },
+                        {
+                            "starts": "12:00", 
+                            "lasts": "2.25", 
+                            "name": "Матан (практика)", 
+                            "auditory": "522 СЛК", 
+                            "professor": "Рядовкин Кирилл Сергеевич"
+                        },
+                        {
+                            "starts": "15:00", 
+                            "lasts": "0.8", 
+                            "name": "Джава (лекция)", 
+                            "auditory": "305 СЛК", 
+                            "professor": "краш серг вен"
+                        }
+                    ]
+                },
+                {
+                    "title": "Пятница",
+                    "activities": [
+                        {   
+                            "starts": "10:00",
+                            "lasts": "1.5", 
+                            "name": "Диффуры", 
+                            "auditory": "208 СЛК", 
+                            "professor": "Васильчук Владимир Юрьевич"
+                        },
+                        {
+                            "starts": "12:00", 
+                            "lasts": "1.5", 
+                            "name": "Английский", 
+                            "auditory": "442, 445, 540 ФТШ", 
+                            "professor": "не знаю..."
+                        },
+                        {
+                            "starts": "14:00", 
+                            "lasts": "2", 
+                            "name": "История", 
+                            "auditory": "208 СЛК", 
+                            "professor": "Закржевский Александр Геннадьевич"
+                        }
+                    ]
+                },
+                {
+                    "title": "Суббота",
+                    "activities": [
+                        {   
+                            "starts": "12:00",
+                            "lasts": "1.5", 
+                            "name": "Джава (практика)", 
+                            "auditory": "305 СЛК", 
+                            "professor": "Луцив Е.Г."
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

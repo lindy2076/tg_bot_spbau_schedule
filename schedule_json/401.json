@@ -1,0 +1,112 @@
+{
+    "degree": "bachelor",
+    "activities": [
+        {
+            "group": "401",
+            "week_activities": [    
+                {   
+                    "title": "Понедельник",
+                    "activities": [
+                        {   
+                            "starts": "10:00",
+                            "lasts": "3", 
+                            "name": "Численные методы", 
+                            "auditory": "422 СЛК", 
+                            "professor": "Давыдов Р.В."
+                        },
+                        {
+                            "starts": "14:00", 
+                            "lasts": "1.5", 
+                            "name": "Английский", 
+                            "auditory": "523 СЛК", 
+                            "professor": "не знаю..."
+                        },
+                        {
+                            "starts": "16:00", 
+                            "lasts": "1.5", 
+                            "name": "Оптика п/п (ЧЁТНАЯ НЕДЕЛЯ)", 
+                            "auditory": "517 СЛК", 
+                            "professor": "Шалыгин В.А."
+                        }
+                    ]
+                },
+                {
+                    "title": "Вторник",
+                    "activities": [
+                        {   
+                            "starts": "10:00",
+                            "lasts": "1.5", 
+                            "name": "Физика конд. сос.", 
+                            "auditory": "204 СЛК", 
+                            "professor": "Глазов М.М."
+                        },
+                        {
+                            "starts": "12:00", 
+                            "lasts": "1.5", 
+                            "name": "Физика п/п приборов", 
+                            "auditory": "517 СЛК", 
+                            "professor": "Берт Н.А."
+                        },
+                        {
+                            "starts": "12:00", 
+                            "lasts": "1.5", 
+                            "name": "Оптика п/п", 
+                            "auditory": "517 СЛК", 
+                            "professor": "Шалыгин В.А."
+                        }
+                    ]
+                },
+                {
+                    "title": "Среда",
+                    "activities": [
+                        {   
+                            "starts": "10:00", 
+                            "lasts": "9.5", 
+                            "name": "НИР", 
+                            "auditory": "--", 
+                            "professor": "--"
+                        }
+                    ]
+                },
+                {
+                    "title": "Четверг",
+                    "activities": [
+                        {   
+                            "starts": "10:00",
+                            "lasts": "1.5", 
+                            "name": "Стат физика", 
+                            "auditory": "515 СЛК", 
+                            "professor": "Мартюкова Д.С."
+                        },
+                        {
+                            "starts": "12:00", 
+                            "lasts": "1.5", 
+                            "name": "Стат физика (практика)", 
+                            "auditory": "515 СЛК", 
+                            "professor": "Мартюкова Д.С."
+                        },
+                        {
+                            "starts": "14:00", 
+                            "lasts": "3", 
+                            "name": "Лабораторный практикум/НИР", 
+                            "auditory": "--", 
+                            "professor": "--"
+                        }
+                    ]
+                },
+                {
+                    "title": "Пятница",
+                    "activities": [
+                        {   
+                            "starts": "10:00", 
+                            "lasts": "9.5", 
+                            "name": "НИР", 
+                            "auditory": "--", 
+                            "professor": "--"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
