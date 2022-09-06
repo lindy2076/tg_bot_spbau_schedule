@@ -67,7 +67,7 @@ def parse_day_switch_data(data: str) -> int | str:
 
 def weekday_from_date(user_datetime: datetime.datetime) -> DayTitles:
     """
-    Получаем порядковый номер дня недели по дате
+    Получаем день недели по дате
     """
     weekday_num = user_datetime.weekday()
     return weeknum_to_weekday(weekday_num)
