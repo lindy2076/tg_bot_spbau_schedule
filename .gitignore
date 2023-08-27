@@ -47,3 +47,5 @@ timetable.code-workspace
 backup*.sql
 phd.*
 master.*
+
+**/migrator/versions/*

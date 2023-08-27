@@ -31,3 +31,8 @@ class Degrees(str, Enum):
     mag = "master"
     asp = "phd"
     null = "null"
+
+
+class ErrorMessages(str, Enum):
+    NO_GROUP = "выбери в /setgr свою группу"
+    NO_SCHEDULE = "расписания нет."

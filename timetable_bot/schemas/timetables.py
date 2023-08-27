@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from pydantic import BaseModel, validator
 from typing import List
 
@@ -26,7 +24,7 @@ class Subject(BaseModel):
         try:
             float(new_v)
         except ValueError:
-            raise ValueError("Где-то длительность пары ужасная")
+            raise ValueError("Где-то длительность пары ужасная")   # FIXME norm opisanie
         return new_v
 
     @validator('starts')
