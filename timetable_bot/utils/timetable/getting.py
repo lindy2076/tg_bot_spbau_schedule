@@ -3,7 +3,9 @@ import datetime
 from typing import Tuple
 
 from timetable_bot.schemas import Degree, Week, User
-from timetable_bot.schemas import Degrees, Groups, DayTitles, ErrorMessages
+from timetable_bot.schemas import (
+    Degrees, Groups, DayTitles, ErrorMessages, TextResponse
+)
 from timetable_bot.db.models import User as DbUser
 from timetable_bot.db.connection import get_session
 from .time import weekday_from_date, get_curr_time, get_class_ends_time
@@ -60,7 +62,7 @@ async def get_week(user_group: Groups) -> str:
             continue
         activities = [" " + repr(x) + "\n" for x in _group.week_activities]   # FIXME как-то в метод перенести
         return " ".join(activities)
-    return "пока для этой группы расписания нет..."
+    return TextResponse.NO_SCHEDULE_FOR_GROUP
 
 
 async def get_day(user_group: Groups, user_day: DayTitles) -> str:  # FIXME переделать, особенно for else
@@ -75,13 +77,13 @@ async def get_day(user_group: Groups, user_day: DayTitles) -> str:  # FIXME пе
         if _group.group == user_group:
             break
     else:
-        return "пока для этой группы расписания нет..."
+        return TextResponse.NO_SCHEDULE_FOR_GROUP
     
     for activity in _group.week_activities:
         if activity.title == user_day:
             break
     else:
-        return "на этот день расписания нет..."
+        return TextResponse.NO_SCHEDULE_FOR_DAY
     activities = ["    " + repr(x) + "\n" for x in activity.activities]
 
     return user_day + ":\n\n " + " ".join(activities)
@@ -99,14 +101,14 @@ async def get_today(user_group: Groups, user_datetime: datetime.datetime) -> str
         if _group.group == user_group:
             break
     else:
-        return "пока для этой группы расписания нет..."
+        return TextResponse.NO_SCHEDULE_FOR_GROUP
 
     user_day = weekday_from_date(user_datetime)
     for activity in _group.week_activities:
         if activity.title == user_day:
             break
     else:
-        return "на этот день расписания нет..."
+        return TextResponse.NO_SCHEDULE_FOR_DAY
     activities = ["    " + repr(x) + "\n" for x in activity.activities]
 
     return user_day + ":\n\n " + " ".join(activities)
@@ -124,24 +126,24 @@ async def get_current_class(user_group: Groups, user_datetime: datetime.datetime
         if _group.group == user_group:
             break
     else:
-        return "пока для этой группы расписания нет..."
+        return TextResponse.NO_SCHEDULE_FOR_GROUP
 
     user_day = weekday_from_date(user_datetime)
     for day in _group.week_activities:
         if day.title == user_day:
             break
     else:
-        return "НИЧЕГО!!! СВОБОДА!!!"
+        return TextResponse.DAY_NOTHING
 
     curr_time = get_curr_time(user_datetime)
     for _class in day.activities:
         class_time = _class.starts
         class_ends = get_class_ends_time(_class.starts, _class.lasts)
         if class_time < curr_time and curr_time < class_ends:
-            return "сейчас идёт " + _class.name + " в " + _class.auditory
+            return TextResponse.curr_class(_class.name, _class.auditory)
         if curr_time < class_time:
-            return "сейчас будет " + _class.name + " в " + class_time + " в " + _class.auditory
-    return "кажется ничего не идёт..."
+            return TextResponse.future_class(_class.name, _class.auditory, class_time)
+    return TextResponse.NEXT_CLASS_NONE
 
 
 async def set_user_group(tg_user, message: str) -> str:  #FIXME описать структуру message в комменте
@@ -172,12 +174,12 @@ async def set_user_group(tg_user, message: str) -> str:  #FIXME описать �
     else:
         if user_db.group == validated.group:
             await session.close()
-            return "кажется ты уже выбрал эту группу..."
+            return TextResponse.SAME_GROUP_CHOSEN
         user_db.group = validated.group
         session.add(user_db)
     await session.commit()
     await session.close()
-    return "теперь " + validated.group + " - ваша группа"
+    return TextResponse.new_group(validated.group)
 
 
 async def get_user_group_message(user_id: int) -> str:
@@ -186,12 +188,12 @@ async def get_user_group_message(user_id: int) -> str:
     """
     group = await get_user_group(user_id)
     if not group:
-        return "к сожалению, я пока о тебе ничего не знаю. попробуй /setgr *номер_группы*"
-    return "я выдаю для тебя расписание группы номер " + group + \
-    "\n\nя храню только жизненно необходимую информацию, а именно: " + \
-    "айди телеграма, имя в телеграме, номер группы, время обращения, все сообщения боту, время онлайна в телеграме, фамилию в телеграме, вашу платёжную информацию, местоположение, а также номер телефона.\n" +\
-    "шучу😁. я храню только ваш тг айди, тг имя, номер группы и время обращения к боту. чтобы удалить себя из базы данных, пропишите /del"
-
+        return TextResponse.CHOOSE_GROUP_POLITE
+    # return "я выдаю для тебя расписание группы номер " + group + \
+    # "\n\nя храню только жизненно необходимую информацию, а именно: " + \
+    # "айди телеграма, имя в телеграме, номер группы, время обращения, все сообщения боту, время онлайна в телеграме, фамилию в телеграме, вашу платёжную информацию, местоположение, а также номер телефона.\n" +\
+    # "шучу😁. я храню только ваш тг айди, тг имя, номер группы и время обращения к боту. чтобы удалить себя из базы данных, пропишите /del"
+    return TextResponse.info_and_policy(group)
 
 async def get_user_group(user_id: int) -> Groups | None:
     """
@@ -215,4 +217,4 @@ async def del_user_from_db(user_id: int) -> str:
     await session.execute(query)
     await session.commit()
     await session.close()
-    return "тебя больше (а может и не больше) нет в моей бд. (но в логах есть🙃 )"
+    return TextResponse.USER_DELETED

@@ -17,7 +17,7 @@ class DefaultSettings(BaseSettings):
     DB_CONNECT_RETRY: int = environ.get("DB_CONNECT_RETRY", 20)
     DB_POOL_SIZE: int = environ.get("DB_POOL_SIZE", 15)
 
-    TIMEZONE_OFFSET: int = 3
+    TIMEZONE_OFFSET: int = -5
 
     @property
     def database_settings(self) -> dict:

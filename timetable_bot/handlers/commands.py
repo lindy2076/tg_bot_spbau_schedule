@@ -4,6 +4,7 @@ from datetime import timedelta
 import timetable_bot.keyboards as kb
 import timetable_bot.utils as utils
 from timetable_bot.config import DefaultSettings
+from timetable_bot.schemas import TextResponse
 
 
 TD = timedelta(hours=DefaultSettings().TIMEZONE_OFFSET)
@@ -12,10 +13,8 @@ async def send_hello(message: types.Message):
     """
     Приветствие с клавиатурой выбора дня недели.
     """
-    await message.reply("ПРИВЕТ, " + str(message.from_user.first_name) + " 🤗🤗🤗",
-        reply_markup=kb.smile_kb)
-    await message.answer("\nпосмотри в меню, там команды всякие. но пока можешь выбрать свою группу:", 
-        reply_markup=kb.group_sel_kb)
+    await message.reply(TextResponse.greet(message.from_user.first_name))
+    await message.answer(TextResponse.SEE_MENU, reply_markup=kb.group_sel_kb)
 
 
 async def send_echo(message: types.Message):
@@ -32,7 +31,13 @@ async def send_echo(message: types.Message):
         case "неделя":
             await send_week_schedule(message)
         case _:
-            await message.reply(message.from_user.first_name + " говорит: " + message.text + "\nвыбери день:", reply_markup=kb.day_sel_kb)
+            await message.reply(
+                TextResponse.echo_and_dayselect(
+                    message.from_user.first_name,
+                    message.text
+                ),
+                reply_markup=kb.day_sel_kb
+            )
 
 
 async def send_week_schedule(message: types.Message):
@@ -48,7 +53,7 @@ async def get_day_schedule(message: types.Message):
     """
     Выдаёт клаву с выбором дня, вызывается командой /day (ну или другой из __init__)
     """
-    await message.reply("выбери день.\n", reply_markup=kb.day_sel_kb)
+    await message.reply(TextResponse.CHOOSE_DAY, reply_markup=kb.day_sel_kb)
 
 
 async def get_current_class(message: types.Message):

@@ -34,7 +34,6 @@ class Subject(BaseModel):
         return v
 
 
-
 class Day(BaseModel):
     title: DayTitles
     activities: List[Subject] | None
