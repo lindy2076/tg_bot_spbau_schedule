@@ -5,7 +5,7 @@ endif
 
 args := $(wordlist 2, 100, $(MAKECMDGOALS))
 ifndef args
-MESSAGE = "No such command (or you pass two or many targets to )."
+MESSAGE = "No such command (or you pass two or many targets to ). See Makefile file."
 else
 MESSAGE = "Done"
 endif

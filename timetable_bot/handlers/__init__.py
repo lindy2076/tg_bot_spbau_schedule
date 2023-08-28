@@ -1,4 +1,4 @@
-from .timetable import (
+from .commands import (
     send_hello, 
     send_echo,  
     send_week_schedule, 
@@ -15,6 +15,7 @@ from .callback import (
     handle_day_switch
 )
 
+
 list_of_commands = [
     (send_hello, ['start', 'help']),
     (send_week_schedule, ['week']),
@@ -27,13 +28,11 @@ list_of_commands = [
     (send_echo, None)
 ]
 
-
 callback_handlers = [
     (handle_user_group, lambda c: c.data and c.data.startswith("setgr")),
     (handle_day_select, lambda c: c.data and c.data.startswith("day")),
     (handle_day_switch, lambda c: c.data and c.data.startswith("wd"))
 ]
-
 
 __all__ = [
     "list_of_commands",
