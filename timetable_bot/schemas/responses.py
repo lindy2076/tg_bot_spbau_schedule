@@ -56,3 +56,7 @@ class TextResponse(str):
     @classmethod
     def info_and_policy(cls, group: str) -> str:
         return "я выдаю для тебя расписание группы номер {:s}".format(group) + TextResponse.POLICY
+
+    @classmethod
+    def curr_time(cls, day: str, time: str) -> str:
+        return "\n\nсейчас у меня {:s}, {:s}".format(day.lower(), time)

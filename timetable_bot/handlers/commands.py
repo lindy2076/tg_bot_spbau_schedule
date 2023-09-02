@@ -30,6 +30,8 @@ async def send_echo(message: types.Message):
             await set_user_group(message)
         case "неделя":
             await send_week_schedule(message)
+        case "информация...":
+            await get_user_group(message)
         case _:
             await message.reply(
                 TextResponse.echo_and_dayselect(
@@ -88,9 +90,9 @@ async def set_user_group(message: types.Message):
 
 async def get_user_group(message: types.Message):
     """
-    Отправляет сообщение с группой юзера
+    Отправляет сообщение с группой юзера + хранящуююся информацию + текущее время бота
     """
-    result = await utils.get_user_group_message(message.from_user.id)
+    result = await utils.get_user_group_message(message.from_user.id, message.date + TD)
     await message.reply(result)
 
 
