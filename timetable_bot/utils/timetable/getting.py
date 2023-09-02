@@ -189,7 +189,9 @@ async def get_user_group_message(user_id: int, user_datetime: datetime.datetime)
     group = await get_user_group(user_id)
     if not group:
         return TextResponse.CHOOSE_GROUP_POLITE
-    return TextResponse.info_and_policy(group) + TextResponse.curr_time(weekday_from_date(user_datetime), get_curr_time(user_datetime))
+    return TextResponse.info_and_policy(group) + TextResponse.curr_time(
+        weekday_from_date(user_datetime), get_curr_time(user_datetime)
+    )
 
 
 async def get_user_group(user_id: int) -> Groups | None:
