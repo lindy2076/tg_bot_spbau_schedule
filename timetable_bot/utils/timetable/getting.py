@@ -182,18 +182,15 @@ async def set_user_group(tg_user, message: str) -> str:  #FIXME описать �
     return TextResponse.new_group(validated.group)
 
 
-async def get_user_group_message(user_id: int) -> str:
+async def get_user_group_message(user_id: int, user_datetime: datetime.datetime) -> str:
     """
-    Смешной текст с номером группы и тем что хранит бот.
+    Смешной текст с номером группы и тем что хранит бот + текущее время бота
     """
     group = await get_user_group(user_id)
     if not group:
         return TextResponse.CHOOSE_GROUP_POLITE
-    # return "я выдаю для тебя расписание группы номер " + group + \
-    # "\n\nя храню только жизненно необходимую информацию, а именно: " + \
-    # "айди телеграма, имя в телеграме, номер группы, время обращения, все сообщения боту, время онлайна в телеграме, фамилию в телеграме, вашу платёжную информацию, местоположение, а также номер телефона.\n" +\
-    # "шучу😁. я храню только ваш тг айди, тг имя, номер группы и время обращения к боту. чтобы удалить себя из базы данных, пропишите /del"
-    return TextResponse.info_and_policy(group)
+    return TextResponse.info_and_policy(group) + TextResponse.curr_time(weekday_from_date(user_datetime), get_curr_time(user_datetime))
+
 
 async def get_user_group(user_id: int) -> Groups | None:
     """

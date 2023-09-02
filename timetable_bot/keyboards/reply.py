@@ -9,12 +9,13 @@ def create_smile_kb() -> ReplyKeyboardMarkup:
     btn_today = KeyboardButton("что сёдня")
     btn_week = KeyboardButton("неделя")
     btn_group = KeyboardButton("выбрать группу")
+    btn_info = KeyboardButton("информация...")
 
     kb = ReplyKeyboardMarkup(resize_keyboard=True)
     kb.row(button_face)
     kb.row(btn_now)
     kb.row(btn_today, btn_week)
-    kb.row(btn_group)
+    kb.row(btn_group, btn_info)
     return kb
 
 
