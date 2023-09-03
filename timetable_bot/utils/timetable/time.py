@@ -39,6 +39,24 @@ def weekday_to_weeknum(weekday: DayTitles) -> int:
             return 6
 
 
+def weeknum_to_short_weekday(weeknum: int) -> str:
+    match weeknum:
+        case 0:
+            return "Пн"
+        case 1:
+            return "Вт"
+        case 2:
+            return "Ср"
+        case 3:
+            return "Чт"
+        case 4:
+            return "Пт"
+        case 5:
+            return "Сб"
+        case 6:
+            return "Вс"
+
+
 def parse_sel_day_data(data: str) -> DayTitles:
     """
     Парсим данные callback запроса клавы sel_day_kb.

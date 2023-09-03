@@ -24,6 +24,8 @@ async def send_echo(message: types.Message):
     match message.text:
         case "что щас":
             await get_current_class(message)
+        case "next пара":
+            await get_next_class(message)
         case "что сёдня":
             await get_today_schedule(message)
         case "выбрать группу":
@@ -64,6 +66,15 @@ async def get_current_class(message: types.Message):
     """
     group = await utils.get_user_group(message.from_user.id)
     result = await utils.get_current_class(group, message.date + TD)
+    await message.reply(result)
+
+
+async def get_next_class(message: types.Message):
+    """
+    Отправляет следущее занятие
+    """
+    group = await utils.get_user_group(message.from_user.id)
+    result = await utils.get_next_class(group, message.date + TD)
     await message.reply(result)
 
 
