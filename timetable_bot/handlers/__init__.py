@@ -2,11 +2,12 @@ from .commands import (
     send_hello, 
     send_echo,  
     send_week_schedule, 
-    get_day_schedule, 
-    get_current_class, 
-    get_today_schedule, 
-    set_user_group, 
-    get_user_group, 
+    get_day_schedule,
+    get_current_class,
+    get_next_class,
+    get_today_schedule,
+    set_user_group,
+    get_user_group,
     del_me_from_db
 )
 from .callback import (
@@ -22,6 +23,7 @@ list_of_commands = [
     (get_day_schedule, ['day']),
     (get_today_schedule, ['today']),
     (get_current_class, ['now']),
+    (get_next_class, ['next']),
     (set_user_group, ['setgr']),
     (get_user_group, ['me']),
     (del_me_from_db, ['del']),

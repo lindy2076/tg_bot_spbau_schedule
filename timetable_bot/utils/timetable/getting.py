@@ -91,12 +91,38 @@ async def get_current_class(user_group: Groups, user_datetime: datetime.datetime
     else:
         return TextResponse.DAY_NOTHING
 
-    curr_time = get_curr_time(user_datetime)
+    curr_time: str = get_curr_time(user_datetime)
     for _class in day.activities:
         class_time = _class.starts
         class_ends = get_class_ends_time(_class.starts, _class.lasts)
         if class_time < curr_time and curr_time < class_ends:
             return TextResponse.curr_class(_class.name, _class.auditory)
+        if curr_time < class_time:
+            return TextResponse.future_class(_class.name, _class.auditory, class_time)
+    return TextResponse.CURR_CLASS_NONE
+
+
+async def get_next_class(user_group: Groups, user_datetime: datetime.datetime) -> str:
+    """
+    Даёт следующее занятие на сегодня.
+    """
+    week, err = await load_week_from_file(user_group)
+    if err is not None:
+        return err
+
+    user_day = weekday_from_date(user_datetime)
+    for day in week.week_activities:
+        if day.title == user_day:
+            break
+    else:
+        return TextResponse.DAY_NOTHING
+
+    curr_time: str = get_curr_time(user_datetime)
+    for _class in day.activities:
+        class_time = _class.starts
+        class_ends = get_class_ends_time(_class.starts, _class.lasts)
+        if class_time < curr_time and curr_time < class_ends:
+            continue
         if curr_time < class_time:
             return TextResponse.future_class(_class.name, _class.auditory, class_time)
     return TextResponse.NEXT_CLASS_NONE
