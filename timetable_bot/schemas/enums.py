@@ -28,8 +28,8 @@ class Groups(str, Enum):
     # b4 = "402"
 
 
-class Degrees(str, Enum):
-    bach = "bachelor"
-    mag = "master"
-    asp = "phd"
-    null = "null"
+# class Degrees(str, Enum):
+#     bach = "bachelor"
+#     mag = "master"
+#     asp = "phd"
+#     null = "null"

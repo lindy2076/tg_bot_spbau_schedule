@@ -2,9 +2,9 @@ import json
 import datetime
 from typing import Tuple
 
-from timetable_bot.schemas import Degree, Week, User
+from timetable_bot.schemas import Week, User
 from timetable_bot.schemas import (
-    Degrees, Groups, DayTitles, ErrorMessages, TextResponse
+    Groups, DayTitles, ErrorMessages, TextResponse
 )
 from timetable_bot.db.models import User as DbUser
 from timetable_bot.db.connection import get_session
@@ -15,27 +15,13 @@ from pydantic import ValidationError
 from sqlalchemy import delete, select
 
 
-def get_degree(user_group: Groups) -> Degrees:  # зачем..? скорее всего depricated
-    """
-    Определяем степень челика по номеру группы (бак, маг, асп, null)
-    """
-    if not user_group:
-        return Degrees.null
-    if user_group[0] <= "4":
-        return Degrees.bach
-    if user_group[0] in ["5", "6"]:
-        return Degrees.mag
-    return Degrees.null
-
-
-async def load_week_from_file(user_group: Groups) -> Tuple[list[Week], ErrorMessages | None]:
+async def load_week_from_file(user_group: Groups) -> Tuple[Week, ErrorMessages | None]:
     """
     Грузим расписание группы user_group и выдаём расписание на неделю.
     Если не выбрана группа или нет расписания, то вернёт соответствующую
     ошибку вторым параметром, иначе None.
     """
-    degree = get_degree(user_group)
-    if degree == Degrees.null:
+    if not user_group:
         return None, ErrorMessages.NO_GROUP
 
     filename = "schedule_json/" + user_group + ".json"
@@ -43,48 +29,41 @@ async def load_week_from_file(user_group: Groups) -> Tuple[list[Week], ErrorMess
         with open(filename) as wsc:
             loaded = json.load(wsc)
     except:
-        return None, ErrorMessages.NO_SCHEDULE
+        return None, ErrorMessages.NO_SCHEDULE_FOR_GROUP
 
-    res = Degree(**loaded)
-    return getattr(res, "activities"), None
+    try:
+        res = Week(**loaded)
+    except:
+        return None, ErrorMessages.NO_SCHEDULE_FOR_GROUP
+    return res, None
 
 
 async def get_week(user_group: Groups) -> str:
     """
     Даёт расписание на неделю для выбранной группы в готовом виде.
     """
-    week_activities, err = await load_week_from_file(user_group)
+    week, err = await load_week_from_file(user_group)
     if err is not None:
         return err
-
-    for _group in week_activities:   # чзх 
-        if _group.group != user_group:
-            continue
-        activities = [" " + repr(x) + "\n" for x in _group.week_activities]   # FIXME как-то в метод перенести
-        return " ".join(activities)
-    return TextResponse.NO_SCHEDULE_FOR_GROUP
+    
+    activities = [" " + repr(x) + "\n" for x in week.week_activities]  # FIXME как-то в метод перенести
+    return " ".join(activities)
 
 
 async def get_day(user_group: Groups, user_day: DayTitles) -> str:  # FIXME переделать, особенно for else
     """
     Даёт расписание на конкретный день для выбранной группы
     """
-    bach_activities, err = await load_week_from_file(user_group)
+    week, err = await load_week_from_file(user_group)
     if err is not None:
         return err
 
-    for _group in bach_activities:
-        if _group.group == user_group:
-            break
-    else:
-        return TextResponse.NO_SCHEDULE_FOR_GROUP
-    
-    for activity in _group.week_activities:
-        if activity.title == user_day:
+    for day in week.week_activities:
+        if day.title == user_day:
             break
     else:
         return TextResponse.NO_SCHEDULE_FOR_DAY
-    activities = ["    " + repr(x) + "\n" for x in activity.activities]
+    activities = ["    " + repr(x) + "\n" for x in day.activities]
 
     return user_day + ":\n\n " + " ".join(activities)
 
@@ -93,43 +72,20 @@ async def get_today(user_group: Groups, user_datetime: datetime.datetime) -> str
     """
     Даёт расписание на сегодня для выбранной группы.
     """
-    bach_activities, err = await load_week_from_file(user_group)
-    if err is not None:
-        return err
-    
-    for _group in bach_activities:
-        if _group.group == user_group:
-            break
-    else:
-        return TextResponse.NO_SCHEDULE_FOR_GROUP
-
     user_day = weekday_from_date(user_datetime)
-    for activity in _group.week_activities:
-        if activity.title == user_day:
-            break
-    else:
-        return TextResponse.NO_SCHEDULE_FOR_DAY
-    activities = ["    " + repr(x) + "\n" for x in activity.activities]
-
-    return user_day + ":\n\n " + " ".join(activities)
+    return await get_day(user_group, user_day)
 
 
 async def get_current_class(user_group: Groups, user_datetime: datetime.datetime) -> str:
     """
     Даёт текущее занятие или будущее занятие на сегодня.
     """
-    bach_activities, err = await load_week_from_file(user_group)
+    week, err = await load_week_from_file(user_group)
     if err is not None:
         return err
 
-    for _group in bach_activities:
-        if _group.group == user_group:
-            break
-    else:
-        return TextResponse.NO_SCHEDULE_FOR_GROUP
-
     user_day = weekday_from_date(user_datetime)
-    for day in _group.week_activities:
+    for day in week.week_activities:
         if day.title == user_day:
             break
     else:
@@ -189,7 +145,9 @@ async def get_user_group_message(user_id: int, user_datetime: datetime.datetime)
     group = await get_user_group(user_id)
     if not group:
         return TextResponse.CHOOSE_GROUP_POLITE
-    return TextResponse.info_and_policy(group) + TextResponse.curr_time(weekday_from_date(user_datetime), get_curr_time(user_datetime))
+    return TextResponse.info_and_policy(group) + TextResponse.curr_time(
+        weekday_from_date(user_datetime), get_curr_time(user_datetime)
+    )
 
 
 async def get_user_group(user_id: int) -> Groups | None:
