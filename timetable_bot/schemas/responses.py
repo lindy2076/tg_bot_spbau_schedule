@@ -2,14 +2,13 @@
 
 class ErrorMessages(str):
     NO_GROUP = "выбери в /setgr свою группу"
-    NO_SCHEDULE = "расписания нет."
+    NO_SCHEDULE_FOR_GROUP = "пока для этой группы расписания нет..."
 
 
 class TextResponse(str):
     SEE_MENU = "посмотри в меню, там команды всякие. но пока можешь выбрать свою группу:"
     CHOOSE_DAY = "выбери день:"
     CHOOSE_GROUP = "надо выбрать группу:"
-    NO_SCHEDULE_FOR_GROUP = "пока для этой группы расписания нет..."
     NO_SCHEDULE_FOR_DAY = "на этот день расписания нет..."
     DAY_NOTHING = "НИЧЕГО!!! СВОБОДА!!!"
     NEXT_CLASS_NONE = "кажется ничего не идёт..."

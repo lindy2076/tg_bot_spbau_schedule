@@ -1,103 +1,98 @@
 {
-    "degree": "bachelor",
-    "activities": [
+    "group": "302.2",
+    "week_activities": [    
+        {   
+            "title": "Понедельник",
+            "activities": [
+                {
+                    "starts": "11:00", 
+                    "lasts": "2.25", 
+                    "name": "Молекулярная и к. био.", 
+                    "auditory": "431 СЛК", 
+                    "professor": "Рогозова Т.М."
+                },
+                {
+                    "starts": "14:00", 
+                    "lasts": "1.5", 
+                    "name": "Английский", 
+                    "auditory": "523 СЛК, 442, 445 ФТШ", 
+                    "professor": "Разные всякие.."
+                },
+                {
+                    "starts": "16:00", 
+                    "lasts": "1.5", 
+                    "name": "Разработка ui", 
+                    "auditory": "305 СЛК", 
+                    "professor": "Устинов Александр Глебович"
+                }
+            ]
+        },
         {
-            "group": "302.2",
-            "week_activities": [    
+            "title": "Вторник",
+            "activities": [
                 {   
-                    "title": "Понедельник",
-                    "activities": [
-                        {
-                            "starts": "11:00", 
-                            "lasts": "2.25", 
-                            "name": "Молекулярная и к. био.", 
-                            "auditory": "431 СЛК", 
-                            "professor": "Рогозова Т.М."
-                        },
-                        {
-                            "starts": "14:00", 
-                            "lasts": "1.5", 
-                            "name": "Английский", 
-                            "auditory": "523 СЛК, 442, 445 ФТШ", 
-                            "professor": "Разные всякие.."
-                        },
-                        {
-                            "starts": "16:00", 
-                            "lasts": "1.5", 
-                            "name": "Разработка ui", 
-                            "auditory": "305 СЛК", 
-                            "professor": "Устинов Александр Глебович"
-                        }
-                    ]
+                    "starts": "10:00",
+                    "lasts": "9.5", 
+                    "name": "НИР", 
+                    "auditory": "--", 
+                    "professor": "--"
+                }
+            ]
+        },
+        {
+            "title": "Среда",
+            "activities": [
+                {
+                    "starts": "11:00", 
+                    "lasts": "1.5", 
+                    "name": "web", 
+                    "auditory": "305 СЛК", 
+                    "professor": "краш серг вен"
+                },
+                {   
+                    "starts": "14:00",
+                    "lasts": "1.5", 
+                    "name": "Основы химии (лекция)", 
+                    "auditory": "208 СЛК", 
+                    "professor": "Вязьмин С.Ю."
                 },
                 {
-                    "title": "Вторник",
-                    "activities": [
-                        {   
-                            "starts": "10:00",
-                            "lasts": "9.5", 
-                            "name": "НИР", 
-                            "auditory": "--", 
-                            "professor": "--"
-                        }
-                    ]
+                    "starts": "16:00", 
+                    "lasts": "1.5", 
+                    "name": "Основы химии (практика)", 
+                    "auditory": "208 СЛК", 
+                    "professor": "Вязьмин С.Ю."
+                }
+            ]
+        },
+        {
+            "title": "Четверг",
+            "activities": [
+                {   
+                    "starts": "10:00", 
+                    "lasts": "9.5", 
+                    "name": "НИР", 
+                    "auditory": "--", 
+                    "professor": "--"
+                }
+            ]
+        },
+        {
+            "title": "Пятница",
+            "activities": [
+                {   
+                    "starts": "14:00",
+                    "lasts": "1.5", 
+                    "name": "Теорвер", 
+                    "auditory": "204 СЛК", 
+                    "professor": "Виноградов А.С."
                 },
                 {
-                    "title": "Среда",
-                    "activities": [
-                        {
-                            "starts": "11:00", 
-                            "lasts": "1.5", 
-                            "name": "web", 
-                            "auditory": "305 СЛК", 
-                            "professor": "краш серг вен"
-                        },
-                        {   
-                            "starts": "14:00",
-                            "lasts": "1.5", 
-                            "name": "Основы химии (лекция)", 
-                            "auditory": "208 СЛК", 
-                            "professor": "Вязьмин С.Ю."
-                        },
-                        {
-                            "starts": "16:00", 
-                            "lasts": "1.5", 
-                            "name": "Основы химии (практика)", 
-                            "auditory": "208 СЛК", 
-                            "professor": "Вязьмин С.Ю."
-                        }
-                    ]
-                },
-                {
-                    "title": "Четверг",
-                    "activities": [
-                        {   
-                            "starts": "10:00", 
-                            "lasts": "9.5", 
-                            "name": "НИР", 
-                            "auditory": "--", 
-                            "professor": "--"
-                        }
-                    ]
-                },
-                {
-                    "title": "Пятница",
-                    "activities": [
-                        {   
-                            "starts": "14:00",
-                            "lasts": "1.5", 
-                            "name": "Теорвер", 
-                            "auditory": "204 СЛК", 
-                            "professor": "Виноградов А.С."
-                        },
-                        {
-                            "starts": "16:00", 
-                            "lasts": "1.5", 
-                            "name": "Теорвер (практика)", 
-                            "auditory": "517 СЛК", 
-                            "professor": "Виноградов А.С."
-                        }
-                    ]
+                    "starts": "16:00", 
+                    "lasts": "1.5", 
+                    "name": "Теорвер (практика)", 
+                    "auditory": "517 СЛК", 
+                    "professor": "Виноградов А.С."
                 }
             ]
         }

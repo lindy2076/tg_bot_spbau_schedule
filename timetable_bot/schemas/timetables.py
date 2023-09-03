@@ -1,7 +1,7 @@
 from pydantic import BaseModel, validator
 from typing import List
 
-from .enums import DayTitles, Groups, Degrees
+from .enums import DayTitles, Groups
 
 
 class Subject(BaseModel):
@@ -58,16 +58,16 @@ class Week(BaseModel):
         use_enum_values = True
 
 
-class Degree(BaseModel):
-    degree: Degrees
-    activities: List[Week]
+# class Degree(BaseModel):
+#     degree: Degrees
+#     activities: List[Week]
 
-    def __repr__(self):
-        activities_str = [" " + repr(x) + "\n" for x in self.activities]
-        return str(self.degree) + ': \n' + " ".join(activities_str)
+#     def __repr__(self):
+#         activities_str = [" " + repr(x) + "\n" for x in self.activities]
+#         return str(self.degree) + ': \n' + " ".join(activities_str)
 
-    class Config:  
-        use_enum_values = True
+#     class Config:  
+#         use_enum_values = True
 
 
 class User(BaseModel):
