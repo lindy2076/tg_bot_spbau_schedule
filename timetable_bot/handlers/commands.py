@@ -9,6 +9,7 @@ from timetable_bot.schemas import TextResponse
 
 TD = timedelta(hours=DefaultSettings().TIMEZONE_OFFSET)
 
+
 async def send_hello(message: types.Message):
     """
     Приветствие с клавиатурой выбора дня недели.
