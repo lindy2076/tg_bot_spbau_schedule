@@ -5,7 +5,7 @@
             "title": "Понедельник",
             "activities": [
                 {   
-                    "starts": "9:00",
+                    "starts": "09:00",
                     "lasts": "4.5", 
                     "name": "НИР", 
                     "auditory": "--", 
