@@ -92,7 +92,6 @@ async def get_current_class(user_group: Groups, user_datetime: datetime.datetime
         return TextResponse.DAY_NOTHING
 
     curr_time: str = get_curr_time(user_datetime)
-    print(curr_time)
     for _class in day.activities:
         class_time = _class.starts
         class_ends = get_class_ends_time(_class.starts, _class.lasts)
