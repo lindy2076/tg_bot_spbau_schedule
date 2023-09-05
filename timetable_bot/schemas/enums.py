@@ -24,7 +24,7 @@ class Groups(str, Enum):
     b3_1 = "302.1"
     b3_2 = "302.2"
     # f4 = "401"
-    # b4 = "402"
+    b4 = "402"
 
 
 # class Degrees(str, Enum):
