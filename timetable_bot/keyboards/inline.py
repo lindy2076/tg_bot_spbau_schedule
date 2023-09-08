@@ -12,6 +12,8 @@ def create_group_sel_inline_kb(grd: CallbackData) -> InlineKeyboardMarkup:
     b1012 = InlineKeyboardButton(Groups.f1_2.value + " ⚛️", callback_data=grd.new(id=Groups.f1_2.value))
     b1021 = InlineKeyboardButton(Groups.b1_1.value + " 🧬", callback_data=grd.new(id=Groups.b1_1.value))
 
+    f2021 = InlineKeyboardButton(Groups.f2_1.value + " ⚛️", callback_data=grd.new(id=Groups.f2_1.value))
+    f2022 = InlineKeyboardButton(Groups.f2_2.value + " ⚛️", callback_data=grd.new(id=Groups.f2_2.value))
     b2021 = InlineKeyboardButton(Groups.b2_1.value + " 🧬", callback_data=grd.new(id=Groups.b2_1.value))
 
     f3011 = InlineKeyboardButton(Groups.f3_1.value + " ⚛️", callback_data=grd.new(id=Groups.f3_1.value))
@@ -19,13 +21,19 @@ def create_group_sel_inline_kb(grd: CallbackData) -> InlineKeyboardMarkup:
     f3013 = InlineKeyboardButton(Groups.f3_3.value + " ⚛️", callback_data=grd.new(id=Groups.f3_3.value))
     b3021 = InlineKeyboardButton(Groups.b3_1.value + " 🧬", callback_data=grd.new(id=Groups.b3_1.value))
     b3022 = InlineKeyboardButton(Groups.b3_2.value + " 🧬", callback_data=grd.new(id=Groups.b3_2.value))
+    
+    f4011 = InlineKeyboardButton(Groups.f4_1.value + " ⚛️", callback_data=grd.new(id=Groups.f4_1.value))
+    f4012 = InlineKeyboardButton(Groups.f4_2.value + " ⚛️", callback_data=grd.new(id=Groups.f4_2.value))
+    f4013 = InlineKeyboardButton(Groups.f4_3.value + " ⚛️", callback_data=grd.new(id=Groups.f4_3.value))
+    b402 = InlineKeyboardButton(Groups.b4.value + " 🧬", callback_data=grd.new(id=Groups.b4.value))
 
     group_sel_kb = InlineKeyboardMarkup()
-    group_sel_kb.row(b1011, b1012)
-    group_sel_kb.row(b1021)
-    group_sel_kb.row(b2021)
+    group_sel_kb.row(b1011, b1012, b1021)
+    group_sel_kb.row(f2021, f2022, b2021)
     group_sel_kb.row(f3011, f3012, f3013)
     group_sel_kb.row(b3021, b3022)
+    group_sel_kb.row(f4011, f4012, f4013)
+    group_sel_kb.row(b402)
 
     return group_sel_kb
 

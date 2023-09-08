@@ -1,82 +1,89 @@
 {
-    "degree": "bachelor",
-    "activities": [
+    "group": "402",
+    "week_activities": [    
         {
-            "group": "402",
-            "week_activities": [    
+            "title": "Понедельник",
+            "activities": [
+                {
+                    "starts": "12:00", 
+                    "lasts": "1.5", 
+                    "name": "Биотехнологии", 
+                    "auditory": "433 СЛК", 
+                    "professor": "Макашов Андрей Андреевич"
+                },
+                {
+                    "starts": "14:00", 
+                    "lasts": "1.5", 
+                    "name": "Генетика", 
+                    "auditory": "431 СЛК", 
+                    "professor": "Рогоза Т. М."
+                },
+                {
+                    "starts": "16:00", 
+                    "lasts": "1.5", 
+                    "name": "Английский", 
+                    "auditory": "442, 539 ФТШ", 
+                    "professor": "не знаю..."
+                }
+            ]
+        },
+        {
+            "title": "Вторник",
+            "activities": [
                 {   
-                    "title": "Понедельник",
-                    "activities": [
-                        {
-                            "starts": "10:00", 
-                            "lasts": "1.5", 
-                            "name": "Английский", 
-                            "auditory": "442, 507 ФТШ", 
-                            "professor": "не знаю..."
-                        },
-                        {
-                            "starts": "12:00", 
-                            "lasts": "3", 
-                            "name": "Анализ изображений", 
-                            "auditory": "433 СЛК", 
-                            "professor": "Андреев Ю.А."
-                        }
-                    ]
-                },
+                    "starts": "10:00", 
+                    "lasts": "9.5", 
+                    "name": "НИР", 
+                    "auditory": "--", 
+                    "professor": "--"
+                }
+            ]
+        },
+        {
+            "title": "Среда",
+            "activities": [
+                {   
+                    "starts": "10:00", 
+                    "lasts": "9.5", 
+                    "name": "НИР", 
+                    "auditory": "--", 
+                    "professor": "--"
+                }
+            ]
+        },
+        {
+            "title": "Четверг",
+            "activities": [
                 {
-                    "title": "Вторник",
-                    "activities": [
-                        {   
-                            "starts": "10:00",
-                            "lasts": "1.5", 
-                            "name": "БСтат", 
-                            "auditory": "523 СЛК", 
-                            "professor": "Малов С.В."
-                        },
-                        {
-                            "starts": "12:00", 
-                            "lasts": "3", 
-                            "name": "Системная биология", 
-                            "auditory": "--", 
-                            "professor": "--"
-                        }
-                    ]
-                },
-                {
-                    "title": "Среда",
-                    "activities": [
-                        {   
-                            "starts": "10:00", 
-                            "lasts": "9.5", 
-                            "name": "НИР", 
-                            "auditory": "--", 
-                            "professor": "--"
-                        }
-                    ]
-                },
-                {
-                    "title": "Четверг",
-                    "activities": [
-                        {   
-                            "starts": "10:00", 
-                            "lasts": "9.5", 
-                            "name": "НИР", 
-                            "auditory": "--", 
-                            "professor": "--"
-                        }
-                    ]
-                },
-                {
-                    "title": "Пятница",
-                    "activities": [
-                        {   
-                            "starts": "10:00", 
-                            "lasts": "9.5", 
-                            "name": "НИР", 
-                            "auditory": "--", 
-                            "professor": "--"
-                        }
-                    ]
+                    "starts": "15:00", 
+                    "lasts": "3", 
+                    "name": "Системная биология", 
+                    "auditory": "433 СЛК", 
+                    "professor": "Арапиди Г. П."
+                }
+            ]
+        },
+        {
+            "title": "Пятница",
+            "activities": [
+                {   
+                    "starts": "10:00", 
+                    "lasts": "9.5", 
+                    "name": "НИР", 
+                    "auditory": "--", 
+                    "professor": "--"
+                }
+            ]
+        },
+        {
+            "title": "Суббота",
+            "activities": [
+                {   
+                    "starts": "10:00", 
+                    "lasts": "3", 
+                    "name": "Маш. и глуб. обучение", 
+                    "auditory": "204 СЛК", 
+                    "professor": "Андреев Юрий А."
                 }
             ]
         }
