@@ -2,22 +2,20 @@ from aiogram.types import (
     ReplyKeyboardMarkup, ReplyKeyboardRemove, KeyboardButton
 )
 
+from aiogram.utils.keyboard import ReplyKeyboardBuilder
+
 
 def create_smile_kb() -> ReplyKeyboardMarkup:
-    button_face = KeyboardButton("🤠")
-    btn_now = KeyboardButton("что щас")
-    btn_next = KeyboardButton("next пара")
-    btn_today = KeyboardButton("что сёдня")
-    btn_week = KeyboardButton("неделя")
-    btn_group = KeyboardButton("выбрать группу")
-    btn_info = KeyboardButton("информация...")
+    builder = ReplyKeyboardBuilder()
 
-    kb = ReplyKeyboardMarkup(resize_keyboard=True)
-    kb.row(button_face)
-    kb.row(btn_now, btn_next)
-    kb.row(btn_today, btn_week)
-    kb.row(btn_group, btn_info)
-    return kb
+    buttons = ["🤠", "что щас", "next пара", "что сёдня", "неделя", "выбрать группу", "информация..."]
+
+    for btn_text in buttons:
+        builder.button(text=btn_text)
+
+    builder.adjust(1, 2, 2, 2)
+
+    return builder.as_markup(resize_keyboard=True)
 
 
 nothing = ReplyKeyboardRemove()

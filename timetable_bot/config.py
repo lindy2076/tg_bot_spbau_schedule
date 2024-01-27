@@ -1,21 +1,24 @@
-from os import environ
+from os import environ, path
+from dotenv import load_dotenv
 
-from pydantic import BaseSettings
+
+dotenv_path = path.join(path.dirname(__file__), '..', '.env')
+load_dotenv(dotenv_path)
 
 
-class DefaultSettings(BaseSettings):
+class DefaultSettings:
     """
     Default config for application.
     """
-    BOT_TOKEN: str = environ.get("BOT_TOKEN", "0")
+    BOT_TOKEN: str = environ.get("BOT_TOKEN", "")
 
     POSTGRES_DB: str = environ.get("POSTGRES_DB", "timetable_db")
     POSTGRES_HOST: str = environ.get("POSTGRES_HOST", "localhost")
     POSTGRES_USER: str = environ.get("POSTGRES_USER", "user")
     POSTGRES_PORT: int = int(environ.get("POSTGRES_PORT", "5432")[-4:])
     POSTGRES_PASSWORD: str = environ.get("POSTGRES_PASSWORD", "funnypassword")
-    DB_CONNECT_RETRY: int = environ.get("DB_CONNECT_RETRY", 20)
-    DB_POOL_SIZE: int = environ.get("DB_POOL_SIZE", 15)
+    # DB_CONNECT_RETRY: int = environ.get("DB_CONNECT_RETRY", 20)
+    # DB_POOL_SIZE: int = environ.get("DB_POOL_SIZE", 15)
 
     TIMEZONE_OFFSET: int = 3
 

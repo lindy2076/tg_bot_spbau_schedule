@@ -1,43 +1,43 @@
+import asyncio
 import logging
 
-from aiogram import Bot
-from aiogram.dispatcher import Dispatcher
-from aiogram.utils import executor
+from aiogram import Bot, Dispatcher
+from aiogram.enums import ParseMode
 
 from timetable_bot.config import DefaultSettings
-from timetable_bot.handlers import list_of_commands, callback_handlers
+from timetable_bot.handlers import main_router, callback_router
+
+
+dp = Dispatcher()
+settings = DefaultSettings()
 
 
 def get_app() -> Bot:
     """
     Get application instance.
     """
-    settings = DefaultSettings()
     BOT_TOKEN = settings.BOT_TOKEN
-    bot = Bot(token=BOT_TOKEN)
-    return bot 
-
-
-async def on_startup(_):
-    logging.info("bot started!")
+    logging.info(BOT_TOKEN)
+    if not BOT_TOKEN:
+        logging.ERROR("No token provided...")
+        exit(1)
+    bot = Bot(token=BOT_TOKEN, parse_mode=ParseMode.HTML)
+    return bot
 
 
 logging.basicConfig(
     format='%(levelname)s:%(asctime)s %(message)s',
-    datefmt='%m/%d/%Y %I:%M:%S %p', 
-    filename='spbau_sch.log', 
-    level=logging.INFO)
+    datefmt='%m/%d/%Y %I:%M:%S %p',
+    filename='spbau_sch.log',
+    level=logging.INFO
+)
 
-bot = get_app()
-dp = Dispatcher(bot)
 
-# регистрируем команды
-for handler, handler_commands in list_of_commands:
-    dp.register_message_handler(handler, commands=handler_commands)
-# регистрируем хэндлеры для инлайн кнопок
-for handler, handler_filter in callback_handlers:
-    dp.register_callback_query_handler(handler, handler_filter)
+async def main():
+    bot = get_app()
+    dp.include_routers(main_router, callback_router)
+    await dp.start_polling(bot)
 
 
 if __name__ == "__main__":
-    executor.start_polling(dp, skip_updates=True, on_startup=on_startup)
+    asyncio.run(main())

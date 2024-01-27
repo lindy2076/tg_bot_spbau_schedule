@@ -1,5 +1,3 @@
-# from enum import Enum
-
 class ErrorMessages(str):
     NO_GROUP = "выбери в /setgr свою группу"
     NO_SCHEDULE_FOR_GROUP = "пока для этой группы расписания нет..."

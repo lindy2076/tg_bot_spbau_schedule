@@ -128,15 +128,11 @@ async def get_next_class(user_group: Groups, user_datetime: datetime.datetime) -
     return TextResponse.NEXT_CLASS_NONE
 
 
-async def set_user_group(tg_user, message: str) -> str:  #FIXME описать структуру message в комменте
+async def set_user_group(tg_user, group: str) -> str:  #FIXME описать структуру message в комменте
     """
     Устанавливаем выбранную группу для юзера
     """
-    try:
-        group = message.split(":")[1]
-    except IndexError:
-        return "вот ето да... интересно как ты ето сделал... напиши моему автору!"
-
+    
     try:
         validated = User(id=tg_user.id, group=group)
     except ValidationError:

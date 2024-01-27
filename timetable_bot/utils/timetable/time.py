@@ -61,11 +61,7 @@ def parse_sel_day_data(data: str) -> DayTitles:
     """
     Парсим данные callback запроса клавы sel_day_kb.
     """
-    try:
-        d = data.split(":")[1]
-    except:
-        return DayTitles.sun
-    return d
+    return data
 
 
 def parse_day_switch_data(data: str) -> int | str:
@@ -74,13 +70,11 @@ def parse_day_switch_data(data: str) -> int | str:
     Возвращаем номер дня или "menu"
     """
     try:
-        d = int(data.split(":")[1])
+        d = int(data)
     except ValueError:
         # print(data.split(":")[1], type(data.split(":")[1]), e.__class__)
         return "menu"
-    except:
-        return 6
-    return d
+    return d % 7
 
 
 def weekday_from_date(user_datetime: datetime.datetime) -> DayTitles:
