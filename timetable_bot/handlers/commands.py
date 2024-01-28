@@ -105,6 +105,7 @@ async def get_user_group(message: types.Message):
     Отправляет сообщение с группой юзера + хранящуююся информацию + текущее время бота
     """
     result = await utils.get_user_group_message(message.from_user.id, message.date + TD)
+    print(result)
     await message.reply(result)
 
 
@@ -135,7 +136,7 @@ async def send_echo(message: types.Message):
             await set_user_group(message)
         case "неделя":
             await send_week_schedule(message)
-        case "информация...":
+        case "🤠информация...":
             await get_user_group(message)
         case _:
             await message.reply(
