@@ -40,7 +40,7 @@ class Day(BaseModel):
 
     def __repr__(self):
         activities_str = ["    " + repr(x) + "\n" for x in self.activities]
-        return "\n" + "-"*20 + str(self.title) + "-"*20 + ' \n\n ' + " ".join(activities_str)
+        return "\n" + "="*20 + "\n" + str(self.title) + "\n" + "="*20 + ' \n\n ' + " ".join(activities_str)
     
     class Config:  
         use_enum_values = True
