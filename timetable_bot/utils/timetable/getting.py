@@ -135,7 +135,7 @@ async def set_user_group(tg_user, group: str) -> str:  #FIXME описать с�
     try:
         validated = User(id=tg_user.id, group=group)
     except ValidationError:
-        return "такой группы нет.. напиши моему автору!"
+        return ErrorMessages.GROUP_DOESNT_EXIST
 
     session = await get_session()
     user_str = str(tg_user.id) 

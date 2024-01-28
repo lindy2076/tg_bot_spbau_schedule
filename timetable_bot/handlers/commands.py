@@ -95,8 +95,7 @@ async def set_user_group(message: types.Message):
     """
     Отправляет сообщение с инлайн клавой для выбора группы
     """
-    result = "выбери группу из списка:"
-    await message.reply(result, reply_markup=kb.group_sel_kb)
+    await message.reply(TextResponse.CHOOSE_GROUP2, reply_markup=kb.group_sel_kb)
 
 
 @main_router.message(Command('me'))
@@ -105,7 +104,6 @@ async def get_user_group(message: types.Message):
     Отправляет сообщение с группой юзера + хранящуююся информацию + текущее время бота
     """
     result = await utils.get_user_group_message(message.from_user.id, message.date + TD)
-    print(result)
     await message.reply(result)
 
 
