@@ -76,6 +76,20 @@ async def get_today_schedule(message: types.Message):
         await message.reply(result)
 
 
+@main_router.message(Command('tomorrow'))
+async def get_tomorrow_schedule(message: types.Message):
+    """
+    Отправляет расписание на завтра с инлайн переключателем дней недели.
+    """
+    group = await utils.get_user_group(message.from_user.id)
+    result = utils.get_today(group, message.date + timedelta(hours=24) + TD)
+    today = utils.weekday_from_date(message.date + timedelta(hours=24) + TD)
+    if group:
+        await message.reply(result, reply_markup=kb.day_switch_kb(utils.weekday_to_weeknum(today)))
+    else:
+        await message.reply(result)
+
+
 @main_router.message(Command('setgr'))
 async def set_user_group(message: types.Message):
     """
@@ -115,6 +129,8 @@ async def send_echo(message: types.Message):
             await get_next_class(message)
         case "что сёдня":
             await get_today_schedule(message)
+        case "что завтра":
+            await get_tomorrow_schedule(message)
         case "выбрать группу":
             await set_user_group(message)
         case "неделя":
