@@ -6,7 +6,6 @@ from .timetable.getting import (
     get_user_group_message, del_user_from_db
 )
 from .timetable.time import (
-    parse_sel_day_data,
     parse_day_switch_data,
     weekday_from_date,
     weekday_to_weeknum, weeknum_to_weekday,
@@ -30,7 +29,6 @@ __all__ = [
     "weekday_from_date",
     "weeknum_to_weekday",
     "weeknum_to_short_weekday",
-    "parse_sel_day_data",
     "get_curr_time",
     "get_class_ends_time",
     "parse_day_switch_data"

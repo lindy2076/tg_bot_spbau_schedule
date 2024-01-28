@@ -30,8 +30,8 @@ async def handle_day_select(call: types.CallbackQuery,
     if not group:
         await call.message.answer(TextResponse.CHOOSE_GROUP, reply_markup=kb.group_sel_kb)
     else:
-        day = utils.parse_sel_day_data(callback_data.id)
-        result = await utils.get_day(group, day)
+        day = callback_data.id
+        result = utils.get_day(group, day)
         day_for_button = utils.weekday_to_weeknum(day)
         try:
             await call.message.edit_text(result, reply_markup=kb.day_switch_kb(day_for_button))
@@ -57,7 +57,7 @@ async def handle_day_switch(call: types.CallbackQuery,
         else:
             new_day = int(button_pressed)
             reply_kb = kb.day_switch_kb(new_day)
-            msg = await utils.get_day(group, utils.weeknum_to_weekday(new_day))
+            msg = utils.get_day(group, utils.weeknum_to_weekday(new_day))
 
         try:
             await call.message.edit_text(msg, reply_markup=reply_kb)

@@ -27,10 +27,3 @@ class Groups(str, Enum):
     f4_2 = "401.2"
     f4_3 = "401.3"
     b4 = "402"
-
-
-# class Degrees(str, Enum):
-#     bach = "bachelor"
-#     mag = "master"
-#     asp = "phd"
-#     null = "null"

@@ -7,8 +7,6 @@ __all__ = [
     "Subject",
     "Day",
     "Week",
-    # "Degree",
-    # "Degrees",
     "Groups",
     "DayTitles",
     "User",

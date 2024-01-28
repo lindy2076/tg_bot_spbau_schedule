@@ -57,13 +57,6 @@ def weeknum_to_short_weekday(weeknum: int) -> str:
             return "Вс"
 
 
-def parse_sel_day_data(data: str) -> DayTitles:
-    """
-    Парсим данные callback запроса клавы sel_day_kb.
-    """
-    return data
-
-
 def parse_day_switch_data(data: str) -> int | str:
     """
     Парсим данные callback запроса клавы day_switch_kb.

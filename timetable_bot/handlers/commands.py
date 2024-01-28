@@ -1,3 +1,4 @@
+import asyncio
 from aiogram import types, Router, F, Bot
 from aiogram.filters import Command
 from datetime import timedelta

@@ -25,14 +25,6 @@ def get_app() -> Bot:
     return bot
 
 
-logging.basicConfig(
-    format='%(levelname)s:%(asctime)s %(message)s',
-    datefmt='%m/%d/%Y %I:%M:%S %p',
-    filename='spbau_sch.log',
-    level=logging.INFO
-)
-
-
 async def main():
     bot = get_app()
     dp.include_routers(main_router, callback_router)
@@ -40,4 +32,10 @@ async def main():
 
 
 if __name__ == "__main__":
+    logging.basicConfig(
+        format='%(levelname)s:%(asctime)s %(message)s',
+        datefmt='%m/%d/%Y %I:%M:%S %p',
+        filename='spbau_sch.log',
+        level=logging.INFO
+    )
     asyncio.run(main())
