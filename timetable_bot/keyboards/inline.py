@@ -30,35 +30,27 @@ class SwitchDayCallback(CallbackData, prefix="wd"):
     where: str
 
 
-def create_group_sel_inline_kb() -> InlineKeyboardMarkup:
-    builder = InlineKeyboardBuilder()
-    year1 = [Groups.f1_1, Groups.f1_2, Groups.b1_1]
-    for group in year1:
-        builder.button(
-            text=group.value + determine_emoji(group),
-            callback_data=SelectGroupCallback(id=group.value).pack()
-        )
-    
-    year2 = [Groups.f2_1, Groups.f2_2, Groups.b2_1]
-    for group in year2:
+def add_group_button(builder: InlineKeyboardBuilder, year: list[Groups]):
+    for group in year:
         builder.button(
             text=group.value + determine_emoji(group),
             callback_data=SelectGroupCallback(id=group.value).pack()
         )
 
+
+def create_group_sel_inline_kb() -> InlineKeyboardMarkup:
+    builder = InlineKeyboardBuilder()
+    year1 = [Groups.f1_1, Groups.f1_2, Groups.b1_1]
+    add_group_button(builder, year1)
+    
+    year2 = [Groups.f2_1, Groups.f2_2, Groups.b2_1]
+    add_group_button(builder, year2)
+
     year3 = [Groups.f3_1, Groups.f3_2, Groups.f3_3, Groups.b3_1, Groups.b3_2]
-    for group in year3:
-        builder.button(
-            text=group.value + determine_emoji(group),
-            callback_data=SelectGroupCallback(id=group.value).pack()
-        )
+    add_group_button(builder, year3)
     
     year4 = [Groups.f4_1, Groups.f4_2, Groups.f4_3, Groups.b4]
-    for group in year4:
-        builder.button(
-            text=group.value + determine_emoji(group),
-            callback_data=SelectGroupCallback(id=group.value).pack()
-        )
+    add_group_button(builder, year4)
 
     builder.adjust(len(year1), len(year2), 3, 2, len(year4))
     return builder.as_markup()
