@@ -15,7 +15,7 @@ from pydantic import ValidationError
 from sqlalchemy import delete, select
 
 
-async def load_week_from_file(user_group: Groups) -> Tuple[Week, ErrorMessages | None]:
+def load_week_from_file(user_group: Groups) -> Tuple[Week, ErrorMessages | None]:
     """
     Грузим расписание группы user_group и выдаём расписание на неделю.
     Если не выбрана группа или нет расписания, то вернёт соответствующую
@@ -38,11 +38,11 @@ async def load_week_from_file(user_group: Groups) -> Tuple[Week, ErrorMessages |
     return res, None
 
 
-async def get_week(user_group: Groups) -> str:
+def get_week(user_group: Groups) -> str:
     """
     Даёт расписание на неделю для выбранной группы в готовом виде.
     """
-    week, err = await load_week_from_file(user_group)
+    week, err = load_week_from_file(user_group)
     if err is not None:
         return err
     
@@ -50,11 +50,11 @@ async def get_week(user_group: Groups) -> str:
     return " ".join(activities)
 
 
-async def get_day(user_group: Groups, user_day: DayTitles) -> str:  # FIXME переделать, особенно for else
+def get_day(user_group: Groups, user_day: DayTitles) -> str:  # FIXME переделать, особенно for else
     """
     Даёт расписание на конкретный день для выбранной группы
     """
-    week, err = await load_week_from_file(user_group)
+    week, err = load_week_from_file(user_group)
     if err is not None:
         return err
 
@@ -68,19 +68,19 @@ async def get_day(user_group: Groups, user_day: DayTitles) -> str:  # FIXME пе
     return user_day + ":\n\n " + " ".join(activities)
 
 
-async def get_today(user_group: Groups, user_datetime: datetime.datetime) -> str:
+def get_today(user_group: Groups, user_datetime: datetime.datetime) -> str:
     """
     Даёт расписание на сегодня для выбранной группы.
     """
     user_day = weekday_from_date(user_datetime)
-    return await get_day(user_group, user_day)
+    return get_day(user_group, user_day)
 
 
-async def get_current_class(user_group: Groups, user_datetime: datetime.datetime) -> str:
+def get_current_class(user_group: Groups, user_datetime: datetime.datetime) -> str:
     """
     Даёт текущее занятие или будущее занятие на сегодня.
     """
-    week, err = await load_week_from_file(user_group)
+    week, err = load_week_from_file(user_group)
     if err is not None:
         return err
 
@@ -102,11 +102,11 @@ async def get_current_class(user_group: Groups, user_datetime: datetime.datetime
     return TextResponse.CURR_CLASS_NONE
 
 
-async def get_next_class(user_group: Groups, user_datetime: datetime.datetime) -> str:
+def get_next_class(user_group: Groups, user_datetime: datetime.datetime) -> str:
     """
     Даёт следующее занятие на сегодня.
     """
-    week, err = await load_week_from_file(user_group)
+    week, err = load_week_from_file(user_group)
     if err is not None:
         return err
 
@@ -132,7 +132,6 @@ async def set_user_group(tg_user, group: str) -> str:  #FIXME описать с�
     """
     Устанавливаем выбранную группу для юзера
     """
-    
     try:
         validated = User(id=tg_user.id, group=group)
     except ValidationError:

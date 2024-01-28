@@ -29,7 +29,7 @@ async def send_week_schedule(message: types.Message):
     Отправляет расписание на неделю для группы юзера 
     """
     group = await utils.get_user_group(message.from_user.id)
-    result = await utils.get_week(group)
+    result = utils.get_week(group)
     await message.reply(result, reply_markup=kb.day_sel_kb)
 
 
@@ -47,7 +47,7 @@ async def get_current_class(message: types.Message):
     Отправляет текущее занятие (или следующее, если сейчас ничего не идёт)
     """
     group = await utils.get_user_group(message.from_user.id)
-    result = await utils.get_current_class(group, message.date + TD)
+    result = utils.get_current_class(group, message.date + TD)
     await message.reply(result)
 
 
@@ -57,7 +57,7 @@ async def get_next_class(message: types.Message):
     Отправляет следущее занятие
     """
     group = await utils.get_user_group(message.from_user.id)
-    result = await utils.get_next_class(group, message.date + TD)
+    result = utils.get_next_class(group, message.date + TD)
     await message.reply(result)
 
 
@@ -67,7 +67,7 @@ async def get_today_schedule(message: types.Message):
     Отправляет расписание на сегодня с инлайн переключателем дней недели.
     """
     group = await utils.get_user_group(message.from_user.id)
-    result = await utils.get_today(group, message.date + TD)
+    result = utils.get_today(group, message.date + TD)
     today = utils.weekday_from_date(message.date + TD)
     if group:
         await message.reply(result, reply_markup=kb.day_switch_kb(utils.weekday_to_weeknum(today)))
