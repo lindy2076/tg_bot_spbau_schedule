@@ -197,6 +197,9 @@ async def del_user_from_db(user_id: int) -> str:
 
 
 async def get_users_ids():
+    """
+    Получаем список тг айди всех юзеров.
+    """
     ids = []
     session = await get_session()
     q = select(DbUser)

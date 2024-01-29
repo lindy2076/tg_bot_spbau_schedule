@@ -21,6 +21,7 @@ env:
 	@$(eval SHELL:=/bin/bash)
 	@cp .env.sample .env
 	@echo "BOT_TOKEN=your_key" >> .env
+	@echo "ADMIN_ID=your_id" >> .env
 
 run:
 	python3 -m timetable_bot
