@@ -3,7 +3,8 @@ from .timetable.getting import (
     get_current_class, get_next_class,
     get_today, 
     set_user_group, get_user_group, 
-    get_user_group_message, del_user_from_db
+    get_user_group_message, del_user_from_db,
+    get_users_ids
 )
 from .timetable.time import (
     parse_day_switch_data,
@@ -31,5 +32,6 @@ __all__ = [
     "weeknum_to_short_weekday",
     "get_curr_time",
     "get_class_ends_time",
-    "parse_day_switch_data"
+    "parse_day_switch_data",
+    "get_users_ids"
 ]

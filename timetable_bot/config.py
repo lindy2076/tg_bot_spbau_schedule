@@ -11,6 +11,7 @@ class DefaultSettings:
     Default config for application.
     """
     BOT_TOKEN: str = environ.get("BOT_TOKEN", "")
+    ADMIN_ID: str = environ.get("ADMIN_ID", "")
 
     POSTGRES_DB: str = environ.get("POSTGRES_DB", "timetable_db")
     POSTGRES_HOST: str = environ.get("POSTGRES_HOST", "localhost")

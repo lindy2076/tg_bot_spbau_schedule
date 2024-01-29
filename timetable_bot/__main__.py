@@ -5,7 +5,9 @@ from aiogram import Bot, Dispatcher
 from aiogram.enums import ParseMode
 
 from timetable_bot.config import DefaultSettings
-from timetable_bot.handlers import main_router, callback_router
+from timetable_bot.handlers import (
+    admin_router, main_router, callback_router
+)
 
 
 dp = Dispatcher()
@@ -27,7 +29,7 @@ def get_app() -> Bot:
 
 async def main():
     bot = get_app()
-    dp.include_routers(main_router, callback_router)
+    dp.include_routers(admin_router, main_router, callback_router)
     await dp.start_polling(bot)
 
 

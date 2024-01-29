@@ -58,18 +58,6 @@ class Week(BaseModel):
         use_enum_values = True
 
 
-# class Degree(BaseModel):
-#     degree: Degrees
-#     activities: List[Week]
-
-#     def __repr__(self):
-#         activities_str = [" " + repr(x) + "\n" for x in self.activities]
-#         return str(self.degree) + ': \n' + " ".join(activities_str)
-
-#     class Config:  
-#         use_enum_values = True
-
-
 class User(BaseModel):
     id: int
     group: Groups

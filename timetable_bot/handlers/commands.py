@@ -1,5 +1,5 @@
 import asyncio
-from aiogram import types, Router, F, Bot
+from aiogram import types, Router
 from aiogram.filters import Command
 from datetime import timedelta
 import logging
@@ -20,7 +20,8 @@ async def send_hello(message: types.Message):
     """
     Приветствие с клавиатурой выбора дня недели.
     """
-    await message.reply(TextResponse.greet(message.from_user.first_name), reply_markup=kb.smile_kb)
+    await message.reply(TextResponse.greet(message.from_user.first_name), 
+                        reply_markup=kb.smile_kb)
     await message.answer(TextResponse.SEE_MENU, reply_markup=kb.group_sel_kb)
 
 
@@ -35,7 +36,7 @@ async def send_week_schedule(message: types.Message):
 
 
 @main_router.message(Command('day'))
-async def get_day_schedule(message: types.Message):
+async def select_day(message: types.Message):
     """
     Выдаёт клаву с выбором дня, вызывается командой /day (ну или другой из __init__)
     """
@@ -62,18 +63,23 @@ async def get_next_class(message: types.Message):
     await message.reply(result)
 
 
+def get_weekday_for_group(user_group, user_datetime):
+    result = utils.get_today(user_group, user_datetime)
+    today = utils.weekday_from_date(user_datetime)
+    return result, today
+
+
 @main_router.message(Command('today'))
 async def get_today_schedule(message: types.Message):
     """
     Отправляет расписание на сегодня с инлайн переключателем дней недели.
     """
     group = await utils.get_user_group(message.from_user.id)
-    result = utils.get_today(group, message.date + TD)
-    today = utils.weekday_from_date(message.date + TD)
+    result, today = get_weekday_for_group(group, message.date + TD)
+    reply_kb = None
     if group:
-        await message.reply(result, reply_markup=kb.day_switch_kb(utils.weekday_to_weeknum(today)))
-    else:
-        await message.reply(result)
+        reply_kb = kb.day_switch_kb(utils.weekday_to_weeknum(today))
+    await message.reply(result, reply_markup=reply_kb)
 
 
 @main_router.message(Command('tomorrow'))
@@ -82,12 +88,13 @@ async def get_tomorrow_schedule(message: types.Message):
     Отправляет расписание на завтра с инлайн переключателем дней недели.
     """
     group = await utils.get_user_group(message.from_user.id)
-    result = utils.get_today(group, message.date + timedelta(hours=24) + TD)
-    today = utils.weekday_from_date(message.date + timedelta(hours=24) + TD)
+    result, today = get_weekday_for_group(
+        group, message.date + timedelta(hours=24) + TD
+    )
+    reply_kb = None
     if group:
-        await message.reply(result, reply_markup=kb.day_switch_kb(utils.weekday_to_weeknum(today)))
-    else:
-        await message.reply(result)
+        reply_kb = kb.day_switch_kb(utils.weekday_to_weeknum(today))
+    await message.reply(result, reply_markup=reply_kb)
 
 
 @main_router.message(Command('setgr'))

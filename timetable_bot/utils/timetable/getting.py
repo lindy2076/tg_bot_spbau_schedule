@@ -194,3 +194,15 @@ async def del_user_from_db(user_id: int) -> str:
     await session.commit()
     await session.close()
     return TextResponse.USER_DELETED
+
+
+async def get_users_ids():
+    ids = []
+    session = await get_session()
+    q = select(DbUser)
+    users = await session.execute(q)
+    await session.close()
+    for user in users:
+        user_id = user[0].tg_id
+        ids.append(user_id)
+    return ids
