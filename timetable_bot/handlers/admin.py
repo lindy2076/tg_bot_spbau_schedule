@@ -12,6 +12,9 @@ config = DefaultSettings()
 
 @admin_router.message(Command('send_all'))
 async def send_all(message: types.Message, bot: Bot):
+    """
+    Разослать всем юзезрам сообщение.
+    """
     if str(message.from_user.id) != config.ADMIN_ID:
         await message.answer(TextResponse.YOU_ARE_NOT_ADMIN)
         return
@@ -27,3 +30,15 @@ async def send_all(message: types.Message, bot: Bot):
         except:
             await message.answer(user_id + " меня заблочил.")
     await message.reply("вроде отправилось. Всего " + str(send_to_count))
+
+
+@admin_router.message(Command('send_admin'))
+async def send_admin(message: types.Message, bot: Bot):
+    if len(message.text) < 12:
+        await message.answer("ничего не отправлено. сообщение пустое!")
+        return
+    await bot.send_message(
+        chat_id=int(config.ADMIN_ID),
+        text=TextResponse.echo_user_msg(message)
+    )
+    await message.reply("сообщение отправлено")

@@ -64,6 +64,11 @@ async def get_next_class(message: types.Message):
 
 
 def get_weekday_for_group(user_group, user_datetime):
+    """
+    Метод хелпер для get_today_schedule
+    Возвращает расписание на выбранный день (user_datetime)
+    а также сам день.
+    """
     result = utils.get_today(user_group, user_datetime)
     today = utils.weekday_from_date(user_datetime)
     return result, today

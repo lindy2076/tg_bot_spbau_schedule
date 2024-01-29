@@ -62,3 +62,8 @@ class TextResponse(str):
     @classmethod
     def curr_time(cls, day: str, time: str) -> str:
         return "\n\nсейчас у меня {:s}, {:s}".format(day.lower(), time)
+
+    @classmethod
+    def echo_user_msg(cls, msg_obj) -> str:
+        """Пишет имя отправителя и сообщение. Обрезается команда"""
+        return f"{msg_obj.from_user.first_name} передаёт:\n{msg_obj.text[12:]}"
