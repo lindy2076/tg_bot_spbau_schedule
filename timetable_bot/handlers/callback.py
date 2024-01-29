@@ -3,7 +3,7 @@ import logging
 
 import timetable_bot.utils as utils
 import timetable_bot.keyboards as kb
-from timetable_bot.schemas import TextResponse
+from timetable_bot.schemas import TextResponse, DayTitles
 
 
 callback_router = Router(name="callback_router")
@@ -31,7 +31,7 @@ async def handle_day_select(call: types.CallbackQuery,
         await call.message.answer(TextResponse.CHOOSE_GROUP, reply_markup=kb.group_sel_kb)
     else:
         day = callback_data.id
-        result = utils.get_day(group, day)
+        result = utils.get_day(group, DayTitles.from_str(day_str=day))
         day_for_button = utils.weekday_to_weeknum(day)
         try:
             await call.message.edit_text(result, reply_markup=kb.day_switch_kb(day_for_button))

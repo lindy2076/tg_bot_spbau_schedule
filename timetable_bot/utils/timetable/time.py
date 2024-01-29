@@ -65,7 +65,6 @@ def parse_day_switch_data(data: str) -> int | str:
     try:
         d = int(data)
     except ValueError:
-        # print(data.split(":")[1], type(data.split(":")[1]), e.__class__)
         return "menu"
     return d % 7
 

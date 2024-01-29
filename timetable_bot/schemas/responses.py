@@ -9,7 +9,7 @@ class TextResponse(str):
     CHOOSE_DAY = "выбери день:"
     CHOOSE_GROUP = "надо выбрать группу:"
     CHOOSE_GROUP2 = "выбери группу из списка:"
-    NO_SCHEDULE_FOR_DAY = "на этот день расписания нет..."
+    NO_SCHEDULE_FOR_DAY = "на этот день расписания нет"
     DAY_NOTHING = "НИЧЕГО!!! СВОБОДА!!!"
     CURR_CLASS_NONE = "кажется ничего не идёт..."
     NEXT_CLASS_NONE = "домой"

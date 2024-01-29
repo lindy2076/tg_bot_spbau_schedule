@@ -10,6 +10,12 @@ class DayTitles(str, Enum):
     sat = "Суббота"
     sun = "Воскресенье"
 
+    @classmethod
+    def from_str(cls, day_str):
+        for k, v in cls.__members__.items():
+            if v == day_str:
+                return cls[k]
+
 
 class Groups(str, Enum):
     f1_1 = "101.1"
