@@ -1,8 +1,9 @@
 import json
 from typing import Tuple
 import logging
+from pydantic import ValidationError
 
-from timetable_bot.schemas import DayTitles, Groups, ErrorMessages
+from timetable_bot.schemas import DayTitles, Groups, ErrorMessages, Day
 from timetable_bot import utils
 
 
@@ -74,6 +75,11 @@ def replace_day_json(
     except Exception as e:
         logging.info(f"failed to load json. {e}")
         return None, f"failed to load json {e}"
+    
+    try:
+        Day(**day_json)
+    except ValidationError:
+        return None, f"failed to validate json."
 
     day_title = day_json["title"]
     for day in week_json['week_activities']:
