@@ -14,6 +14,9 @@ from .timetable.time import (
     get_curr_time,
     get_class_ends_time
 )
+from .timetable.editing import (
+    parse_edit_params, get_day_json, get_week_json, replace_day_json
+)
 
 
 __all__ = [
@@ -33,5 +36,7 @@ __all__ = [
     "get_curr_time",
     "get_class_ends_time",
     "parse_day_switch_data",
-    "get_users_ids"
+    "get_users_ids",
+    "parse_edit_params",
+    "get_day_json", "get_week_json"
 ]

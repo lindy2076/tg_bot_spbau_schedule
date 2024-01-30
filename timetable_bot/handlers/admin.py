@@ -1,13 +1,24 @@
+from typing import Tuple
+import logging
+
 from aiogram import Router, types, Bot
 from aiogram.filters import Command
+from aiogram.fsm.state import State, StatesGroup
+from aiogram.fsm.context import FSMContext
 
 from timetable_bot.config import DefaultSettings
-from timetable_bot.schemas import TextResponse
+from timetable_bot.schemas import TextResponse, DayTitles, ErrorMessages, Groups
 from timetable_bot import utils
 
 
 admin_router = Router(name='admin_router')
 config = DefaultSettings()
+
+
+class EditForm(StatesGroup):
+    group = State()
+    day = State()
+    edit = State()
 
 
 @admin_router.message(Command('send_all'))
@@ -34,6 +45,9 @@ async def send_all(message: types.Message, bot: Bot):
 
 @admin_router.message(Command('send_admin'))
 async def send_admin(message: types.Message, bot: Bot):
+    """
+    Послать админу сообщение
+    """
     if len(message.text) < 12:
         await message.answer("ничего не отправлено. сообщение пустое!")
         return
@@ -42,3 +56,61 @@ async def send_admin(message: types.Message, bot: Bot):
         text=TextResponse.echo_user_msg(message)
     )
     await message.reply("сообщение отправлено")
+
+
+@admin_router.message(Command('edit'))
+async def edit_schedule(message: types.Message, bot: Bot, state: FSMContext):
+    """
+    Запустить изменение расписания. Необходимые параметры: 
+    /edit group day, где day - weeknum (0-6).
+    Переходит в состояние EditForm.edit, если команда валидна.
+    """
+    if str(message.from_user.id) != config.ADMIN_ID:
+        await message.answer(TextResponse.YOU_ARE_NOT_ADMIN)
+        return
+
+    params = message.text.split()
+    params, err = utils.parse_edit_params(params)
+    if err is not None:
+        await message.reply(err)
+        return
+
+    group, day = params
+    res = utils.get_day_json(group, day)
+    await message.answer(f"{group.value} {day.value} {res}\nОтправьте новый словарь. Или пишите /cancel для отмены")
+    await state.update_data(day=day)
+    await state.update_data(group=group)
+    await state.set_state(EditForm.edit)
+
+
+@admin_router.message(Command('cancel'))
+async def cancel_state(message: types.Message, state: FSMContext):
+    """
+    Выход из всех состояний.
+    """
+    curr_state = state.get_state()
+    if curr_state is None:
+        await message.reply("нет состояний.")
+        return
+
+    await state.clear()
+    await message.reply("отмена")
+
+
+@admin_router.message(EditForm.edit)
+async def process_new_dict(message: types.Message, state: FSMContext):
+    """
+    Проверка отправленного словаря и замена дня в расписании.
+    """
+    logging.info(message.text)
+    data = await state.get_data()
+    group = data["group"]
+
+    day_json_str = message.text
+    res, err = utils.replace_day_json(day_json_str, group)
+    if err is not None:
+        await message.reply(f"произошла ошипка. {err}")
+        return
+
+    await state.clear()
+    await message.reply(f"ok. {str(res)}")

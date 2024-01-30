@@ -15,6 +15,7 @@ class DayTitles(str, Enum):
         for k, v in cls.__members__.items():
             if v == day_str:
                 return cls[k]
+        return None
 
 
 class Groups(str, Enum):
@@ -33,3 +34,10 @@ class Groups(str, Enum):
     f4_2 = "401.2"
     f4_3 = "401.3"
     b4 = "402"
+
+    @classmethod
+    def from_str(cls, day_str):
+        for k, v in cls.__members__.items():
+            if v == day_str:
+                return cls[k]
+        return None

@@ -4,7 +4,6 @@ import logging
 from typing import Tuple
 
 from pydantic import ValidationError
-
 from sqlalchemy import delete, select
 
 from timetable_bot.schemas import Week, User, Day
