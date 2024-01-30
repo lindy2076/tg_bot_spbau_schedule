@@ -3,7 +3,9 @@ from typing import Tuple
 import logging
 from pydantic import ValidationError
 
-from timetable_bot.schemas import DayTitles, Groups, ErrorMessages, Day
+from timetable_bot.schemas import (
+    DayTitles, Groups, Day, ErrorMessages, TextResponse
+)
 from timetable_bot import utils
 
 
@@ -12,19 +14,19 @@ def parse_edit_params(params: list[str]) -> Tuple[Tuple[Groups, DayTitles], Erro
     Спарсить параметры команды edit (группа и день)
     """
     if len(params) != 3:
-        return None, "чего-то не хватает. /edit group day"
+        return None, ErrorMessages.EDIT_MISSING_PARAMS
 
     try:
         day = int(params[2])
         if day > 6 or day < 0:
             raise ValueError
     except ValueError:
-        return None, "день введён неправильно. можно 0-6"
+        return None, ErrorMessages.EDIT_WRONG_DAY
     day_title = utils.weeknum_to_weekday(day)
     group = Groups.from_str(params[1])
     if group is None:
-        return None, f"группы {params[1]} нет."
-    
+        return None, ErrorMessages.no_such_group(params[1])
+
     return (group, day_title), None
 
 
@@ -55,7 +57,7 @@ def get_day_json(user_group: Groups, user_day: DayTitles) -> str:
         if day['title'] == user_day:
             break
     else:
-        return "на этот день расписания нет"
+        return TextResponse.NO_SCHEDULE_FOR_DAY
     
     return f"<pre><code class='language-json'>{day}</code></pre>"
 
@@ -74,8 +76,8 @@ def replace_day_json(
         day_json = json.loads(day_json_str.replace("'", "\""))
     except Exception as e:
         logging.info(f"failed to load json. {e}")
-        return None, f"failed to load json {e}"
-    
+        return None, f"failed to load json. {e}"
+
     try:
         Day(**day_json)
     except ValidationError:
@@ -88,7 +90,6 @@ def replace_day_json(
     else:
         return None, "странно однако этого дня нет"
     day["activities"] = day_json["activities"]
-    # write to file
 
     filename = "schedule_json/" + user_group + ".json"
     try:

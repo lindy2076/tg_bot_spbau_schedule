@@ -7,7 +7,7 @@ from aiogram.fsm.state import State, StatesGroup
 from aiogram.fsm.context import FSMContext
 
 from timetable_bot.config import DefaultSettings
-from timetable_bot.schemas import TextResponse, DayTitles, ErrorMessages, Groups
+from timetable_bot.schemas import TextResponse
 from timetable_bot import utils
 
 
@@ -30,7 +30,7 @@ async def send_all(message: types.Message, bot: Bot):
         await message.answer(TextResponse.YOU_ARE_NOT_ADMIN)
         return
     if len(message.text) < 10:
-        await message.answer("ничего не отправлено. пусто!")
+        await message.answer(TextResponse.NOTHING_SENT)
         return
     id_list = await utils.get_users_ids()
     send_to_count = 0
@@ -39,8 +39,8 @@ async def send_all(message: types.Message, bot: Bot):
             await bot.send_message(chat_id=int(user_id), text=message.text[10:])
             send_to_count += 1
         except:
-            await message.answer(user_id + " меня заблочил.")
-    await message.reply("вроде отправилось. Всего " + str(send_to_count))
+            await message.answer(f"{user_id} меня заблочил.")
+    await message.reply(TextResponse.sent_successfully_to(send_to_count))
 
 
 @admin_router.message(Command('send_admin'))
@@ -49,17 +49,17 @@ async def send_admin(message: types.Message, bot: Bot):
     Послать админу сообщение
     """
     if len(message.text) < 12:
-        await message.answer("ничего не отправлено. сообщение пустое!")
+        await message.answer(TextResponse.NOTHING_SENT)
         return
     await bot.send_message(
         chat_id=int(config.ADMIN_ID),
         text=TextResponse.echo_user_msg(message)
     )
-    await message.reply("сообщение отправлено")
+    await message.reply(TextResponse.MESSAGE_SENT_SUCCESSFULLY)
 
 
 @admin_router.message(Command('edit'))
-async def edit_schedule(message: types.Message, bot: Bot, state: FSMContext):
+async def edit_schedule(message: types.Message, state: FSMContext):
     """
     Запустить изменение расписания. Необходимые параметры: 
     /edit group day, где day - weeknum (0-6).
@@ -77,7 +77,9 @@ async def edit_schedule(message: types.Message, bot: Bot, state: FSMContext):
 
     group, day = params
     res = utils.get_day_json(group, day)
-    await message.answer(f"{group.value} {day.value} {res}\nОтправьте новый словарь. Или пишите /cancel для отмены")
+    await message.answer(
+        TextResponse.group_day_and_day_json(group.value, day.value, res)
+    )
     await state.update_data(day=day)
     await state.update_data(group=group)
     await state.set_state(EditForm.edit)
