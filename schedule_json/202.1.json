@@ -1,74 +1,67 @@
 {
     "group": "202.1",
-    "week_activities": [    
-        {   
+    "week_activities": [
+        {
             "title": "Понедельник",
             "activities": [
                 {
-                    "starts": "09:00", 
-                    "lasts": "2.25", 
-                    "name": "Матан (практика)", 
-                    "auditory": "208 СЛК", 
-                    "professor": "Михайлов А. С."
+                    "starts": "10:00", 
+                    "lasts": "1.5", 
+                    "name": "Введение в биоинф", 
+                    "auditory": "305 СЛК",
+                    "professor": "Макашов Андрей Андреевич"
                 },
                 {
                     "starts": "12:00", 
                     "lasts": "1.5", 
-                    "name": "Английский", 
-                    "auditory": "445 ФТШ, 523 СЛК", 
-                    "professor": "Разные всякие.."
-                },
-                {
-                    "starts": "14:00", 
-                    "lasts": "2.25", 
                     "name": "Матан", 
-                    "auditory": "208 СЛК", 
-                    "professor": "Симонов Сергей Александрович"
+                    "auditory": "313 СЛК", 
+                    "professor": "Михайлов А. С."
                 }
             ]
         },
         {
             "title": "Вторник",
             "activities": [
-                {   
-                    "starts": "10:00",
-                    "lasts": "1.5", 
-                    "name": "Физкультура", 
-                    "auditory": "Спорткомплекс ФТШ", 
-                    "professor": "Разные всякие.."
-                },
                 {
-                    "starts": "12:00", 
-                    "lasts": "1.5", 
-                    "name": "UNIX", 
-                    "auditory": "206 СЛК", 
-                    "professor": "краш серг вен"
+                    "starts": "12:00",
+                    "lasts": "1.5",
+                    "name": "Физкультура",
+                    "auditory": "Спорткомплекс ФТШ",
+                    "professor": "Разные всякие.."
                 },
                 {
                     "starts": "14:00", 
                     "lasts": "1.5", 
-                    "name": "UNIX", 
-                    "auditory": "433 СЛК", 
-                    "professor": "краш серг вен"
+                    "name": "Английский", 
+                    "auditory": "442, 445 ФТШ", 
+                    "professor": "Разные всякие.."
                 }
             ]
         },
         {
             "title": "Среда",
-            "activities": [                        
+            "activities": [
+                {
+                    "starts": "10:00",
+                    "lasts": "1.5",
+                    "name": "Разработка ПО",
+                    "auditory": "305 СЛК", 
+                    "professor": "Андреев Юрий А."
+                },
                 {
                     "starts": "12:00", 
                     "lasts": "1.5", 
-                    "name": "Диффуры", 
-                    "auditory": "516 СЛК", 
-                    "professor": "Нежинская И. В."
+                    "name": "Численные методы", 
+                    "auditory": "517 СЛК", 
+                    "professor": "Давыдов Роман Вадимович"
                 }
             ]
         },
         {
             "title": "Четверг",
             "activities": [
-                {   
+                {
                     "starts": "10:00", 
                     "lasts": "1.5", 
                     "name": "Физкультура", 
@@ -76,51 +69,51 @@
                     "professor": "Разные всякие.."
                 },
                 {
-                    "starts": "12:00",
+                    "starts": "12:00", 
                     "lasts": "1.5", 
-                    "name": "Алгебра", 
-                    "auditory": "422 ФТШ", 
-                    "professor": "Всемирнов Максим Александрович"
+                    "name": "Численные методы", 
+                    "auditory": "517 СЛК", 
+                    "professor": "..."
                 },
                 {
                     "starts": "14:00", 
                     "lasts": "1.5", 
-                    "name": "Алгебра (практика)", 
-                    "auditory": "204 СЛК", 
-                    "professor": "Ржонсницкий Алексей Викторович"
-                },
-                {   
-                    "starts": "16:00",
-                    "lasts": "1.5", 
-                    "name": "Диффуры", 
-                    "auditory": "206 СЛК", 
-                    "professor": "Васильчук Владимир Юрьевич"
+                    "name": "Введение в биоинф", 
+                    "auditory": "430 СЛК",
+                    "professor": "Симонов Сергей Александрович"
                 }
             ]
         },
         {
             "title": "Пятница",
             "activities": [
-                {
+                {   
                     "starts": "10:00", 
                     "lasts": "1.5", 
-                    "name": "Английский", 
-                    "auditory": "442 ФТШ, 523 СЛК", 
-                    "professor": "не знаю..."
+                    "name": "БД", 
+                    "auditory": "305 СЛК", 
+                    "professor": "Помыткина Татьяна Борисовна"
                 },
-                {
-                    "starts": "12:00", 
-                    "lasts": "1.5", 
-                    "name": "Чесноки", 
-                    "auditory": "432 СЛК", 
-                    "professor": "Сухайр М."
+                {   
+                    "starts": "12:00",
+                    "lasts": "1.5",
+                    "name": "БД",
+                    "auditory": "305 СЛК",
+                    "professor": "Помыткина Татьяна Борисовна"
                 },
                 {
                     "starts": "14:00", 
                     "lasts": "1.5", 
-                    "name": "Чесноки", 
-                    "auditory": "206 СЛК", 
-                    "professor": "Давыдов Роман Вадимович"
+                    "name": "Английский", 
+                    "auditory": "539, 445 ФТШ", 
+                    "professor": "Разные всякие.."
+                },
+                {
+                    "starts": "16:00", 
+                    "lasts": "1.5", 
+                    "name": "История", 
+                    "auditory": "422 ФТШ", 
+                    "professor": "Закржевский Александр Геннадьевич"
                 }
             ]
         }
