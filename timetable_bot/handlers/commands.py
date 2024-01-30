@@ -1,8 +1,6 @@
-import asyncio
 from aiogram import types, Router
 from aiogram.filters import Command
 from datetime import timedelta
-import logging
 
 import timetable_bot.keyboards as kb
 import timetable_bot.utils as utils
