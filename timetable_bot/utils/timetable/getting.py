@@ -217,3 +217,17 @@ async def get_users_ids():
     await session.close()
     ids = list(map(lambda u: u[0].tg_id, users))
     return ids
+
+
+def get_pdf_id() -> Tuple[str, ErrorMessages]:
+    """
+    Получить file_id пдфки с расписанием.
+    """
+    filename = "pdffileid"
+    try:
+        with open(filename, 'r') as f:
+            file_id = f.readline()
+    except Exception as e:
+        logging.info(f"ошибка чтения file_id. {e}")
+        return None, "ошипка чтения. возможно его ещё не загрузили"
+    return file_id, None

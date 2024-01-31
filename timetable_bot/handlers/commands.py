@@ -1,4 +1,4 @@
-from aiogram import types, Router
+from aiogram import types, Router, Bot
 from aiogram.filters import Command
 from datetime import timedelta
 
@@ -126,8 +126,17 @@ async def del_me_from_db(message: types.Message):
     await message.reply(result)
 
 
+@main_router.message(Command('pdf'))
+async def serve_pdf(message: types.Message, bot: Bot):
+    file_id, err = utils.get_pdf_id()
+    if err is not None:
+        await message.reply(err)
+        return
+    await bot.send_document(message.chat.id, file_id)
+
+
 @main_router.message()
-async def send_echo(message: types.Message):
+async def send_echo(message: types.Message, bot: Bot):
     """
     Обработчик следующих команд от юзера (которые можно отправить с reply клавы smile_kb)
     """
@@ -146,6 +155,8 @@ async def send_echo(message: types.Message):
             await send_week_schedule(message)
         case "🤠информация...":
             await get_user_group(message)
+        case "pdf":
+            await serve_pdf(message, bot)
         case _:
             await message.reply(
                 TextResponse.echo_and_dayselect(

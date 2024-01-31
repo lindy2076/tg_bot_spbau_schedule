@@ -45,4 +45,4 @@ docs/_build/
 timetable.code-workspace
 /postgres_data/
 dumps/
-
+pdffileid

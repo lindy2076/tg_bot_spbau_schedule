@@ -100,3 +100,17 @@ def replace_day_json(
         return None, f"ошибка во время записи: {e}"
     logging.info(f"расписание {user_group.value} обновлено")
     return week_json, None
+
+
+def update_pdf_id(file_id: str) -> ErrorMessages:
+    """
+    Обновляет file_id пдфки с расписанием в файле pdffileid
+    """
+    filename = "pdffileid"
+    try:
+        with open(filename, 'w') as f:
+            f.write(file_id)
+    except Exception as e:
+        logging.info(f"ошибка записи file_id. {e}")
+        return "ошипка записи"
+    return None

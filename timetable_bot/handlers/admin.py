@@ -1,7 +1,7 @@
 from typing import Tuple
 import logging
 
-from aiogram import Router, types, Bot
+from aiogram import Router, types, Bot, F
 from aiogram.filters import Command
 from aiogram.fsm.state import State, StatesGroup
 from aiogram.fsm.context import FSMContext
@@ -19,6 +19,10 @@ class EditForm(StatesGroup):
     group = State()
     day = State()
     edit = State()
+
+
+class PdfUpdForm(StatesGroup):
+    pdf = State()
 
 
 @admin_router.message(Command('send_all'))
@@ -116,3 +120,24 @@ async def process_new_dict(message: types.Message, state: FSMContext):
 
     await state.clear()
     await message.reply(f"ok. {str(res)}")
+
+
+@admin_router.message(Command('pdfupd'))
+async def update_pdf(message: types.Message, state: FSMContext):
+    await message.reply("прикрепите pdf")
+    await state.set_state(PdfUpdForm.pdf)
+
+
+@admin_router.message(PdfUpdForm.pdf)
+async def process_new_pdf(message: types.Message, state: FSMContext, bot: Bot):
+    if not message.document:
+        await message.reply("нужен pdf!")
+        return
+    file_id = message.document.file_id
+    err = utils.update_pdf_id(file_id)
+    if err is not None:
+        await message.reply(f"{err}")
+        return
+    await state.clear()
+    await message.reply("ok")
+    await bot.send_document(message.chat.id, file_id)
