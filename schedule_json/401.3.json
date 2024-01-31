@@ -4,23 +4,9 @@
         {   
             "title": "Понедельник",
             "activities": [
-                {   
-                    "starts": "10:00",
-                    "lasts": "1.5", 
-                    "name": "Численные методы", 
-                    "auditory": "432 СЛК", 
-                    "professor": "Сухайр М."
-                },
                 {
-                    "starts": "12:00", 
-                    "lasts": "1.5", 
-                    "name": "Стат физика (практика)", 
-                    "auditory": "515 СЛК", 
-                    "professor": "Мартюкова Д.С."
-                },
-                {
-                    "starts": "14:00", 
-                    "lasts": "5", 
+                    "starts": "10:00", 
+                    "lasts": "9.5", 
                     "name": "НИР", 
                     "auditory": "--", 
                     "professor": "--"
@@ -31,37 +17,51 @@
             "title": "Вторник",
             "activities": [
                 {   
-                    "starts": "10:00",
+                    "starts": "10:00", 
                     "lasts": "1.5", 
-                    "name": "Физика конд. сос.", 
-                    "auditory": "204 СЛК", 
-                    "professor": "Глазов М.М."
+                    "name": "Английский", 
+                    "auditory": "507, 442, 445 ФТШ, 523 СЛК", 
+                    "professor": "разные.."
                 },
-                {
-                    "starts": "12:00", 
+                {   
+                    "starts": "12:00",
                     "lasts": "1.5", 
-                    "name": "Ф. п/п п.", 
-                    "auditory": "523 СЛК", 
-                    "professor": "Берт Н. А."
+                    "name": "Стат физика (практика)", 
+                    "auditory": "208 СЛК", 
+                    "professor": "Мартюкова Д.С."
                 },
                 {
                     "starts": "14:00", 
-                    "lasts": "3", 
-                    "name": "Элементы квантовой теории поля", 
-                    "auditory": "204 СЛК", 
-                    "professor": "Нестеренок А. В."
+                    "lasts": "1.5", 
+                    "name": "Физика п/п приборов", 
+                    "auditory": "515 СЛК", 
+                    "professor": "Берт Н.А."
+                },
+                {
+                    "starts": "16:00", 
+                    "lasts": "1.5", 
+                    "name": "Фунд. ФРЗ", 
+                    "auditory": "516 СЛК", 
+                    "professor": "Чугунов А.И."
                 }
             ]
         },
         {
             "title": "Среда",
             "activities": [
-                {   
-                    "starts": "10:00", 
-                    "lasts": "9.5", 
-                    "name": "НИР", 
-                    "auditory": "--", 
-                    "professor": "--"
+                {
+                    "starts": "12:00", 
+                    "lasts": "1.5", 
+                    "name": "Семинар по СПФ", 
+                    "auditory": "432 СЛК", 
+                    "professor": "Качаровский В. Ю."
+                },
+                {
+                    "starts": "14:00",
+                    "lasts": "2.25",
+                    "name": "ОТО",
+                    "auditory": "208 СЛК", 
+                    "professor": "Иванчик А. В."
                 }
             ]
         },
@@ -77,36 +77,29 @@
                 },
                 {
                     "starts": "12:00", 
-                    "lasts": "1.5", 
-                    "name": "Ядерная астрофизика", 
-                    "auditory": "523 СЛК", 
-                    "professor": "Юрченко В. Ю."
+                    "lasts": "3",
+                    "name": "Оптика п/п", 
+                    "auditory": "517 СЛК", 
+                    "professor": "Смирнов Д. С."
                 },
                 {
                     "starts": "14:00", 
-                    "lasts": "1.5",
-                    "name": "Оптика КС", 
-                    "auditory": "517 СЛК", 
-                    "professor": "Липовский А. А."
+                    "lasts": "3",
+                    "name": "Физика МЗС", 
+                    "auditory": "516 СЛК", 
+                    "professor": "Балашев С. А."
                 }
             ]
         },
         {
             "title": "Пятница",
             "activities": [
-                {   
-                    "starts": "12:00", 
-                    "lasts": "1.5", 
-                    "name": "Английский", 
-                    "auditory": "507, 442, 445 ФТШ, 523 СЛК", 
-                    "professor": "разные.."
-                },
                 {
-                    "starts": "14:00", 
-                    "lasts": "1.5", 
-                    "name": "Численные методы", 
-                    "auditory": "206 СЛК", 
-                    "professor": "Давыдов Роман Вадимович"
+                    "starts": "10:00", 
+                    "lasts": "9.5", 
+                    "name": "НИР", 
+                    "auditory": "--", 
+                    "professor": "--"
                 }
             ]
         }
