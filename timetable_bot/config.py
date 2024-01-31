@@ -22,6 +22,8 @@ class DefaultSettings:
     # DB_POOL_SIZE: int = environ.get("DB_POOL_SIZE", 15)
 
     TIMEZONE_OFFSET: int = 3
+    NEW_SEMESTER_STARTS: str = "2023-02-05"
+    FILE_FOR_PDF_FILE_ID: str = "pdffileid"
 
     @property
     def database_settings(self) -> dict:

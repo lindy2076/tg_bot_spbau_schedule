@@ -1,6 +1,10 @@
 import datetime
 
 from timetable_bot.schemas import DayTitles
+from timetable_bot.config import DefaultSettings
+
+
+config = DefaultSettings()
 
 
 def weeknum_to_weekday(weeknum: int) -> DayTitles:
@@ -95,3 +99,16 @@ def get_class_ends_time(class_starts: str, class_lasts: str) -> str:
     )
     end_datetime = start_datetime + datetime.timedelta(minutes=lasts_in_mins)
     return "{:02d}:{:02d}".format(end_datetime.hour, end_datetime.minute)
+
+
+def week_is_odd(user_datetime: datetime.datetime):
+    """
+    Определяем, нечетная ли неделя.
+    """
+    session_start = config.NEW_SEMESTER_STARTS
+    equiv = datetime.datetime.fromisoformat(session_start)
+    d = user_datetime.replace(tzinfo=None) - equiv
+    weeks_passed = d.days // 7
+    if weeks_passed % 2:
+        return False
+    return True

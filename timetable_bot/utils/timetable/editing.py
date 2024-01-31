@@ -7,6 +7,10 @@ from timetable_bot.schemas import (
     DayTitles, Groups, Day, ErrorMessages, TextResponse
 )
 from timetable_bot import utils
+from timetable_bot.config import DefaultSettings
+
+
+config = DefaultSettings()
 
 
 def parse_edit_params(params: list[str]) -> Tuple[Tuple[Groups, DayTitles], ErrorMessages]:
@@ -106,7 +110,7 @@ def update_pdf_id(file_id: str) -> ErrorMessages:
     """
     Обновляет file_id пдфки с расписанием в файле pdffileid
     """
-    filename = "pdffileid"
+    filename = config.FILE_FOR_PDF_FILE_ID
     try:
         with open(filename, 'w') as f:
             f.write(file_id)

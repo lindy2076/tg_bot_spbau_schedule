@@ -68,7 +68,7 @@ class TextResponse(str):
 
     @classmethod
     def curr_time(cls, day: str, time: str) -> str:
-        return "\n\nсейчас у меня {:s}, {:s}".format(day.lower(), time)
+        return "\n\nсейчас у меня {:s}, {:s}\n".format(day.lower(), time)
 
     @classmethod
     def echo_user_msg(cls, msg_obj) -> str:
@@ -84,3 +84,8 @@ class TextResponse(str):
     def group_day_and_day_json(cls, group: str, day: str, day_json: dict):
         """выдает день, группу и словарь расписания дня"""
         return f"{group} {day} {day_json}\nОтправьте новый словарь. Или пишите /cancel для отмены"
+
+    @classmethod
+    def curr_week_odd_even(cls, week_is_odd: bool):
+        """пишет неделя четная или нет"""
+        return f"сейчас {('чётная', 'нечётная')[week_is_odd]} неделя"

@@ -13,7 +13,8 @@ from .timetable.time import (
     weekday_to_weeknum, weeknum_to_weekday,
     weeknum_to_short_weekday,
     get_curr_time,
-    get_class_ends_time
+    get_class_ends_time,
+    week_is_odd
 )
 from .timetable.editing import (
     parse_edit_params, get_day_json, get_week_json,

@@ -6,13 +6,17 @@ from typing import Tuple
 from pydantic import ValidationError
 from sqlalchemy import delete, select
 
+from timetable_bot.config import DefaultSettings
 from timetable_bot.schemas import Week, User, Day
 from timetable_bot.schemas import (
     Groups, DayTitles, ErrorMessages, TextResponse
 )
 from timetable_bot.db.models import User as DbUser
 from timetable_bot.db.connection import get_session
-from .time import weekday_from_date, get_curr_time, get_class_ends_time
+from .time import weekday_from_date, get_curr_time, get_class_ends_time, week_is_odd
+
+
+config = DefaultSettings()
 
 
 def load_week_from_file(user_group: Groups) -> Tuple[Week, ErrorMessages | None]:
@@ -65,7 +69,7 @@ def get_day_obj(week: Week, user_day: DayTitles) -> Tuple[Day, TextResponse | No
     return day, None
 
 
-def get_day(user_group: Groups, user_day: DayTitles) -> str:
+def get_day(user_group: Groups, user_day: DayTitles, week_is_odd: bool = None) -> str:
     """
     Даёт расписание на конкретный день для выбранной группы в готовом виде.
     """
@@ -77,8 +81,15 @@ def get_day(user_group: Groups, user_day: DayTitles) -> str:
     if err is not None:
         return err
     activities = [" "*4 + repr(x) + "\n" for x in day.activities]
+    activities_str = ' '.join(activities)
+    response = f"{user_day.value}:\n\n{activities_str}"
+    if week_is_odd is None:
+        return response
 
-    return f"{user_day.value}:\n\n{' '.join(activities)}"
+    if "чет" in activities_str or "нечет" in activities_str:
+        response += f"<i>{TextResponse.curr_week_odd_even(week_is_odd)}</i>"
+
+    return response
 
 
 def get_today(user_group: Groups, user_datetime: datetime.datetime) -> str:
@@ -86,7 +97,7 @@ def get_today(user_group: Groups, user_datetime: datetime.datetime) -> str:
     Даёт расписание на сегодня для выбранной группы.
     """
     user_day = weekday_from_date(user_datetime)
-    return get_day(user_group, user_day)
+    return get_day(user_group, user_day, week_is_odd(user_datetime))
 
 
 def get_current_class(user_group: Groups, user_datetime: datetime.datetime) -> str:
@@ -179,7 +190,7 @@ async def get_user_group_message(user_id: int, user_datetime: datetime.datetime)
         return TextResponse.CHOOSE_GROUP_POLITE
     return TextResponse.info_and_policy(group) + TextResponse.curr_time(
         weekday_from_date(user_datetime), get_curr_time(user_datetime)
-    )
+    ) + TextResponse.curr_week_odd_even(week_is_odd(user_datetime))
 
 
 async def get_user_group(user_id: int) -> Groups | None:
@@ -223,7 +234,7 @@ def get_pdf_id() -> Tuple[str, ErrorMessages]:
     """
     Получить file_id пдфки с расписанием.
     """
-    filename = "pdffileid"
+    filename = config.FILE_FOR_PDF_FILE_ID
     try:
         with open(filename, 'r') as f:
             file_id = f.readline()
