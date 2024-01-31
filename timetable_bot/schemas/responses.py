@@ -50,14 +50,14 @@ class TextResponse(str):
         Пишет, что текущая пара под названием class_name идёт в class_room
         """
         return "сейчас идёт {:s} в {:s}".format(class_name, class_room)
-    
+
     @classmethod
     def future_class(cls, class_name: str, class_room: str, class_time: str) -> str:
         """
         Пишет, что следующая пара под названием class_name будет в class_room в class_time 
         """
         return "сейчас будет {:s} в {:s} в {:s}".format(class_name, class_time, class_room)
-    
+
     @classmethod
     def new_group(cls, new_group: str) -> str:
         return "теперь {:s} - ваша группа".format(new_group)

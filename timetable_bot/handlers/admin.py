@@ -1,7 +1,6 @@
-from typing import Tuple
 import logging
 
-from aiogram import Router, types, Bot, F
+from aiogram import Router, types, Bot
 from aiogram.filters import Command
 from aiogram.fsm.state import State, StatesGroup
 from aiogram.fsm.context import FSMContext
@@ -40,9 +39,12 @@ async def send_all(message: types.Message, bot: Bot):
     send_to_count = 0
     for user_id in id_list:
         try:
-            await bot.send_message(chat_id=int(user_id), text=message.text[10:])
+            await bot.send_message(
+                chat_id=int(user_id), text=message.text[10:]
+            )
             send_to_count += 1
-        except:
+        except Exception as e:
+            logging.info(f"error during send_all. {e}")
             await message.answer(f"{user_id} меня заблочил.")
     await message.reply(TextResponse.sent_successfully_to(send_to_count))
 
@@ -65,7 +67,7 @@ async def send_admin(message: types.Message, bot: Bot):
 @admin_router.message(Command('edit'))
 async def edit_schedule(message: types.Message, state: FSMContext):
     """
-    Запустить изменение расписания. Необходимые параметры: 
+    Запустить изменение расписания. Необходимые параметры:
     /edit group day, где day - weeknum (0-6).
     Переходит в состояние EditForm.edit, если команда валидна.
     """

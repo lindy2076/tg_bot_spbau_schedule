@@ -1,4 +1,4 @@
-import json 
+import json
 import datetime
 import logging
 from typing import Tuple
@@ -13,13 +13,15 @@ from timetable_bot.schemas import (
 )
 from timetable_bot.db.models import User as DbUser
 from timetable_bot.db.connection import get_session
-from .time import weekday_from_date, get_curr_time, get_class_ends_time, week_is_odd
+from .time import (
+    weekday_from_date, get_curr_time, get_class_ends_time, week_is_odd
+)
 
 
 config = DefaultSettings()
 
 
-def load_week_from_file(user_group: Groups) -> Tuple[Week, ErrorMessages | None]:
+def load_week_from_file(user_group: Groups) -> Tuple[Week, ErrorMessages]:
     """
     Грузим расписание группы user_group и выдаём объект расписания на неделю.
     Если не выбрана группа или нет расписания, то вернёт соответствующую
@@ -57,7 +59,7 @@ def get_week(user_group: Groups) -> str:
     return " ".join(activities)
 
 
-def get_day_obj(week: Week, user_day: DayTitles) -> Tuple[Day, TextResponse | None]:
+def get_day_obj(week: Week, user_day: DayTitles) -> Tuple[Day, TextResponse]:
     """
     Получем объект расписания на выбранный день в неделе
     """
@@ -69,7 +71,11 @@ def get_day_obj(week: Week, user_day: DayTitles) -> Tuple[Day, TextResponse | No
     return day, None
 
 
-def get_day(user_group: Groups, user_day: DayTitles, week_is_odd: bool = None) -> str:
+def get_day(
+    user_group: Groups,
+    user_day: DayTitles,
+    week_is_odd: bool = None
+) -> str:
     """
     Даёт расписание на конкретный день для выбранной группы в готовом виде.
     """
@@ -100,7 +106,9 @@ def get_today(user_group: Groups, user_datetime: datetime.datetime) -> str:
     return get_day(user_group, user_day, week_is_odd(user_datetime))
 
 
-def get_current_class(user_group: Groups, user_datetime: datetime.datetime) -> str:
+def get_current_class(
+    user_group: Groups, user_datetime: datetime.datetime
+) -> str:
     """
     Даёт текущее занятие или будущее занятие на сегодня.
     """
@@ -120,11 +128,15 @@ def get_current_class(user_group: Groups, user_datetime: datetime.datetime) -> s
         if class_time < curr_time and curr_time < class_ends:
             return TextResponse.curr_class(_class.name, _class.auditory)
         if curr_time < class_time:
-            return TextResponse.future_class(_class.name, _class.auditory, class_time)
+            return TextResponse.future_class(
+                _class.name, _class.auditory, class_time
+            )
     return TextResponse.CURR_CLASS_NONE
 
 
-def get_next_class(user_group: Groups, user_datetime: datetime.datetime) -> str:
+def get_next_class(
+    user_group: Groups, user_datetime: datetime.datetime
+) -> str:
     """
     Даёт следующее занятие на сегодня.
     """
@@ -144,14 +156,16 @@ def get_next_class(user_group: Groups, user_datetime: datetime.datetime) -> str:
         if class_time < curr_time and curr_time < class_ends:
             continue
         if curr_time < class_time:
-            return TextResponse.future_class(_class.name, _class.auditory, class_time)
+            return TextResponse.future_class(
+                _class.name, _class.auditory, class_time
+            )
     return TextResponse.NEXT_CLASS_NONE
 
 
-async def set_user_group(tg_user, group: str) -> str:  #FIXME описать структуру message в комменте
+async def set_user_group(tg_user, group: str) -> str:
     """
     Устанавливаем выбранную группу для юзера
-    
+
     :param tg_user: Telegram User object
     """
     try:
@@ -165,7 +179,7 @@ async def set_user_group(tg_user, group: str) -> str:  #FIXME описать с�
     user_db = await session.scalar(query)
     if not user_db:
         new_user = DbUser(
-            tg_id=user_id_str, 
+            tg_id=user_id_str,
             username=tg_user.first_name,
             group=validated.group
         )
@@ -181,7 +195,9 @@ async def set_user_group(tg_user, group: str) -> str:  #FIXME описать с�
     return TextResponse.new_group(validated.group)
 
 
-async def get_user_group_message(user_id: int, user_datetime: datetime.datetime) -> str:
+async def get_user_group_message(
+    user_id: int, user_datetime: datetime.datetime
+) -> str:
     """
     Смешной текст с номером группы и тем что хранит бот + текущее время бота
     """

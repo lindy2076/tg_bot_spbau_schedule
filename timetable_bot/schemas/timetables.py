@@ -12,10 +12,12 @@ class Subject(BaseModel):
     professor: str | None
 
     def __repr__(self):
-        res = ""
-        res += "• " + str(self.starts) + ": " + str(self.name) + " | " + str(self.auditory) + " | " + str(int(float(self.lasts) * 60)) + " минут | " + str(self.professor) + "\n"
+        res = "• {:s}: {:s} | {:s} | {:s} минут | {:s}".format(
+            self.starts, self.name, self.auditory,
+            str(int(float(self.lasts) * 60)), self.professor
+        )
         return res
-    
+
     @validator('lasts')
     def hours_must_have_dot(cls, v):
         new_v = v
@@ -24,7 +26,7 @@ class Subject(BaseModel):
         try:
             float(new_v)
         except ValueError:
-            raise ValueError("Где-то длительность пары ужасная")   # FIXME norm opisanie
+            raise ValueError("Длительность пары не соответствует офрмату")
         return new_v
 
     @validator('starts')
@@ -40,9 +42,12 @@ class Day(BaseModel):
 
     def __repr__(self):
         activities_str = ["    " + repr(x) + "\n" for x in self.activities]
-        return "\n" + "="*20 + "\n" + str(self.title) + "\n" + "="*20 + ' \n\n ' + " ".join(activities_str)
-    
-    class Config:  
+        sep = "=" * 20
+        return "\n{:s}\n    {:s}\n{:s}\n\n{:s}".format(
+            sep, str(self.title), sep, ''.join(activities_str)
+        )
+
+    class Config:
         use_enum_values = True
 
 
@@ -53,8 +58,8 @@ class Week(BaseModel):
     def __repr__(self):
         activities_str = ["  " + repr(x) + "\n" for x in self.week_activities]
         return str(self.group) + ': \n ' + "\n" + " ".join(activities_str)
-    
-    class Config:  
+
+    class Config:
         use_enum_values = True
 
 

@@ -13,7 +13,9 @@ from timetable_bot.config import DefaultSettings
 config = DefaultSettings()
 
 
-def parse_edit_params(params: list[str]) -> Tuple[Tuple[Groups, DayTitles], ErrorMessages]:
+def parse_edit_params(
+    params: list[str]
+) -> Tuple[Tuple[Groups, DayTitles], ErrorMessages]:
     """
     Спарсить параметры команды edit (группа и день)
     """
@@ -45,7 +47,7 @@ def get_week_json(user_group: Groups) -> Tuple[dict, ErrorMessages]:
     except Exception as e:
         logging.info(f"Failed to load {filename}. Error: {e}")
         return None, ErrorMessages.NO_SCHEDULE_FOR_GROUP
-    
+
     return loaded, None
 
 
@@ -56,13 +58,13 @@ def get_day_json(user_group: Groups, user_day: DayTitles) -> str:
     week, err = get_week_json(user_group)
     if err is not None:
         return err
-    
+
     for day in week['week_activities']:
         if day['title'] == user_day:
             break
     else:
         return TextResponse.NO_SCHEDULE_FOR_DAY
-    
+
     return f"<pre><code class='language-json'>{day}</code></pre>"
 
 
@@ -70,7 +72,7 @@ def replace_day_json(
     day_json_str: str, user_group: Groups
 ) -> Tuple[dict, ErrorMessages]:
     """
-    Берёт json msg и пытается поменять её в расписании. 
+    Берёт json msg и пытается поменять её в расписании.
     """
     week_json, err = get_week_json(user_group)
     if err is not None:
@@ -85,7 +87,7 @@ def replace_day_json(
     try:
         Day(**day_json)
     except ValidationError:
-        return None, f"failed to validate json."
+        return None, "failed to validate json."
 
     day_title = day_json["title"]
     for day in week_json['week_activities']:

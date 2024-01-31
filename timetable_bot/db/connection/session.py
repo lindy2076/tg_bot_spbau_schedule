@@ -6,7 +6,8 @@ from timetable_bot.config import DefaultSettings
 
 class SessionManager:
     """
-    A class that implements the necessary functionality for working with the database:
+    A class that implements the necessary functionality for working
+    with the database:
     issuing sessions, storing and updating connection settings.
     """
 
@@ -19,10 +20,14 @@ class SessionManager:
         return cls.instance  # noqa
 
     def get_session_maker(self) -> sessionmaker:
-        return sessionmaker(self.engine, class_=AsyncSession, expire_on_commit=False)
+        return sessionmaker(
+            self.engine, class_=AsyncSession, expire_on_commit=False
+        )
 
     def refresh(self) -> None:
-        self.engine = create_async_engine(DefaultSettings().database_uri, echo=True, future=True)
+        self.engine = create_async_engine(
+            DefaultSettings().database_uri, echo=True, future=True
+        )
 
 
 async def get_session() -> AsyncSession:

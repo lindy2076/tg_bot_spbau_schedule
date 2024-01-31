@@ -18,7 +18,7 @@ async def send_hello(message: types.Message):
     """
     Приветствие с клавиатурой выбора дня недели.
     """
-    await message.reply(TextResponse.greet(message.from_user.first_name), 
+    await message.reply(TextResponse.greet(message.from_user.first_name),
                         reply_markup=kb.smile_kb)
     await message.answer(TextResponse.SEE_MENU, reply_markup=kb.group_sel_kb)
 
@@ -26,7 +26,7 @@ async def send_hello(message: types.Message):
 @main_router.message(Command('week'))
 async def send_week_schedule(message: types.Message):
     """
-    Отправляет расписание на неделю для группы юзера 
+    Отправляет расписание на неделю для группы юзера
     """
     group = await utils.get_user_group(message.from_user.id)
     result = utils.get_week(group)
@@ -36,7 +36,7 @@ async def send_week_schedule(message: types.Message):
 @main_router.message(Command('day'))
 async def select_day(message: types.Message):
     """
-    Выдаёт клаву с выбором дня, вызывается командой /day (ну или другой из __init__)
+    Выдаёт клаву с выбором дня, вызывается командой /day или callback menu
     """
     await message.reply(TextResponse.CHOOSE_DAY, reply_markup=kb.day_sel_kb)
 
@@ -105,16 +105,21 @@ async def set_user_group(message: types.Message):
     """
     Отправляет сообщение с инлайн клавой для выбора группы
     """
-    await message.reply(TextResponse.CHOOSE_GROUP2, reply_markup=kb.group_sel_kb)
+    await message.reply(
+        TextResponse.CHOOSE_GROUP2, reply_markup=kb.group_sel_kb
+    )
 
 
 @main_router.message(Command('me'))
 @main_router.message(Command('help'))
 async def get_user_group(message: types.Message):
     """
-    Отправляет сообщение с группой юзера + хранящуююся информацию + текущее время бота
+    Отправляет сообщение с группой юзера + хранящуююся информацию
+    + текущее время бота + четность недели
     """
-    result = await utils.get_user_group_message(message.from_user.id, message.date + TD)
+    result = await utils.get_user_group_message(
+        message.from_user.id, message.date + TD
+    )
     await message.reply(result)
 
 
@@ -139,7 +144,8 @@ async def serve_pdf(message: types.Message, bot: Bot):
 @main_router.message()
 async def send_echo(message: types.Message, bot: Bot):
     """
-    Обработчик следующих команд от юзера (которые можно отправить с reply клавы smile_kb)
+    Обработчик следующих команд от юзера
+    (которые можно отправить с reply клавы smile_kb)
     """
     match message.text:
         case "что щас":
