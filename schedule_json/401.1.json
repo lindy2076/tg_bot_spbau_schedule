@@ -4,23 +4,9 @@
         {   
             "title": "Понедельник",
             "activities": [
-                {   
-                    "starts": "12:00",
-                    "lasts": "1.5", 
-                    "name": "Численные методы", 
-                    "auditory": "432 СЛК", 
-                    "professor": "Сухайр М."
-                },
                 {
-                    "starts": "14:00", 
-                    "lasts": "1.5", 
-                    "name": "Лаб. практикум", 
-                    "auditory": "физтех", 
-                    "professor": "Заморянская М. В."
-                },
-                {
-                    "starts": "16:00", 
-                    "lasts": "4", 
+                    "starts": "10:00", 
+                    "lasts": "9.5", 
                     "name": "НИР", 
                     "auditory": "--", 
                     "professor": "--"
@@ -31,37 +17,44 @@
             "title": "Вторник",
             "activities": [
                 {   
-                    "starts": "10:00",
+                    "starts": "10:00", 
                     "lasts": "1.5", 
-                    "name": "Физика конд. сос.", 
-                    "auditory": "204 СЛК", 
-                    "professor": "Глазов М.М."
+                    "name": "Английский", 
+                    "auditory": "507, 442, 445 ФТШ, 523 СЛК", 
+                    "professor": "разные.."
                 },
-                {
-                    "starts": "12:00", 
+                {   
+                    "starts": "12:00",
                     "lasts": "1.5", 
-                    "name": "Физика п/п приборов", 
-                    "auditory": "523 СЛК", 
-                    "professor": "Берт Н.А."
+                    "name": "Стат физика (практика)", 
+                    "auditory": "208 СЛК", 
+                    "professor": "Мартюкова Д.С."
                 },
                 {
                     "starts": "14:00", 
-                    "lasts": "4", 
-                    "name": "НИР", 
-                    "auditory": "--", 
-                    "professor": "--"
+                    "lasts": "1.5", 
+                    "name": "Физика п/п приборов", 
+                    "auditory": "515 СЛК", 
+                    "professor": "Берт Н.А."
                 }
             ]
         },
         {
             "title": "Среда",
             "activities": [
-                {   
+                {
                     "starts": "10:00", 
-                    "lasts": "9.5", 
+                    "lasts": "3", 
                     "name": "НИР", 
                     "auditory": "--", 
                     "professor": "--"
+                },
+                {
+                    "starts": "14:00",
+                    "lasts": "2.25",
+                    "name": "ОТО",
+                    "auditory": "208 СЛК", 
+                    "professor": "Иванчик А. В."
                 }
             ]
         },
@@ -77,36 +70,22 @@
                 },
                 {
                     "starts": "12:00", 
-                    "lasts": "1.5", 
-                    "name": "Стат физика (практика)", 
-                    "auditory": "515 СЛК", 
-                    "professor": "Мартюкова Д.С."
-                },
-                {
-                    "starts": "14:00", 
-                    "lasts": "3", 
-                    "name": "Оптика КС", 
+                    "lasts": "3",
+                    "name": "Оптика п/п", 
                     "auditory": "517 СЛК", 
-                    "professor": "Липовский А. А."
+                    "professor": "Смирнов Д. С."
                 }
             ]
         },
         {
             "title": "Пятница",
             "activities": [
-                {   
-                    "starts": "12:00", 
-                    "lasts": "1.5", 
-                    "name": "Английский", 
-                    "auditory": "507, 442, 445 ФТШ, 523 СЛК", 
-                    "professor": "разные.."
-                },
                 {
-                    "starts": "14:00", 
-                    "lasts": "1.5", 
-                    "name": "Численные методы", 
-                    "auditory": "206 СЛК", 
-                    "professor": "Давыдов Роман Вадимович"
+                    "starts": "10:00", 
+                    "lasts": "9.5", 
+                    "name": "НИР", 
+                    "auditory": "--", 
+                    "professor": "--"
                 }
             ]
         }

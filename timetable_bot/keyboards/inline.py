@@ -1,93 +1,102 @@
 from aiogram.types import (
-    InlineKeyboardButton, InlineKeyboardMarkup
+    InlineKeyboardMarkup
 )
-from aiogram.utils.callback_data import CallbackData
+from aiogram.filters.callback_data import CallbackData
+from aiogram.utils.keyboard import InlineKeyboardBuilder
 
-from timetable_bot.schemas import Groups, DayTitles
-from timetable_bot.utils import weeknum_to_short_weekday 
-
-
-def create_group_sel_inline_kb(grd: CallbackData) -> InlineKeyboardMarkup:
-    b1011 = InlineKeyboardButton(Groups.f1_1.value + " ⚛️", callback_data=grd.new(id=Groups.f1_1.value))
-    b1012 = InlineKeyboardButton(Groups.f1_2.value + " ⚛️", callback_data=grd.new(id=Groups.f1_2.value))
-    b1021 = InlineKeyboardButton(Groups.b1_1.value + " 🧬", callback_data=grd.new(id=Groups.b1_1.value))
-
-    f2021 = InlineKeyboardButton(Groups.f2_1.value + " ⚛️", callback_data=grd.new(id=Groups.f2_1.value))
-    f2022 = InlineKeyboardButton(Groups.f2_2.value + " ⚛️", callback_data=grd.new(id=Groups.f2_2.value))
-    b2021 = InlineKeyboardButton(Groups.b2_1.value + " 🧬", callback_data=grd.new(id=Groups.b2_1.value))
-
-    f3011 = InlineKeyboardButton(Groups.f3_1.value + " ⚛️", callback_data=grd.new(id=Groups.f3_1.value))
-    f3012 = InlineKeyboardButton(Groups.f3_2.value + " ⚛️", callback_data=grd.new(id=Groups.f3_2.value))
-    f3013 = InlineKeyboardButton(Groups.f3_3.value + " ⚛️", callback_data=grd.new(id=Groups.f3_3.value))
-    b3021 = InlineKeyboardButton(Groups.b3_1.value + " 🧬", callback_data=grd.new(id=Groups.b3_1.value))
-    b3022 = InlineKeyboardButton(Groups.b3_2.value + " 🧬", callback_data=grd.new(id=Groups.b3_2.value))
-    
-    f4011 = InlineKeyboardButton(Groups.f4_1.value + " ⚛️", callback_data=grd.new(id=Groups.f4_1.value))
-    f4012 = InlineKeyboardButton(Groups.f4_2.value + " ⚛️", callback_data=grd.new(id=Groups.f4_2.value))
-    f4013 = InlineKeyboardButton(Groups.f4_3.value + " ⚛️", callback_data=grd.new(id=Groups.f4_3.value))
-    b402 = InlineKeyboardButton(Groups.b4.value + " 🧬", callback_data=grd.new(id=Groups.b4.value))
-
-    group_sel_kb = InlineKeyboardMarkup()
-    group_sel_kb.row(b1011, b1012, b1021)
-    group_sel_kb.row(f2021, f2022, b2021)
-    group_sel_kb.row(f3011, f3012, f3013)
-    group_sel_kb.row(b3021, b3022)
-    group_sel_kb.row(f4011, f4012, f4013)
-    group_sel_kb.row(b402)
-
-    return group_sel_kb
+from timetable_bot.schemas import Groups
+from timetable_bot.utils import weeknum_to_short_weekday, weeknum_to_weekday
 
 
-def create_weekday_sel_kb(grd: CallbackData) -> InlineKeyboardMarkup:
-    b1 = InlineKeyboardButton("пн", callback_data=grd.new(id=DayTitles.mon.value))
-    b2 = InlineKeyboardButton("вт", callback_data=grd.new(id=DayTitles.tue.value))
-    b3 = InlineKeyboardButton("ср", callback_data=grd.new(id=DayTitles.wed.value))
-    b4 = InlineKeyboardButton("чт", callback_data=grd.new(id=DayTitles.thu.value))
-    b5 = InlineKeyboardButton("пт", callback_data=grd.new(id=DayTitles.fri.value))
-    b6 = InlineKeyboardButton("сб", callback_data=grd.new(id=DayTitles.sat.value))
-    
-    kb = InlineKeyboardMarkup()
-    kb.row(b1, b4)
-    kb.row(b2, b5)
-    kb.row(b3, b6)
-    return kb
+PHY_EMOJI = " ⚛️"
+BIO_EMOJI = " 🧬"
 
 
-def create_wd_arrows_kb(grd: CallbackData, curr_day: int) -> InlineKeyboardMarkup:
+def determine_emoji(group: Groups):
+    if group.value.split(".")[0][-1] == "1":
+        return PHY_EMOJI
+    return BIO_EMOJI
+
+
+class SelectGroupCallback(CallbackData, prefix="setgr"):
+    id: str
+
+
+class SelectDayCallback(CallbackData, prefix="day"):
+    id: str
+
+
+class SwitchDayCallback(CallbackData, prefix="wd"):
+    where: str
+
+
+def add_group_button(builder: InlineKeyboardBuilder, year: list[Groups]):
+    for group in year:
+        builder.button(
+            text=group.value + determine_emoji(group),
+            callback_data=SelectGroupCallback(id=group.value).pack()
+        )
+
+
+def create_group_sel_inline_kb() -> InlineKeyboardMarkup:
+    builder = InlineKeyboardBuilder()
+    year1 = [Groups.f1_1, Groups.f1_2, Groups.b1_1]
+    add_group_button(builder, year1)
+
+    year2 = [Groups.f2_1, Groups.f2_2, Groups.b2_1]
+    add_group_button(builder, year2)
+
+    year3 = [Groups.f3_1, Groups.f3_2, Groups.f3_3, Groups.b3_1, Groups.b3_2]
+    add_group_button(builder, year3)
+
+    year4 = [Groups.f4_1, Groups.f4_2, Groups.f4_3, Groups.b4]
+    add_group_button(builder, year4)
+
+    builder.adjust(len(year1), len(year2), 3, 2, len(year4))
+    return builder.as_markup()
+
+
+def create_weekday_sel_kb() -> InlineKeyboardMarkup:
+    builder = InlineKeyboardBuilder()
+    btns = ["пн", "вт", "ср", "чт", "пт", "сб"]
+    for idx, btn_text in enumerate(btns):
+        builder.button(
+            text=btn_text,
+            callback_data=SelectDayCallback(
+                id=weeknum_to_weekday(idx).value
+            ).pack()
+        )
+    builder.adjust(2, 2, 2)
+    return builder.as_markup()
+
+
+def create_wd_arrows_kb(curr_day: int) -> InlineKeyboardMarkup:
     if curr_day == 6:
         left_day, right_day = 5, 0
     else:
         left_day = (curr_day - 1) % 6
         right_day = (curr_day + 1) % 6
     curr_day_str = weeknum_to_short_weekday(curr_day)
-    b1 = InlineKeyboardButton("◀️", callback_data=grd.new(where=left_day))
-    b2 = InlineKeyboardButton("▶️", callback_data=grd.new(where=right_day))
-    b3 = InlineKeyboardButton("🗓️ {:s}".format(curr_day_str), callback_data=grd.new(where="menu"))
-    kb = InlineKeyboardMarkup()
-    kb.row(b1, b3, b2)
-    return kb
+
+    builder = InlineKeyboardBuilder()
+    builder.button(text="◀️", callback_data=SwitchDayCallback(
+        where=str(left_day)).pack()
+    )
+    builder.button(
+        text="🗓️ {:s}".format(curr_day_str),
+        callback_data=SwitchDayCallback(where="menu").pack()
+    )
+    builder.button(text="▶️", callback_data=SwitchDayCallback(
+        where=str(right_day)).pack()
+    )
+
+    return builder.as_markup()
 
 
 def day_switch_kb(curr_day: int) -> InlineKeyboardMarkup:
-    kb = create_wd_arrows_kb(day_switch_callback_data, curr_day)
-    return kb 
+    kb = create_wd_arrows_kb(curr_day)
+    return kb
 
 
-def create_callback_data(k: str = "group"):   # FIXME вспомнить че это
-    d = CallbackData("setgr", "id")
-    match k:
-        case "group":
-            d = CallbackData("setgr", "id")
-        case "day":
-            d = CallbackData("day", "id")
-        case "wd":
-            d = CallbackData("wd", "where")
-    return d
-
-
-group_callback_data = create_callback_data(k="group")
-day_callback_data = create_callback_data(k="day")
-day_switch_callback_data = create_callback_data(k="wd")
-
-group_sel_kb = create_group_sel_inline_kb(group_callback_data)
-day_sel_kb = create_weekday_sel_kb(day_callback_data)
+group_sel_kb = create_group_sel_inline_kb()
+day_sel_kb = create_weekday_sel_kb()

@@ -44,7 +44,5 @@ docs/_build/
 /venv/
 timetable.code-workspace
 /postgres_data/
-backup*.sql
-phd.*
-master.*
-
+dumps/
+pdffileid

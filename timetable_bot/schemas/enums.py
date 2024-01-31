@@ -10,6 +10,13 @@ class DayTitles(str, Enum):
     sat = "Суббота"
     sun = "Воскресенье"
 
+    @classmethod
+    def from_str(cls, day_str):
+        for k, v in cls.__members__.items():
+            if v == day_str:
+                return cls[k]
+        return None
+
 
 class Groups(str, Enum):
     f1_1 = "101.1"
@@ -28,9 +35,9 @@ class Groups(str, Enum):
     f4_3 = "401.3"
     b4 = "402"
 
-
-# class Degrees(str, Enum):
-#     bach = "bachelor"
-#     mag = "master"
-#     asp = "phd"
-#     null = "null"
+    @classmethod
+    def from_str(cls, day_str):
+        for k, v in cls.__members__.items():
+            if v == day_str:
+                return cls[k]
+        return None
