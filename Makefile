@@ -41,5 +41,8 @@ revision:
 down:
 	docker compose down
 
+flake:
+	flake8 $(APPLICATION_NAME) --exclude "*/db/migrator/*, *responses.py, */config.py"
+
 %::
 	echo $(MESSAGE)
