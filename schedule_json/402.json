@@ -1,21 +1,21 @@
 {
     "group": "402",
-    "week_activities": [    
+    "week_activities": [
         {
             "title": "Понедельник",
             "activities": [
                 {
-                    "starts": "12:00", 
-                    "lasts": "1.5", 
-                    "name": "Обработка БОД", 
-                    "auditory": "422 (чет)/305 (нечет) СЛК", 
+                    "starts": "12:00",
+                    "lasts": "1.5",
+                    "name": "Обработка БОД",
+                    "auditory": "422 (чет) / 305 (нечет) СЛК",
                     "professor": "Денисов А.Р."
                 },
                 {
-                    "starts": "14:00", 
-                    "lasts": "1.5", 
-                    "name": "Английский", 
-                    "auditory": "442 ФТШ", 
+                    "starts": "14:00",
+                    "lasts": "1.5",
+                    "name": "Английский",
+                    "auditory": "442 ФТШ",
                     "professor": "не знаю..."
                 }
             ]
@@ -24,17 +24,17 @@
             "title": "Вторник",
             "activities": [
                 {
-                    "starts": "10:00", 
-                    "lasts": "2.25", 
-                    "name": "Презентация р.и.", 
-                    "auditory": "523 СЛК", 
+                    "starts": "10:00",
+                    "lasts": "2.25",
+                    "name": "Презентация р.и.",
+                    "auditory": "523 СЛК",
                     "professor": "Рогоза Т. М."
                 },
-                {   
-                    "starts": "12:00", 
-                    "lasts": "1.5", 
-                    "name": "Обучение с подкреплением", 
-                    "auditory": "431 СЛК", 
+                {
+                    "starts": "12:00",
+                    "lasts": "1.5",
+                    "name": "Обучение с подкреплением",
+                    "auditory": "431 СЛК",
                     "professor": "Андреев Юрий А."
                 }
             ]
@@ -42,11 +42,11 @@
         {
             "title": "Среда",
             "activities": [
-                {   
-                    "starts": "10:00", 
-                    "lasts": "9.5", 
-                    "name": "НИР", 
-                    "auditory": "--", 
+                {
+                    "starts": "10:00",
+                    "lasts": "9.5",
+                    "name": "НИР",
+                    "auditory": "--",
                     "professor": "--"
                 }
             ]
@@ -55,24 +55,24 @@
             "title": "Четверг",
             "activities": [
                 {
-                    "starts": "10:00", 
-                    "lasts": "1.5", 
-                    "name": "Биостатистика", 
-                    "auditory": "204 СЛК", 
+                    "starts": "10:00",
+                    "lasts": "1.5",
+                    "name": "Биостатистика",
+                    "auditory": "204 СЛК",
                     "professor": "Малов С.В."
                 },
                 {
-                    "starts": "12:00", 
-                    "lasts": "1.5", 
-                    "name": "Биостатистика", 
-                    "auditory": "204 СЛК", 
+                    "starts": "12:00",
+                    "lasts": "1.5",
+                    "name": "Биостатистика",
+                    "auditory": "204 СЛК",
                     "professor": "Малов С.В."
                 },
                 {
-                    "starts": "14:00", 
-                    "lasts": "4.5", 
-                    "name": "НИР", 
-                    "auditory": "--", 
+                    "starts": "14:00",
+                    "lasts": "4.5",
+                    "name": "НИР",
+                    "auditory": "--",
                     "professor": "--"
                 }
             ]
@@ -80,11 +80,11 @@
         {
             "title": "Пятница",
             "activities": [
-                {   
-                    "starts": "10:00", 
-                    "lasts": "9.5", 
-                    "name": "НИР", 
-                    "auditory": "--", 
+                {
+                    "starts": "10:00",
+                    "lasts": "9.5",
+                    "name": "НИР",
+                    "auditory": "--",
                     "professor": "--"
                 }
             ]
