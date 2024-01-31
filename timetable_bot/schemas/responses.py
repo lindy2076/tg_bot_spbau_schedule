@@ -83,5 +83,4 @@ class TextResponse(str):
     @classmethod
     def group_day_and_day_json(cls, group: str, day: str, day_json: dict):
         """выдает день, группу и словарь расписания дня"""
-        return f"{group.value} {day.value} {day_json}\n\
-            Отправьте новый словарь. Или пишите /cancel для отмены"
+        return f"{group} {day} {day_json}\nОтправьте новый словарь. Или пишите /cancel для отмены"
