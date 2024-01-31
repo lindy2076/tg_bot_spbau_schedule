@@ -126,6 +126,9 @@ async def process_new_dict(message: types.Message, state: FSMContext):
 
 @admin_router.message(Command('pdfupd'))
 async def update_pdf(message: types.Message, state: FSMContext):
+    if str(message.from_user.id) != config.ADMIN_ID:
+        await message.answer(TextResponse.YOU_ARE_NOT_ADMIN)
+        return
     await message.reply("прикрепите pdf")
     await state.set_state(PdfUpdForm.pdf)
 
