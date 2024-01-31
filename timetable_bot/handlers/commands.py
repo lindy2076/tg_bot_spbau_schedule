@@ -109,6 +109,7 @@ async def set_user_group(message: types.Message):
 
 
 @main_router.message(Command('me'))
+@main_router.message(Command('help'))
 async def get_user_group(message: types.Message):
     """
     Отправляет сообщение с группой юзера + хранящуююся информацию + текущее время бота
@@ -153,7 +154,7 @@ async def send_echo(message: types.Message, bot: Bot):
             await set_user_group(message)
         case "неделя":
             await send_week_schedule(message)
-        case "🤠информация...":
+        case "🤠 help":
             await get_user_group(message)
         case "pdf":
             await serve_pdf(message, bot)
