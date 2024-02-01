@@ -31,7 +31,7 @@ class TextResponse(str):
         "и все сообщения боту. Чтобы удалить себя из базы данных, пропишите /del ." + \
         "\nЧтобы получить расписание в pdf напишите /pdf или pdf ." + \
         "\nЧтобы отправить какое-либо сообщение админу напишите /send_admin *сообщение*" + \
-        "\n\nрепа: github.com/lindy2076/tg_bot_spbau_schedule"
+        "\n\nрепа: <a href='github.com/lindy2076/tg_bot_spbau_schedule/tree/master'>гитхаб</a>"
 
     @classmethod
     def greet(cls, username: str) -> str:
