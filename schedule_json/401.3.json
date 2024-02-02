@@ -36,19 +36,19 @@
                     "name": "Физика п/п приборов", 
                     "auditory": "515 СЛК", 
                     "professor": "Берт Н.А."
-                },
-                {
-                    "starts": "16:00", 
-                    "lasts": "1.5", 
-                    "name": "Фунд. ФРЗ", 
-                    "auditory": "516 СЛК", 
-                    "professor": "Чугунов А.И."
                 }
             ]
         },
         {
             "title": "Среда",
             "activities": [
+                {
+                    "starts": "10:00", 
+                    "lasts": "1.5", 
+                    "name": "Фунд. ФРЗ", 
+                    "auditory": "517 СЛК", 
+                    "professor": "Чугунов А.И."
+                },
                 {
                     "starts": "12:00", 
                     "lasts": "1.5", 
@@ -77,16 +77,16 @@
                 },
                 {
                     "starts": "12:00", 
-                    "lasts": "3",
+                    "lasts": "2.25",
                     "name": "Оптика п/п", 
                     "auditory": "517 СЛК", 
                     "professor": "Смирнов Д. С."
                 },
                 {
                     "starts": "14:00", 
-                    "lasts": "3",
+                    "lasts": "1.5",
                     "name": "Физика МЗС", 
-                    "auditory": "516 СЛК", 
+                    "auditory": "521 СЛК", 
                     "professor": "Балашев С. А."
                 }
             ]
