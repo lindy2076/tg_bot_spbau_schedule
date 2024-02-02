@@ -120,7 +120,7 @@ async def get_user_group(message: types.Message):
     result = await utils.get_user_group_message(
         message.from_user.id, message.date + TD
     )
-    await message.reply(result)
+    await message.reply(result, link_preview_options=types.LinkPreviewOptions(is_disabled=True))
 
 
 @main_router.message(Command('del'))

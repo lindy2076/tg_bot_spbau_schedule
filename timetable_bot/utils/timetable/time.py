@@ -110,5 +110,5 @@ def week_is_odd(user_datetime: datetime.datetime):
     d = user_datetime.replace(tzinfo=None) - equiv
     weeks_passed = d.days // 7
     if weeks_passed % 2:
-        return False
-    return True
+        return True
+    return False
