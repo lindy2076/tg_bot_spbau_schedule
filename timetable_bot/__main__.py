@@ -1,6 +1,5 @@
 import asyncio
 import logging
-import ssl
 
 from aiohttp import web
 from aiogram import Bot, Dispatcher
@@ -62,10 +61,7 @@ def main_webhook():
     )
     webhook_requests_handler.register(app, path=settings.WEBHOOK_PATH)
     setup_application(app, dp, bot=bot)
-    context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
-    context.load_cert_chain(settings.CERT_PATH, settings.CERT_KEY_PATH)
-
-    web.run_app(app, host="127.0.0.1", port=8080, ssl_context=context)
+    web.run_app(app, host="127.0.0.1", port=8080)
 
 
 if __name__ == "__main__":
