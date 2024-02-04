@@ -10,8 +10,14 @@ class DefaultSettings:
     """
     Default config for application.
     """
+    DEBUG: bool = environ.get("DEBUG", True)
     BOT_TOKEN: str = environ.get("BOT_TOKEN", "")
     ADMIN_ID: str = environ.get("ADMIN_ID", "")
+    HOST_ADDR: str = environ.get("HOST_ADDR", "")
+    HOST_PORT: str = environ.get("HOST_PORT", "")
+    WEBHOOK_PATH: str = environ.get("WEBHOOK_PATH", "")
+
+    WEBHOOK_URL: str = f"{HOST_ADDR}:{HOST_PORT}{WEBHOOK_PATH}"
 
     POSTGRES_DB: str = environ.get("POSTGRES_DB", "timetable_db")
     POSTGRES_HOST: str = environ.get("POSTGRES_HOST", "localhost")
