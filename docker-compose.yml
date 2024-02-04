@@ -10,8 +10,8 @@ services:
       - "8001:8080"
     env_file:
       - ./.env
-    # volumes: FIXME
-    #  - ./schedule_json:/var/json/
+    volumes:
+     - ../certs/:${CERT_PATH}
   
   db:
     container_name: 'timetable_db'
