@@ -3,6 +3,7 @@ import logging
 
 from aiohttp import web
 from aiogram import Bot, Dispatcher
+from aiogram.types import FSInputFile
 from aiogram.enums import ParseMode
 from aiogram.webhook.aiohttp_server import (
     SimpleRequestHandler, setup_application
@@ -37,7 +38,10 @@ async def on_startup_polling(bot: Bot):
 
 async def on_startup_webhook(bot: Bot):
     logging.info("bot started with webhook!")
-    await bot.set_webhook(settings.WEBHOOK_URL)
+    await bot.set_webhook(
+        settings.WEBHOOK_URL,
+        certificate=FSInputFile(settings.CERT_PATH),
+    )
 
 
 async def main_longpolling():
