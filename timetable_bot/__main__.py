@@ -1,8 +1,13 @@
 import asyncio
 import logging
 
+from aiohttp import web
 from aiogram import Bot, Dispatcher
+from aiogram.types import FSInputFile
 from aiogram.enums import ParseMode
+from aiogram.webhook.aiohttp_server import (
+    SimpleRequestHandler, setup_application
+)
 
 from timetable_bot.config import DefaultSettings
 from timetable_bot.handlers import (
@@ -27,10 +32,36 @@ def get_app() -> Bot:
     return bot
 
 
-async def main():
-    bot = get_app()
-    dp.include_routers(admin_router, main_router, callback_router)
-    await dp.start_polling(bot)
+async def on_startup_polling(bot: Bot):
+    logging.info("bot started with longpolling!")
+
+
+async def on_startup_webhook(bot: Bot):
+    logging.info("bot started with webhook!")
+    await bot.set_webhook(
+        settings.WEBHOOK_URL,
+        certificate=FSInputFile(settings.CERT_PATH),
+    )
+
+
+async def main_longpolling():
+    dp.startup.register(on_startup_polling)
+    await dp.start_polling(
+        bot,
+        on_startup=on_startup_polling,
+    )
+
+
+def main_webhook():
+    dp.startup.register(on_startup_webhook)
+    app = web.Application()
+    webhook_requests_handler = SimpleRequestHandler(
+        dispatcher=dp,
+        bot=bot
+    )
+    webhook_requests_handler.register(app, path=settings.WEBHOOK_PATH)
+    setup_application(app, dp, bot=bot)
+    web.run_app(app, host="127.0.0.1", port=8080)
 
 
 if __name__ == "__main__":
@@ -40,4 +71,10 @@ if __name__ == "__main__":
         filename='spbau_sch.log',
         level=logging.INFO
     )
-    asyncio.run(main())
+    bot = get_app()
+    dp.include_routers(admin_router, main_router, callback_router)
+
+    if settings.DEBUG in ["TRUE", "True", "1", True]:
+        asyncio.run(main_longpolling())
+    else:
+        main_webhook()

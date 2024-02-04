@@ -10,8 +10,16 @@ class DefaultSettings:
     """
     Default config for application.
     """
+    DEBUG: bool = environ.get("DEBUG", True)
     BOT_TOKEN: str = environ.get("BOT_TOKEN", "")
     ADMIN_ID: str = environ.get("ADMIN_ID", "")
+    HOST_ADDR: str = environ.get("HOST_ADDR", "")
+    HOST_PORT: str = environ.get("HOST_PORT", "")
+    WEBHOOK_PATH: str = environ.get("WEBHOOK_PATH", "")
+    CERT_PATH: str = environ.get("CERT_PATH", "")
+    CERT_KEY_PATH: str = environ.get("CERT_KEY_PATH", "")
+
+    WEBHOOK_URL: str = f"{HOST_ADDR}:{HOST_PORT}{WEBHOOK_PATH}"
 
     POSTGRES_DB: str = environ.get("POSTGRES_DB", "timetable_db")
     POSTGRES_HOST: str = environ.get("POSTGRES_HOST", "localhost")
@@ -22,7 +30,7 @@ class DefaultSettings:
     # DB_POOL_SIZE: int = environ.get("DB_POOL_SIZE", 15)
 
     TIMEZONE_OFFSET: int = 3
-    NEW_SEMESTER_STARTS: str = "2023-02-05"
+    NEW_SEMESTER_STARTS: str = "2024-02-05"
     FILE_FOR_PDF_FILE_ID: str = "pdffileid"
 
     @property

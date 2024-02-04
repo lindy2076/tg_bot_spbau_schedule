@@ -7,11 +7,12 @@ services:
     depends_on:
       - db
     ports:
-      - "8000:80"
+      - "8001:8080"
     env_file:
       - ./.env
-    # volumes: FIXME
-    #  - ./schedule_json:/var/json/
+    volumes:
+     - ../certs/cert.pem:${CERT_PATH}
+     - ../certs/key.pem:${CERT_KEY_PATH}
   
   db:
     container_name: 'timetable_db'
