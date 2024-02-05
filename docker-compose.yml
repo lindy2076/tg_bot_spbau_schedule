@@ -7,13 +7,12 @@ services:
     depends_on:
       - db
     ports:
-      - "8001:8080"
+      - "127.0.0.1:8001:8080"
     env_file:
       - ./.env
     volumes:
-     - ../certs/cert.pem:${CERT_PATH}
-     - ../certs/key.pem:${CERT_KEY_PATH}
-  
+      - ${CERT_REAL_PATH}:${CERT_PATH}
+
   db:
     container_name: 'timetable_db'
     image: 'postgres:14'
@@ -21,7 +20,7 @@ services:
     env_file:
       - ./.env
     ports:
-      - '${POSTGRES_PORT}:${POSTGRES_PORT}'
+      - '127.0.0.1:${POSTGRES_PORT}:${POSTGRES_PORT}'
     volumes:
       - ./postgres_data:/var/lib/postgresql/data
 
@@ -29,4 +28,4 @@ services:
     image: adminer
     restart: always
     ports:
-      - 8081:8080
+      - '127.0.0.1:8081:8080'
