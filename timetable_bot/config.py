@@ -17,7 +17,6 @@ class DefaultSettings:
     HOST_PORT: str = environ.get("HOST_PORT", "")
     WEBHOOK_PATH: str = environ.get("WEBHOOK_PATH", "")
     CERT_PATH: str = environ.get("CERT_PATH", "")
-    CERT_KEY_PATH: str = environ.get("CERT_KEY_PATH", "")
 
     WEBHOOK_URL: str = f"{HOST_ADDR}:{HOST_PORT}{WEBHOOK_PATH}"
 
