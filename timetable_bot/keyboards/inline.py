@@ -13,6 +13,8 @@ BIO_EMOJI = " 🧬"
 
 
 def determine_emoji(group: Groups):
+    if group.value[0] == "5":
+        return ""
     if group.value.split(".")[0][-1] == "1":
         return PHY_EMOJI
     return BIO_EMOJI
@@ -52,7 +54,10 @@ def create_group_sel_inline_kb() -> InlineKeyboardMarkup:
     year4 = [Groups.f4_1, Groups.f4_2, Groups.f4_3, Groups.b4]
     add_group_button(builder, year4)
 
-    builder.adjust(len(year1), len(year2), 3, 2, len(year4))
+    year5 = [Groups.m1, Groups.m2, Groups.m3, Groups.m4]
+    add_group_button(builder, year5)
+
+    builder.adjust(len(year1), len(year2), 3, 2, len(year4), len(year5))
     return builder.as_markup()
 
 

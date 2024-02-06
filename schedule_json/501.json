@@ -1,0 +1,128 @@
+{
+    "group": "501",
+    "week_activities": [
+        {
+            "title": "Понедельник",
+            "activities": [
+                {
+                    "starts": "10:00",
+                    "lasts": "1.5",
+                    "name": "МПЭ",
+                    "auditory": "432 СЛК",
+                    "professor": "Большаков А. Д."
+                },
+                {
+                    "starts": "12:00",
+                    "lasts": "1.5",
+                    "name": "Туннельные явления",
+                    "auditory": "521 СЛК",
+                    "professor": "Сурис Р. А."
+                },
+                {
+                    "starts": "14:00",
+                    "lasts": "1.5",
+                    "name": "Полупроводниковые лазеры",
+                    "auditory": "432 СЛК",
+                    "professor": "Жуков А. Е."
+                },
+                {
+                    "starts": "16:00",
+                    "lasts": "1.5",
+                    "name": "Атомные процессы на пов.",
+                    "auditory": "432 СЛК",
+                    "professor": "Корякин А. А."
+                }
+            ]
+        },
+        {
+            "title": "Вторник",
+            "activities": [
+                {
+                    "starts": "10:00",
+                    "lasts": "1.5",
+                    "name": "Наноплазмоника",
+                    "auditory": "517 СЛК",
+                    "professor": "Журихина В. В."
+                },
+                {
+                    "starts": "12:00",
+                    "lasts": "1.5",
+                    "name": "Физика НС",
+                    "auditory": "517 СЛК",
+                    "professor": "Головатенко А. А."
+                },
+                {
+                    "starts": "14:00",
+                    "lasts": "1.5",
+                    "name": "Иняз",
+                    "auditory": "540 ФТШ",
+                    "professor": "..."
+                },
+                {
+                    "starts": "16:00",
+                    "lasts": "1.5",
+                    "name": "Постпроцессинг",
+                    "auditory": "517 СЛК",
+                    "professor": "Мухин И.С."
+                }
+            ]
+        },
+        {
+            "title": "Среда",
+            "activities": [
+                {
+                    "starts": "10:00",
+                    "lasts": "1.5",
+                    "name": "Туннельные явления",
+                    "auditory": "431 СЛК",
+                    "professor": "Алексеев П. С."
+                },
+                {
+                    "starts": "12:00",
+                    "lasts": "1.5",
+                    "name": "Фазовые переходы",
+                    "auditory": "431 СЛК",
+                    "professor": "Кукушкин С. А."
+                },
+                {
+                    "starts": "14:00",
+                    "lasts": "1.5",
+                    "name": "Спектроскопия КС",
+                    "auditory": "431 СЛК",
+                    "professor": "Кочерешко В.П."
+                },
+                {
+                    "starts": "16:00",
+                    "lasts": "1.5",
+                    "name": "Моделирование НС",
+                    "auditory": "305 СЛК",
+                    "professor": "Полозков Р. Г."
+                }
+            ]
+        },
+        {
+            "title": "Четверг",
+            "activities": [
+                {
+                    "starts": "10:00",
+                    "lasts": "9.5",
+                    "name": "НИР",
+                    "auditory": "--",
+                    "professor": "--"
+                }
+            ]
+        },
+        {
+            "title": "Пятница",
+            "activities": [
+                {
+                    "starts": "10:00",
+                    "lasts": "9.5",
+                    "name": "НИР",
+                    "auditory": "--",
+                    "professor": "--"
+                }
+            ]
+        }
+    ]
+}

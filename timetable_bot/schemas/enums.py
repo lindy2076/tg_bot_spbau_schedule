@@ -34,6 +34,10 @@ class Groups(str, Enum):
     f4_2 = "401.2"
     f4_3 = "401.3"
     b4 = "402"
+    m1 = "501"
+    m2 = "502"
+    m3 = "503"
+    m4 = "504"
 
     @classmethod
     def from_str(cls, day_str):

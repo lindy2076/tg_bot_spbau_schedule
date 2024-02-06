@@ -1,0 +1,114 @@
+{
+    "group": "503",
+    "week_activities": [
+        {
+            "title": "Понедельник",
+            "activities": [
+                {
+                    "starts": "10:00",
+                    "lasts": "1.5",
+                    "name": "Иняз",
+                    "auditory": "430 СЛК",
+                    "professor": "..."
+                },
+                {
+                    "starts": "12:00",
+                    "lasts": "1.5",
+                    "name": "Туннельные явления",
+                    "auditory": "521 СЛК",
+                    "professor": "Сурис Р. А."
+                },
+                {
+                    "starts": "14:00",
+                    "lasts": "1.5",
+                    "name": "Теория групп",
+                    "auditory": "430 СЛК",
+                    "professor": "Антоненко П. В."
+                },
+                {
+                    "starts": "16:00",
+                    "lasts": "1.5",
+                    "name": "Атомные процессы на пов.",
+                    "auditory": "432 СЛК",
+                    "professor": "Корякин А. А."
+                }
+            ]
+        },
+        {
+            "title": "Вторник",
+            "activities": [
+                {
+                    "starts": "10:00",
+                    "lasts": "1.5",
+                    "name": "Наноплазмоника",
+                    "auditory": "517 СЛК",
+                    "professor": "Журихина В. В."
+                },
+                {
+                    "starts": "12:00",
+                    "lasts": "1.5",
+                    "name": "Стат физика",
+                    "auditory": "208 СЛК",
+                    "professor": "Мартюкова Д. С."
+                }
+            ]
+        },
+        {
+            "title": "Среда",
+            "activities": [
+                {
+                    "starts": "10:00",
+                    "lasts": "1.5",
+                    "name": "Туннельные явления",
+                    "auditory": "431 СЛК",
+                    "professor": "Алексеев П. С."
+                },
+                {
+                    "starts": "12:00",
+                    "lasts": "1.5",
+                    "name": "Фазовые переходы",
+                    "auditory": "431 СЛК",
+                    "professor": "Кукушкин С. А."
+                },
+                {
+                    "starts": "14:00",
+                    "lasts": "3",
+                    "name": "ОТО",
+                    "auditory": "208 СЛК",
+                    "professor": "Иванчик А. В."
+                }
+            ]
+        },
+        {
+            "title": "Четверг",
+            "activities": [
+                {
+                    "starts": "10:00",
+                    "lasts": "1.5",
+                    "name": "Стат физика",
+                    "auditory": "208 СЛК",
+                    "professor": "Мартюкова Д. С."
+                },
+                {
+                    "starts": "12:00",
+                    "lasts": "1.5",
+                    "name": "Теория групп",
+                    "auditory": "432 СЛК",
+                    "professor": "Конюх Д."
+                }
+            ]
+        },
+        {
+            "title": "Пятница",
+            "activities": [
+                {
+                    "starts": "10:00",
+                    "lasts": "9.5",
+                    "name": "НИР",
+                    "auditory": "--",
+                    "professor": "--"
+                }
+            ]
+        }
+    ]
+}
