@@ -24,7 +24,9 @@ class TextResponse(str):
     CHOOSE_GROUP_POLITE = "к сожалению, я пока о тебе ничего не знаю. попробуй /setgr"
     YOU_ARE_NOT_ADMIN = "ты не админ..."
     NOTHING_SENT = "ничего не отправлено. сообщение пустое!"
-    MESSAGE_SENT_SUCCESSFULLY = "сообщение отправлено"
+    MESSAGE_SENT_SUCCESSFULLY = "сообщение отправлено!"
+    MESSAGE_WASNT_SENT = "ничего не отправлено!"
+    WRITE_MESSAGE_FOR_ADMIN = "что мне передать админу??"
 
     POLICY = "\n\nя храню только жизненно необходимую информацию, а именно: " + \
         "айди телеграма, имя в телеграме, номер группы, время обращения " + \
@@ -71,9 +73,9 @@ class TextResponse(str):
         return "\n\nсейчас у меня {:s}, {:s}".format(day.lower(), time)
 
     @classmethod
-    def echo_user_msg(cls, msg_obj) -> str:
+    def echo_user_msg_for_admin(cls, msg_obj) -> str:
         """Пишет имя отправителя и сообщение. Обрезается команда"""
-        return f"{msg_obj.from_user.first_name} передаёт:\n{msg_obj.text[12:]}"
+        return f"{msg_obj.from_user.full_name} передаёт:\n{msg_obj.text}\n{msg_obj.from_user.id}_{msg_obj.message_id}"
 
     @classmethod
     def sent_successfully_to(cls, count: int) -> str:
@@ -89,3 +91,8 @@ class TextResponse(str):
     def curr_week_odd_even(cls, week_is_odd: bool):
         """пишет неделя четная или нет"""
         return f"\nсейчас {('чётная', 'нечётная')[week_is_odd]} неделя"
+
+    @classmethod
+    def check_msg_before_sending(cls, msg_obj) -> str:
+        """Пишет содержание сообщения и спрашивает отправить админу или нет"""
+        return f"следующее сообщение будет передано админу:\n\n{msg_obj.text}\n\nотправлять?"

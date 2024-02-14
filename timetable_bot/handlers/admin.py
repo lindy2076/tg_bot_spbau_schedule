@@ -1,12 +1,13 @@
 import logging
 
-from aiogram import Router, types, Bot
+from aiogram import Router, types, Bot, F
 from aiogram.filters import Command
 from aiogram.fsm.state import State, StatesGroup
 from aiogram.fsm.context import FSMContext
 
+import timetable_bot.keyboards as kb
 from timetable_bot.config import DefaultSettings
-from timetable_bot.schemas import TextResponse
+from timetable_bot.schemas import TextResponse, LogMessage
 from timetable_bot import utils
 
 
@@ -21,7 +22,26 @@ class EditForm(StatesGroup):
 
 
 class PdfUpdForm(StatesGroup):
-    pdf = State()
+    wait_for_pdf = State()
+
+
+class SendAdminForm(StatesGroup):
+    wait_for_message = State()
+    confirm = State()
+
+
+@admin_router.message(Command('cancel'))
+async def cancel_state(message: types.Message, state: FSMContext):
+    """
+    Выход из всех состояний.
+    """
+    curr_state = await state.get_state()
+    if curr_state is None:
+        await message.reply("нет состояний.")
+        return
+
+    await state.clear()
+    await message.reply("отмена", reply_markup=kb.smile_kb)
 
 
 @admin_router.message(Command('send_all'))
@@ -44,30 +64,63 @@ async def send_all(message: types.Message, bot: Bot):
             )
             send_to_count += 1
         except Exception as e:
-            logging.info(f"error during send_all. {e}")
+            logging.info(LogMessage.err_send_all(e))
             await message.answer(f"{user_id} меня заблочил.")
     await message.reply(TextResponse.sent_successfully_to(send_to_count))
 
 
 @admin_router.message(Command('send_admin'))
-async def send_admin(message: types.Message, bot: Bot):
+async def send_admin(message: types.Message, state: FSMContext):
     """
-    Послать админу сообщение
+    Запуск состояния для отправки сообщения админу
     """
-    if len(message.text) < 12:
-        await message.answer(TextResponse.NOTHING_SENT)
-        return
-    await bot.send_message(
-        chat_id=int(config.ADMIN_ID),
-        text=TextResponse.echo_user_msg(message)
+    await state.set_state(SendAdminForm.wait_for_message)
+    await message.reply(TextResponse.WRITE_MESSAGE_FOR_ADMIN)
+
+
+@admin_router.message(SendAdminForm.wait_for_message)
+async def send_admin_await(message: types.Message, state: FSMContext):
+    """
+    Ожидание сообщения, последняя проверка перед отправкой
+    """
+    await state.update_data(
+        wait_for_message=TextResponse.echo_user_msg_for_admin(message)
     )
-    await message.reply(TextResponse.MESSAGE_SENT_SUCCESSFULLY)
+    await state.set_state(SendAdminForm.confirm)
+    await message.reply(
+        TextResponse.check_msg_before_sending(message),
+        reply_markup=kb.yes_or_no_kb
+    )
+
+
+@admin_router.message(SendAdminForm.confirm)
+async def send_admin_confirm(message: types.Message, bot: Bot, state: FSMContext):
+    """
+    Обработка решения юзера
+    """
+    if message.text.lower() in ["да", "Да"]:
+        data = await state.get_data()
+        await bot.send_message(
+            chat_id=int(config.ADMIN_ID),
+            text=data["wait_for_message"],
+        )
+        await message.reply(
+            TextResponse.MESSAGE_SENT_SUCCESSFULLY,
+            reply_markup=kb.smile_kb
+        )
+        logging.info(LogMessage.sent_msg2admin(message))
+    else:
+        await message.reply(
+            TextResponse.MESSAGE_WASNT_SENT,
+            reply_markup=kb.smile_kb
+        )
+    await state.clear()
 
 
 @admin_router.message(Command('edit'))
 async def edit_schedule(message: types.Message, state: FSMContext):
     """
-    Запустить изменение расписания. Необходимые параметры:
+    Запуск изменения расписания. Необходимые параметры:
     /edit group day, где day - weeknum (0-6).
     Переходит в состояние EditForm.edit, если команда валидна.
     """
@@ -89,20 +142,6 @@ async def edit_schedule(message: types.Message, state: FSMContext):
     await state.update_data(day=day)
     await state.update_data(group=group)
     await state.set_state(EditForm.edit)
-
-
-@admin_router.message(Command('cancel'))
-async def cancel_state(message: types.Message, state: FSMContext):
-    """
-    Выход из всех состояний.
-    """
-    curr_state = state.get_state()
-    if curr_state is None:
-        await message.reply("нет состояний.")
-        return
-
-    await state.clear()
-    await message.reply("отмена")
 
 
 @admin_router.message(EditForm.edit)
@@ -130,10 +169,10 @@ async def update_pdf(message: types.Message, state: FSMContext):
         await message.answer(TextResponse.YOU_ARE_NOT_ADMIN)
         return
     await message.reply("прикрепите pdf")
-    await state.set_state(PdfUpdForm.pdf)
+    await state.set_state(PdfUpdForm.wait_for_pdf)
 
 
-@admin_router.message(PdfUpdForm.pdf)
+@admin_router.message(PdfUpdForm.wait_for_pdf)
 async def process_new_pdf(message: types.Message, state: FSMContext, bot: Bot):
     if not message.document:
         await message.reply("нужен pdf!")
@@ -146,3 +185,8 @@ async def process_new_pdf(message: types.Message, state: FSMContext, bot: Bot):
     await state.clear()
     await message.reply("ok")
     await bot.send_document(message.chat.id, file_id)
+
+
+@admin_router.message(F.reply_to_message)# & F.chat.func(lambda c: c.id == config.ADMIN_ID))
+async def reply_user(message: types.Message, bot: Bot):
+    await message.reply("пересланное сообщение в чате админа")
