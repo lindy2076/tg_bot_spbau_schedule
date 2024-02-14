@@ -187,6 +187,20 @@ async def process_new_pdf(message: types.Message, state: FSMContext, bot: Bot):
     await bot.send_document(message.chat.id, file_id)
 
 
-@admin_router.message(F.reply_to_message)# & F.chat.func(lambda c: c.id == config.ADMIN_ID))
+@admin_router.message(F.reply_to_message & F.from_user.id == int(config.ADMIN_ID))
 async def reply_user(message: types.Message, bot: Bot):
-    await message.reply("пересланное сообщение в чате админа")
+    """
+    Ответить юзеру, который отправил сообщение админу
+    """
+    params, err = utils.get_chat_and_msg_id(message.reply_to_message)
+    if err is not None:
+        await message.reply(f"ошипка: {err}. не могу ответить")
+    chat_id, msg_id = params
+    try:
+        await bot.send_message(
+                chat_id=chat_id, text=TextResponse.echo_msg_from_admin(message.text),
+                reply_to_message_id=msg_id
+            )
+        await message.reply("ответил")
+    except Exception as e:
+        await message.reply(f"ошипка отправки: {e}")

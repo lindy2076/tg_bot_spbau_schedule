@@ -4,6 +4,7 @@ class ErrorMessages(str):
     GROUP_DOESNT_EXIST = "такой группы нет.. напиши моему автору!"
     EDIT_MISSING_PARAMS = "чего-то не хватает. /edit group day"
     EDIT_WRONG_DAY = "день введён неправильно. можно 0-6"
+    CANT_PARSE_CHATANDMSG_IDS = "не могу спарсить айдишники"
 
     @classmethod
     def no_such_group(group: str):
@@ -76,6 +77,10 @@ class TextResponse(str):
     def echo_user_msg_for_admin(cls, msg_obj) -> str:
         """Пишет имя отправителя и сообщение. Обрезается команда"""
         return f"{msg_obj.from_user.full_name} передаёт:\n{msg_obj.text}\n{msg_obj.from_user.id}_{msg_obj.message_id}"
+
+    @classmethod
+    def echo_msg_from_admin(cls, msg: str) -> str:
+        return f"админ передаёт: {msg}"
 
     @classmethod
     def sent_successfully_to(cls, count: int) -> str:
