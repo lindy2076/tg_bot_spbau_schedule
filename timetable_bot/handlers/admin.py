@@ -81,7 +81,8 @@ async def send_admin(message: types.Message, state: FSMContext):
 @admin_router.message(SendAdminForm.wait_for_message)
 async def send_admin_await(message: types.Message, state: FSMContext):
     """
-    Ожидание сообщения, последняя проверка перед отправкой
+    Ожидание сообщения, последняя проверка перед отправкой.
+    Вшивка chat_id и msg_id в сообщение для админа
     """
     await state.update_data(
         wait_for_message=TextResponse.echo_user_msg_for_admin(message)
