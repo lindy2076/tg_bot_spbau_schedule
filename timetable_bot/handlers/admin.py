@@ -1,6 +1,6 @@
 import logging
 
-from aiogram import Router, types, Bot, F
+from aiogram import Router, types, Bot, F, BaseMiddleware
 from aiogram.filters import Command
 from aiogram.fsm.state import State, StatesGroup
 from aiogram.fsm.context import FSMContext
@@ -13,6 +13,8 @@ from timetable_bot import utils
 
 admin_router = Router(name='admin_router')
 config = DefaultSettings()
+
+F_from_admin = F.from_user.id == int(config.ADMIN_ID)
 
 
 class EditForm(StatesGroup):
@@ -44,14 +46,11 @@ async def cancel_state(message: types.Message, state: FSMContext):
     await message.reply("отмена", reply_markup=kb.smile_kb)
 
 
-@admin_router.message(Command('send_all'))
+@admin_router.message(Command('send_all'), F_from_admin)
 async def send_all(message: types.Message, bot: Bot):
     """
     Разослать всем юзезрам сообщение.
     """
-    if str(message.from_user.id) != config.ADMIN_ID:
-        await message.answer(TextResponse.YOU_ARE_NOT_ADMIN)
-        return
     if len(message.text) < 10:
         await message.answer(TextResponse.NOTHING_SENT)
         return
@@ -118,17 +117,13 @@ async def send_admin_confirm(message: types.Message, bot: Bot, state: FSMContext
     await state.clear()
 
 
-@admin_router.message(Command('edit'))
+@admin_router.message(Command('edit'), F_from_admin)
 async def edit_schedule(message: types.Message, state: FSMContext):
     """
     Запуск изменения расписания. Необходимые параметры:
     /edit group day, где day - weeknum (0-6).
     Переходит в состояние EditForm.edit, если команда валидна.
     """
-    if str(message.from_user.id) != config.ADMIN_ID:
-        await message.answer(TextResponse.YOU_ARE_NOT_ADMIN)
-        return
-
     params = message.text.split()
     params, err = utils.parse_edit_params(params)
     if err is not None:
@@ -164,17 +159,20 @@ async def process_new_dict(message: types.Message, state: FSMContext):
     await message.reply(f"ok. {str(res)}")
 
 
-@admin_router.message(Command('pdfupd'))
+@admin_router.message(Command('pdfupd'), F_from_admin)
 async def update_pdf(message: types.Message, state: FSMContext):
-    if str(message.from_user.id) != config.ADMIN_ID:
-        await message.answer(TextResponse.YOU_ARE_NOT_ADMIN)
-        return
+    """
+    Инициация загрузки pdf
+    """
     await message.reply("прикрепите pdf")
     await state.set_state(PdfUpdForm.wait_for_pdf)
 
 
 @admin_router.message(PdfUpdForm.wait_for_pdf)
 async def process_new_pdf(message: types.Message, state: FSMContext, bot: Bot):
+    """
+    Обработка загрузки pdf
+    """
     if not message.document:
         await message.reply("нужен pdf!")
         return
@@ -188,7 +186,7 @@ async def process_new_pdf(message: types.Message, state: FSMContext, bot: Bot):
     await bot.send_document(message.chat.id, file_id)
 
 
-@admin_router.message(F.reply_to_message & F.from_user.id == int(config.ADMIN_ID))
+@admin_router.message(F.reply_to_message & F_from_admin)
 async def reply_user(message: types.Message, bot: Bot):
     """
     Ответить юзеру, который отправил сообщение админу
