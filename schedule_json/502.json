@@ -1,0 +1,112 @@
+{
+    "group": "502",
+    "week_activities": [
+        {
+            "title": "Понедельник",
+            "activities": [
+                {
+                    "starts": "10:00",
+                    "lasts": "1.5",
+                    "name": "Иняз",
+                    "auditory": "430 СЛК",
+                    "professor": "..."
+                },
+                {
+                    "starts": "12:00",
+                    "lasts": "1.5",
+                    "name": "Введение в нанобио",
+                    "auditory": "522 СЛК",
+                    "professor": "Николаев Д. М."
+                },
+                {
+                    "starts": "14:00",
+                    "lasts": "1.5",
+                    "name": "Общая Г и МБ",
+                    "auditory": "523 СЛК",
+                    "professor": "Рогоза Т. М."
+                }
+            ]
+        },
+        {
+            "title": "Вторник",
+            "activities": [
+                {
+                    "starts": "12:00",
+                    "lasts": "1.5",
+                    "name": "Биохимия",
+                    "auditory": "432 СЛК",
+                    "professor": "Кравцов В. Ю."
+                },
+                {
+                    "starts": "14:00",
+                    "lasts": "1.5",
+                    "name": "Концептуальные основы совр. био",
+                    "auditory": "432 СЛК",
+                    "professor": "Кравцов В. Ю."
+                }
+            ]
+        },
+        {
+            "title": "Среда",
+            "activities": [
+                {
+                    "starts": "12:00",
+                    "lasts": "1.5",
+                    "name": "Генная инженерия",
+                    "auditory": "430 СЛК",
+                    "professor": "Бондарев С. А."
+                },
+                {
+                    "starts": "14:00",
+                    "lasts": "1.5",
+                    "name": "К. основы совр. химии",
+                    "auditory": "430 СЛК",
+                    "professor": "Бойцов В. М."
+                }
+            ]
+        },
+        {
+            "title": "Четверг",
+            "activities": [
+                {
+                    "starts": "10:00",
+                    "lasts": "9.5",
+                    "name": "НИР",
+                    "auditory": "--",
+                    "professor": "--"
+                }
+            ]
+        },
+        {
+            "title": "Пятница",
+            "activities": [
+                {
+                    "starts": "10:00",
+                    "lasts": "9.5",
+                    "name": "НИР",
+                    "auditory": "--",
+                    "professor": "--"
+                }
+            ]
+        },
+        {
+            "title": "Суббота",
+            "activities": [
+                {
+                    "starts": "10:00",
+                    "lasts": "1.5",
+                    "name": "Биофизика",
+                    "auditory": "523 СЛК",
+                    "professor": "Рязанцев М. Н."
+                },
+                {
+                    "starts": "12:00",
+                    "lasts": "3",
+                    "name": "Физическая химия",
+                    "auditory": "523 СЛК",
+                    "professor": "Панов М. С."
+                }
+            ]
+        }
+    ]
+}

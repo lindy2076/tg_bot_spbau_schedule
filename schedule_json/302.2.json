@@ -1,28 +1,28 @@
 {
     "group": "302.2",
-    "week_activities": [    
-        {   
+    "week_activities": [
+        {
             "title": "Понедельник",
             "activities": [
                 {
-                    "starts": "12:00", 
-                    "lasts": "1.5", 
-                    "name": "Методы анализа ОС", 
-                    "auditory": "518 СЛК", 
+                    "starts": "12:00",
+                    "lasts": "1.5",
+                    "name": "Методы анализа ОС",
+                    "auditory": "518 СЛК",
                     "professor": "Макашов Андрей Андреевич"
                 },
                 {
                     "starts": "14:00",
                     "lasts": "1.5",
                     "name": "Английский",
-                    "auditory": "445, 540 ФТШ",
+                    "auditory": "1: 447, 2: 445, 3: 507",
                     "professor": "Разные всякие.."
                 },
                 {
-                    "starts": "16:00", 
-                    "lasts": "2.25", 
-                    "name": "МК биология", 
-                    "auditory": "523 СЛК", 
+                    "starts": "16:00",
+                    "lasts": "2.25",
+                    "name": "МК биология",
+                    "auditory": "523 СЛК",
                     "professor": "Рогоза Т.М."
                 }
             ]
@@ -30,11 +30,11 @@
         {
             "title": "Вторник",
             "activities": [
-                {   
+                {
                     "starts": "10:00",
-                    "lasts": "9.5", 
-                    "name": "НИР", 
-                    "auditory": "--", 
+                    "lasts": "9.5",
+                    "name": "НИР",
+                    "auditory": "--",
                     "professor": "--"
                 }
             ]
@@ -43,57 +43,57 @@
             "title": "Среда",
             "activities": [
                 {
-                    "starts": "10:00", 
-                    "lasts": "1.5", 
-                    "name": "Матстат (практика)", 
-                    "auditory": "521 СЛК", 
+                    "starts": "10:00",
+                    "lasts": "1.5",
+                    "name": "Матстат (практика)",
+                    "auditory": "313 СЛК",
                     "professor": "Якубович Ю. В."
                 },
-                {   
+                {
                     "starts": "12:00",
-                    "lasts": "1.5", 
-                    "name": "Матстат", 
-                    "auditory": "521 СЛК", 
+                    "lasts": "1.5",
+                    "name": "Матстат",
+                    "auditory": "313 СЛК",
                     "professor": "Якубович Ю. В."
                 },
                 {
-                    "starts": "14:00", 
-                    "lasts": "1.5", 
-                    "name": "Параллельное прог.", 
-                    "auditory": "305 СЛК", 
-                    "professor": "краш серг вен"
+                    "starts": "14:00",
+                    "lasts": "1.5",
+                    "name": "Параллельное прог.",
+                    "auditory": "305 СЛК",
+                    "professor": "Крашенинников Сергей Вениаминович"
                 },
                 {
-                    "starts": "16:00", 
-                    "lasts": "1.5", 
-                    "name": "Параллельное прог.", 
-                    "auditory": "431 СЛК", 
-                    "professor": "краш серг вен"
+                    "starts": "16:00",
+                    "lasts": "1.5",
+                    "name": "Параллельное прог.",
+                    "auditory": "431 СЛК",
+                    "professor": "Крашенинников Сергей Вениаминович"
                 }
             ]
         },
         {
             "title": "Четверг",
             "activities": [
-                {   
+                {
                     "starts": "10:00",
-                    "lasts": "1.5", 
-                    "name": "NGS", 
-                    "auditory": "518 СЛК", 
+                    "lasts": "1.5",
+                    "name": "NGS",
+                    "auditory": "518 СЛК",
                     "professor": "Симонов Сергей Александрович"
                 },
                 {
-                    "starts": "12:00", 
-                    "lasts": "1.5", 
-                    "name": "NGS", 
-                    "auditory": "518 СЛК", 
+                    "starts": "12:00",
+                    "lasts": "1.5",
+                    "name": "NGS",
+                    "auditory": "518 СЛК",
                     "professor": "Симонов Сергей Александрович"
                 },
-                {   
-                    "starts": "14:00", 
+                {
+                    "starts": "14:00",
                     "lasts": "4.5",
-                    "name": "НИР", 
-                    "auditory": "--", 
+                    "name": "НИР",
+                    "auditory": "--",
                     "professor": "--"
                 }
             ]
@@ -101,11 +101,11 @@
         {
             "title": "Пятница",
             "activities": [
-                {   
+                {
                     "starts": "10:00",
-                    "lasts": "9.5", 
-                    "name": "НИР", 
-                    "auditory": "--", 
+                    "lasts": "9.5",
+                    "name": "НИР",
+                    "auditory": "--",
                     "professor": "--"
                 }
             ]

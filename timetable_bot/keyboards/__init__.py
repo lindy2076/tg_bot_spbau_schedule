@@ -2,7 +2,7 @@ from .inline import (
     group_sel_kb, day_sel_kb, day_switch_kb,
     SelectGroupCallback, SelectDayCallback, SwitchDayCallback
 )
-from .reply import smile_kb, nothing
+from .reply import smile_kb, nothing, yes_or_no_kb
 
 
 __all__ = [
@@ -13,5 +13,6 @@ __all__ = [
     "SelectDayCallback",
     "SwitchDayCallback",
     "day_sel_kb",
-    "day_switch_kb"
+    "day_switch_kb",
+    "yes_or_no_kb"
 ]

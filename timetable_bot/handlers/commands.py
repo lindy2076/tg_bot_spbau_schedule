@@ -1,4 +1,4 @@
-from aiogram import types, Router, Bot
+from aiogram import types, Router, Bot, F
 from aiogram.filters import Command
 from datetime import timedelta
 
@@ -141,7 +141,7 @@ async def serve_pdf(message: types.Message, bot: Bot):
     await bot.send_document(message.chat.id, file_id)
 
 
-@main_router.message()
+@main_router.message(F.text)
 async def send_echo(message: types.Message, bot: Bot):
     """
     Обработчик следующих команд от юзера
@@ -172,3 +172,11 @@ async def send_echo(message: types.Message, bot: Bot):
                 ),
                 reply_markup=kb.day_sel_kb
             )
+
+
+@main_router.message(F.sticker)
+async def manage_nonmsg(message: types.Message):
+    """
+    Обработка сообщений от юзера без текста.
+    """
+    await message.answer_sticker(sticker=TextResponse.SPECIAL_STICKER_FILE_ID)

@@ -5,6 +5,7 @@ from typing import Tuple
 
 from pydantic import ValidationError
 from sqlalchemy import delete, select
+from aiogram import types
 
 from timetable_bot.config import DefaultSettings
 from timetable_bot.schemas import Week, User, Day
@@ -162,7 +163,7 @@ def get_next_class(
     return TextResponse.NEXT_CLASS_NONE
 
 
-async def set_user_group(tg_user, group: str) -> str:
+async def set_user_group(tg_user: types.User, group: str) -> str:
     """
     Устанавливаем выбранную группу для юзера
 
@@ -258,3 +259,14 @@ def get_pdf_id() -> Tuple[str, ErrorMessages]:
         logging.info(f"ошибка чтения file_id. {e}")
         return None, "ошипка чтения. возможно его ещё не загрузили"
     return file_id, None
+
+
+def get_chat_and_msg_id(msg: types.Message) -> Tuple[Tuple[int, int], ErrorMessages]:
+    chat_and_msg_id = msg.text.split("\n")[-1]
+    chat_and_msg_id = chat_and_msg_id.split("_")
+    if len(chat_and_msg_id) != 2:
+        return None, ErrorMessages.CANT_PARSE_CHATANDMSG_IDS
+    chat_id, msg_id = chat_and_msg_id
+    if chat_id.isnumeric() and msg_id.isnumeric():
+        return (int(chat_id), int(msg_id)), None
+    return None, ErrorMessages.CANT_PARSE_CHATANDMSG_IDS
