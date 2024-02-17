@@ -24,6 +24,7 @@ class EditForm(StatesGroup):
 
 
 class PdfUpdForm(StatesGroup):
+    select_degree = State()
     wait_for_pdf = State()
 
 
@@ -164,6 +165,19 @@ async def update_pdf(message: types.Message, state: FSMContext):
     """
     Инициация загрузки pdf
     """
+    await message.reply("выберите степень: 0 - bak, 1 - mag, 2 - asp")
+    await state.set_state(PdfUpdForm.select_degree)
+
+
+@admin_router.message(PdfUpdForm.select_degree)
+async def update_pdf(message: types.Message, state: FSMContext):
+    """
+    Инициация загрузки pdf
+    """
+    if message.text not in ["0", "1", "2"]:
+        await message.reply("эээ")
+        return
+    await state.update_data(select_degree=message.text)
     await message.reply("прикрепите pdf")
     await state.set_state(PdfUpdForm.wait_for_pdf)
 
@@ -176,8 +190,10 @@ async def process_new_pdf(message: types.Message, state: FSMContext, bot: Bot):
     if not message.document:
         await message.reply("нужен pdf!")
         return
+    data = await state.get_data()
+
     file_id = message.document.file_id
-    err = utils.update_pdf_id(file_id)
+    err = utils.update_pdf_id(file_id, int(data["select_degree"]))
     if err is not None:
         await message.reply(f"{err}")
         return

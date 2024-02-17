@@ -32,6 +32,10 @@ class SwitchDayCallback(CallbackData, prefix="wd"):
     where: str
 
 
+class SelectDegreeForPdfCB(CallbackData, prefix="degree_pdf"):
+    degree: str
+
+
 def add_group_button(builder: InlineKeyboardBuilder, year: list[Groups]):
     for group in year:
         builder.button(
@@ -103,5 +107,17 @@ def day_switch_kb(curr_day: int) -> InlineKeyboardMarkup:
     return kb
 
 
+def create_select_degree_pdf() -> InlineKeyboardMarkup:
+    builder = InlineKeyboardBuilder()
+    builder.button(text="магистры", callback_data=SelectDegreeForPdfCB(
+        degree="mag").pack()
+    )
+    builder.button(text="аспиранты", callback_data=SelectDegreeForPdfCB(
+        degree="asp").pack()
+    )
+    return builder.as_markup()
+
+
 group_sel_kb = create_group_sel_inline_kb()
 day_sel_kb = create_weekday_sel_kb()
+select_degree_pdf = create_select_degree_pdf()

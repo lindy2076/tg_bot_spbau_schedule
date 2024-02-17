@@ -108,14 +108,20 @@ def replace_day_json(
     return week_json, None
 
 
-def update_pdf_id(file_id: str) -> ErrorMessages:
+def update_pdf_id(file_id: str, degree: int = 0) -> ErrorMessages:
     """
     Обновляет file_id пдфки с расписанием в файле pdffileid
     """
     filename = config.FILE_FOR_PDF_FILE_ID
     try:
+        with open(filename, 'r') as f:
+            lines = f.readlines()
+        while len(lines) < 3:
+            lines.append("\n")
+        lines[degree] = f"{file_id}\n"
         with open(filename, 'w') as f:
-            f.write(file_id)
+            f.writelines(lines)
+
     except Exception as e:
         logging.info(f"ошибка записи file_id. {e}")
         return "ошипка записи"

@@ -1,5 +1,5 @@
 import datetime as dt
-from aiogram import types, Router
+from aiogram import types, Router, Bot
 import logging
 
 import timetable_bot.utils as utils
@@ -84,4 +84,22 @@ async def handle_day_switch(call: types.CallbackQuery,
             await call.message.edit_text(msg, reply_markup=reply_kb)
         except Exception as e:
             logging.debug(f"same text, didn't edit. {e}")
+    await call.answer()
+
+
+@callback_router.callback_query(kb.SelectDegreeForPdfCB.filter())
+async def handle_degree_pdf_select(call: types.CallbackQuery,
+                                   callback_data: kb.SelectDegreeForPdfCB,
+                                   bot: Bot):
+    """
+    Ответ на колбек с инлайн клавы для выбора пдфки 
+    """
+    selected_degree = callback_data.degree
+    int_degree = 1 if selected_degree == "mag" else 2
+    file_id, err = utils.get_pdf_id(degree=int_degree)
+    if err is not None:
+        await call.message.answer(err)
+    else:
+        await bot.send_document(call.message.chat.id, file_id,
+                            reply_markup=kb.smile_kb)
     await call.answer()

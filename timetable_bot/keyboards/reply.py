@@ -9,12 +9,12 @@ def create_smile_kb() -> ReplyKeyboardMarkup:
     builder = ReplyKeyboardBuilder()
 
     buttons = ["что щас", "next пара", "что сёдня", "что завтра",
-               "неделя", "выбрать группу", "🤠 help"]
+               "неделя", "преподы", "выбрать группу", "🤠 help"]
 
     for btn_text in buttons:
         builder.button(text=btn_text)
 
-    builder.adjust(2, 2, 1, 2)
+    builder.adjust(2, 2, 2, 2)
 
     return builder.as_markup(resize_keyboard=True)
 

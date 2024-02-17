@@ -136,9 +136,11 @@ async def del_me_from_db(message: types.Message):
 async def serve_pdf(message: types.Message, bot: Bot):
     file_id, err = utils.get_pdf_id()
     if err is not None:
-        await message.reply(err)
+        await message.reply(err, reply_markup=kb.smile_kb)
         return
-    await bot.send_document(message.chat.id, file_id)
+    await bot.send_document(message.chat.id, file_id,
+                            reply_markup=kb.select_degree_pdf,
+                            caption="это бакалаврское расписание")
 
 
 @main_router.message(F.text)

@@ -247,14 +247,18 @@ async def get_users_ids():
     return ids
 
 
-def get_pdf_id() -> Tuple[str, ErrorMessages]:
+def get_pdf_id(degree: int = 0) -> Tuple[str, ErrorMessages]:
     """
     Получить file_id пдфки с расписанием.
     """
     filename = config.FILE_FOR_PDF_FILE_ID
     try:
         with open(filename, 'r') as f:
-            file_id = f.readline()
+            for _ in range(degree + 1):
+                file_id = f.readline().strip()
+                if not file_id:
+                    raise Exception("no value")
+
     except Exception as e:
         logging.info(f"ошибка чтения file_id. {e}")
         return None, "ошипка чтения. возможно его ещё не загрузили"
