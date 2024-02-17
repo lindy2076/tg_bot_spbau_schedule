@@ -1,5 +1,6 @@
 import json
 import datetime
+from dataclasses import dataclass
 import logging
 from typing import Tuple
 
@@ -8,7 +9,7 @@ from sqlalchemy import delete, select
 from aiogram import types
 
 from timetable_bot.config import DefaultSettings
-from timetable_bot.schemas import Week, User, Day
+from timetable_bot.schemas import Week, User, Day, Professor
 from timetable_bot.schemas import (
     Groups, DayTitles, ErrorMessages, TextResponse
 )
@@ -274,3 +275,33 @@ def get_chat_and_msg_id(msg: types.Message) -> Tuple[Tuple[int, int], ErrorMessa
     if chat_id.isnumeric() and msg_id.isnumeric():
         return (int(chat_id), int(msg_id)), None
     return None, ErrorMessages.CANT_PARSE_CHATANDMSG_IDS
+
+
+def get_all_profs() -> dict[str, Professor]:
+    """
+    Получить список всех преподов.
+    """
+    profs = {}
+    notes = []
+    for group in Groups:
+        week, err = load_week_from_file(group)
+        if err is not None:
+            notes.append(f"group week err: {err}")
+            continue
+        for day in DayTitles:
+            day, err = get_day_obj(week, day)
+            if err is not None:
+                notes.append(f"day err: {err}")
+                continue
+            for subj in day.activities:
+                prof = subj.professor
+                if prof not in profs:
+                    profs[prof] = Professor(name=prof, groups=[], days={}, subjects={})
+                profs[prof].groups.add(group)
+                if day.title not in profs[prof].days:
+                    profs[prof].days[day.title] = set()
+                profs[prof].days[day.title].add(f"{subj.starts}-{get_class_ends_time(subj.starts, subj.lasts)}")
+                if subj.name not in profs[prof].subjects:
+                    profs[prof].subjects[subj.name] = set()
+                profs[prof].subjects[subj.name].add(group)
+    return profs

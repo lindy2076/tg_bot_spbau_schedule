@@ -1,3 +1,4 @@
+import asyncio
 from aiogram import types, Router, Bot, F
 from aiogram.filters import Command
 from datetime import timedelta
@@ -143,6 +144,19 @@ async def serve_pdf(message: types.Message, bot: Bot):
                             caption="это бакалаврское расписание")
 
 
+@main_router.message(Command('faculty'))
+async def send_faculty_info(message: types.Message):
+    all_profs = utils.get_all_profs()
+    s = ''.join([f"{repr(v)}\n" for _, v in all_profs.items()])
+    if len(s) > 4096:
+        for x in range(0, len(s), 4096):
+            print(x)
+            await message.answer(s[x:x+4096])
+            await asyncio.sleep(1)
+    else:
+        message.answer(s)
+
+
 @main_router.message(F.text)
 async def send_echo(message: types.Message, bot: Bot):
     """
@@ -162,6 +176,8 @@ async def send_echo(message: types.Message, bot: Bot):
             await set_user_group(message)
         case "неделя":
             await send_week_schedule(message)
+        case "преподы":
+            await send_faculty_info(message)
         case "🤠 help":
             await get_user_group(message)
         case "pdf":
