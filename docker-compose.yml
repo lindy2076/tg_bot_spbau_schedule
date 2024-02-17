@@ -11,7 +11,8 @@ services:
     env_file:
       - ./.env
     volumes:
-      - ${CERT_REAL_PATH}:${CERT_PATH}
+      - '${CERT_REAL_PATH}:${CERT_PATH}'
+      - ./schedule_json:/appp/schedule_json
 
   db:
     container_name: 'timetable_db'
