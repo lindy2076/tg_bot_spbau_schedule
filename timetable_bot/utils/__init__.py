@@ -7,7 +7,7 @@ from .timetable.getting import (
     get_users_ids,
     get_pdf_id,
     get_chat_and_msg_id,
-    get_all_profs
+    get_all_profs, get_user_profs
 )
 from .timetable.time import (
     parse_day_switch_data,

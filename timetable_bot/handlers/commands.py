@@ -146,15 +146,21 @@ async def serve_pdf(message: types.Message, bot: Bot):
 
 @main_router.message(Command('faculty'))
 async def send_faculty_info(message: types.Message):
-    all_profs = utils.get_all_profs()
-    s = ''.join([f"{repr(v)}\n" for _, v in all_profs.items()])
+    group = await utils.get_user_group(message.from_user.id)
+    if group is None:
+        await message.answer(TextResponse.CHOOSE_GROUP,
+                             reply_markup=kb.group_sel_kb)
+        return
+    user_profs = utils.get_user_profs(group)
+    # user_profs = utils.get_all_profs()
+    s = ''.join([f"{repr(v)}\n" for _, v in user_profs.items()])
     if len(s) > 4096:
         for x in range(0, len(s), 4096):
             print(x)
             await message.answer(s[x:x+4096])
             await asyncio.sleep(1)
     else:
-        message.answer(s)
+        await message.answer(s)
 
 
 @main_router.message(F.text)

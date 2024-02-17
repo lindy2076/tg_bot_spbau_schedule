@@ -1,5 +1,5 @@
 from pydantic import BaseModel, validator
-from typing import List, Dict, Set
+from typing import List, Dict, Set, Optional
 
 from .enums import DayTitles, Groups
 
@@ -80,7 +80,7 @@ class Professor(BaseModel):
     def __repr__(self):
         sg = [f" - {s} у {', '.join(sorted(gs))}\n" for s, gs in self.subjects.items()]
         ds = [f" - {d}: {'; '.join(sorted(ts))}\n" for d, ts in self.days.items()]
-        return f"{self.name} ведёт предметы:\n{''.join(sg)}В вузе:\n{''.join(ds)}"
+        return f"{self.name} ведёт предметы:\n{''.join(sg)}Ведёт пары в это время:\n{''.join(ds)}"
 
     class Config:
         use_enum_value = True

@@ -1,18 +1,18 @@
 version: '3'
 
 services:
-  app:
-    build: .
-    restart: always
-    depends_on:
-      - db
-    ports:
-      - "127.0.0.1:8001:8080"
-    env_file:
-      - ./.env
-    volumes:
-      - '${CERT_REAL_PATH}:${CERT_PATH}'
-      - ./schedule_json:/appp/schedule_json
+  # app:
+  #   build: .
+  #   restart: always
+  #   depends_on:
+  #     - db
+  #   ports:
+  #     - "127.0.0.1:8001:8080"
+  #   env_file:
+  #     - ./.env
+  #   volumes:
+  #     - '${CERT_REAL_PATH}:${CERT_PATH}'
+  #     - ./schedule_json:/appp/schedule_json
 
   db:
     container_name: 'timetable_db'

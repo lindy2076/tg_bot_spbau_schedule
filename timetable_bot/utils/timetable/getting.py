@@ -295,6 +295,8 @@ def get_all_profs() -> dict[str, Professor]:
                 continue
             for subj in day.activities:
                 prof = subj.professor
+                if prof in ["--", "...", "Разные всякие..", "Разные всякие...", "idk..", "не знаю..."]:
+                    continue
                 if prof not in profs:
                     profs[prof] = Professor(name=prof, groups=[], days={}, subjects={})
                 profs[prof].groups.add(group)
@@ -305,3 +307,14 @@ def get_all_profs() -> dict[str, Professor]:
                     profs[prof].subjects[subj.name] = set()
                 profs[prof].subjects[subj.name].add(group)
     return profs
+
+
+def get_user_profs(user_group: Groups) -> dict[str, Professor]:
+    """
+    Получить список преподов юзера
+    """
+    user_profs = {n: p for n, p in get_all_profs().items() if user_group in p.groups}
+    # for name, p in user_profs.items():
+    #     if user_group not in p.groups:
+    #         user_profs.pop(name)
+    return user_profs
