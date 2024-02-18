@@ -24,7 +24,7 @@ async def cancel_state(message: types.Message, state: FSMContext):
     """
     curr_state = await state.get_state()
     if curr_state is None:
-        await message.reply("нет состояний.")
+        await message.reply("нет состояний.", reply_markup=kb.smile_kb)
         return
 
     await state.clear()
@@ -44,7 +44,8 @@ async def send_all(message: types.Message, bot: Bot):
     for user_id in id_list:
         try:
             await bot.send_message(
-                chat_id=int(user_id), text=message.text[10:]
+                chat_id=int(user_id), text=message.text[10:],
+                reply_markup=kb.smile_kb
             )
             send_to_count += 1
         except Exception as e:

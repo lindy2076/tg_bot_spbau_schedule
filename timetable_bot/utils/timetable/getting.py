@@ -381,8 +381,8 @@ def search_profs_by_keywords(msg_str: str) -> Tuple[str, ErrorMessages]:
         ]
 
     if not filtered_profs_res:
-        return None, f"по таким ключевым словам ничего не найдено... попробуй другие"
+        return None, ErrorMessages.NOTHING_FOUND
     r = '\n'.join(filtered_profs_res)
     if len(r) > 4096 - 20:
-        return None, "поиск по таким ключевым словам слишком широкий. Преподов получилось слишком много и они не помещаются в одно сообщение"
+        return None, ErrorMessages.RESULT_TOO_LARGE
     return f"вот что я нашёл:\n{r}", None

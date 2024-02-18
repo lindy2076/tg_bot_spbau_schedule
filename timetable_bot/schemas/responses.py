@@ -5,6 +5,8 @@ class ErrorMessages(str):
     EDIT_MISSING_PARAMS = "чего-то не хватает. /edit group day"
     EDIT_WRONG_DAY = "день введён неправильно. можно 0-6"
     CANT_PARSE_CHATANDMSG_IDS = "не могу спарсить айдишники"
+    NOTHING_FOUND = "по таким ключевым словам ничего не найдено... попробуй другие."
+    RESULT_TOO_LARGE = "поиск по таким ключевым словам слишком широкий. Преподов получилось слишком много и они не помещаются в одно сообщение"
 
     @classmethod
     def no_such_group(group: str):

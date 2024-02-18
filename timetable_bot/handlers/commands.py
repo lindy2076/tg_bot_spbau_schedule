@@ -169,7 +169,7 @@ async def handle_search_professor(message: types.Message, state: FSMContext):
         return
     result, err = utils.search_profs_by_keywords(message.text)
     if err is not None:
-        await message.reply(err + "\nдля выхода из поиска нажмите /cancel")
+        await message.reply(err + "\nдля выхода из поиска /cancel")
         return
     await message.reply(result, reply_markup=kb.faculty_kb1("allnow", after_search=True))
     await state.clear()
