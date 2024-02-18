@@ -12,7 +12,7 @@ class Subject(BaseModel):
     professor: str | None
 
     def __repr__(self):
-        res = "• {:s}: {:s} | {:s} | {:s} минут | {:s}".format(
+        res = "• <b>{:s}: {:s}</b> | {:s} | {:s} минут | {:s}".format(
             self.starts, self.name, self.auditory,
             str(int(float(self.lasts) * 60)), self.professor
         )
@@ -42,9 +42,8 @@ class Day(BaseModel):
 
     def __repr__(self):
         activities_str = ["    " + repr(x) + "\n" for x in self.activities]
-        sep = "=" * 20
-        return "\n{:s}\n    {:s}\n{:s}\n\n{:s}".format(
-            sep, str(self.title), sep, ''.join(activities_str)
+        return "🗓 <b>{:s}</b>\n{:s}".format(
+            str(self.title), ''.join(activities_str)
         )
 
     class Config:
@@ -56,8 +55,8 @@ class Week(BaseModel):
     week_activities: List[Day] | None
 
     def __repr__(self):
-        activities_str = ["  " + repr(x) + "\n" for x in self.week_activities]
-        return str(self.group) + ': \n ' + "\n" + " ".join(activities_str)
+        activities_str = [repr(x) for x in self.week_activities]
+        return "\n".join(activities_str)
 
     class Config:
         use_enum_values = True
@@ -78,9 +77,14 @@ class Professor(BaseModel):
     subjects: Dict[str, Set[Groups]] | None
 
     def __repr__(self):
-        sg = [f" - {s} у {', '.join(sorted(gs))}\n" for s, gs in self.subjects.items()]
-        ds = [f" - {d}: {'; '.join(sorted(ts))}\n" for d, ts in self.days.items()]
-        return f"{self.name} ведёт предметы:\n{''.join(sg)}Ведёт пары в это время:\n{''.join(ds)}"
+        sg = [f"    • {s} у {', '.join(sorted(gs))}\n" for s, gs in self.subjects.items()]
+        ds = [f"    - {d}: {'; '.join(sorted(ts))}\n" for d, ts in self.days.items()]
+        return f"🎩 <b>{self.name}</b> ведёт предметы:\n{''.join(sg)}🕰 Ведёт пары в это время:\n{''.join(ds)}"
+
+    def repr_for_day(self, day: DayTitles) -> str:
+        sg = [f"    • {s} у {', '.join(sorted(gs))}\n" for s, gs in self.subjects.items()]
+        ds = '; '.join(self.days[day])
+        return f"🎩 <b>{self.name}</b> ведёт предметы:\n{''.join(sg)}🕰 Ведёт пары в это время:\n     <b>{ds}</b>\n"
 
     class Config:
         use_enum_value = True

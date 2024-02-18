@@ -56,9 +56,7 @@ def get_week(user_group: Groups) -> str:
     week, err = load_week_from_file(user_group)
     if err is not None:
         return err
-
-    activities = [repr(day) + "\n" for day in week.week_activities]
-    return " ".join(activities)
+    return repr(week)
 
 
 def get_day_obj(week: Week, user_day: DayTitles) -> Tuple[Day, TextResponse]:
@@ -88,13 +86,12 @@ def get_day(
     day, err = get_day_obj(week, user_day)
     if err is not None:
         return err
-    activities = [" "*4 + repr(x) + "\n" for x in day.activities]
-    activities_str = ' '.join(activities)
-    response = f"{user_day.value}:\n\n{activities_str}"
+
+    response = repr(day)
     if week_is_odd is None:
         return response
 
-    if "чет" in activities_str or "нечет" in activities_str:
+    if "чет" in response or "нечет" in response:
         response += f"<i>{TextResponse.curr_week_odd_even(week_is_odd)}</i>"
 
     return response
@@ -279,7 +276,8 @@ def get_chat_and_msg_id(msg: types.Message) -> Tuple[Tuple[int, int], ErrorMessa
 
 def get_all_profs() -> dict[str, Professor]:
     """
-    Получить список всех преподов.
+    Получить словарь всех преподов в алфавитном порядке.
+    Ключ - ФИО, значение - класс Professor
     """
     profs = {}
     notes = []
@@ -295,26 +293,54 @@ def get_all_profs() -> dict[str, Professor]:
                 continue
             for subj in day.activities:
                 prof = subj.professor
-                if prof in ["--", "...", "Разные всякие..", "Разные всякие...", "idk..", "не знаю..."]:
+                if prof in ["--", "...", "Разные всякие..", "Разные всякие...", "idk..", "не знаю...", "разные.."]:
                     continue
                 if prof not in profs:
                     profs[prof] = Professor(name=prof, groups=[], days={}, subjects={})
                 profs[prof].groups.add(group)
                 if day.title not in profs[prof].days:
                     profs[prof].days[day.title] = set()
-                profs[prof].days[day.title].add(f"{subj.starts}-{get_class_ends_time(subj.starts, subj.lasts)}")
+                timings = f"{subj.starts}-{get_class_ends_time(subj.starts, subj.lasts)} ({subj.auditory})"
+                profs[prof].days[day.title].add(timings)
                 if subj.name not in profs[prof].subjects:
                     profs[prof].subjects[subj.name] = set()
                 profs[prof].subjects[subj.name].add(group)
-    return profs
+    profs_sorted = {n: profs[n] for n in sorted(profs)}
+    return profs_sorted
 
 
 def get_user_profs(user_group: Groups) -> dict[str, Professor]:
     """
-    Получить список преподов юзера
+    Получить словарь преподов юзера
     """
     user_profs = {n: p for n, p in get_all_profs().items() if user_group in p.groups}
-    # for name, p in user_profs.items():
-    #     if user_group not in p.groups:
-    #         user_profs.pop(name)
     return user_profs
+
+
+def get_user_profs_resp(user_group: Groups) -> str:
+    """
+    Получить список преподов юзера в готовом виде
+    """
+    user_profs = get_user_profs(user_group)
+    return ''.join([f"{repr(v)}\n" for _, v in user_profs.items()]) + "\n<i>это твои преподы</i>"
+
+
+def get_all_profs_in_day_resp(user_day: DayTitles) -> str:
+    """
+    Получить список всех преподов на какой-то день в готовом виде
+    """
+    # user_day = weekday_from_date(user_datetime)
+    profs = get_all_profs()
+    today_profs = {n: p for n, p in profs.items() if user_day in p.days}
+    if not today_profs:
+        return TextResponse.no_one_works_today(user_day.value.lower())
+
+    return ''.join([f"{v.repr_for_day(user_day)}\n" for _, v in today_profs.items()])
+
+
+def get_all_profs_today_resp(user_datetime: datetime.datetime) -> str:
+    """
+    Получить список всех преподов на сегодня в готовом виде
+    """
+    today = weekday_from_date(user_datetime)
+    return get_all_profs_in_day_resp(today)

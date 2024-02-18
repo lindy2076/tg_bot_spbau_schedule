@@ -26,14 +26,20 @@ class SelectGroupCallback(CallbackData, prefix="setgr"):
 
 class SelectDayCallback(CallbackData, prefix="day"):
     id: str
+    ctx: str
 
 
 class SwitchDayCallback(CallbackData, prefix="wd"):
     where: str
+    ctx: str
 
 
 class SelectDegreeForPdfCB(CallbackData, prefix="degree_pdf"):
     degree: str
+
+
+class FacultyCallback(CallbackData, prefix="fc"):
+    curr: str
 
 
 def add_group_button(builder: InlineKeyboardBuilder, year: list[Groups]):
@@ -65,21 +71,22 @@ def create_group_sel_inline_kb() -> InlineKeyboardMarkup:
     return builder.as_markup()
 
 
-def create_weekday_sel_kb() -> InlineKeyboardMarkup:
+def create_weekday_sel_kb(context: str = "sch") -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
     btns = ["пн", "вт", "ср", "чт", "пт", "сб"]
     for idx, btn_text in enumerate(btns):
         builder.button(
             text=btn_text,
             callback_data=SelectDayCallback(
-                id=weeknum_to_weekday(idx).value
+                id=weeknum_to_weekday(idx).value,
+                ctx=context
             ).pack()
         )
     builder.adjust(2, 2, 2)
     return builder.as_markup()
 
 
-def create_wd_arrows_kb(curr_day: int) -> InlineKeyboardMarkup:
+def create_wd_arrows_kb(curr_day: int, context: str = "sch") -> InlineKeyboardMarkup:
     if curr_day == 6:
         left_day, right_day = 5, 0
     else:
@@ -89,21 +96,21 @@ def create_wd_arrows_kb(curr_day: int) -> InlineKeyboardMarkup:
 
     builder = InlineKeyboardBuilder()
     builder.button(text="◀️", callback_data=SwitchDayCallback(
-        where=str(left_day)).pack()
+        where=str(left_day), ctx=context).pack()
     )
     builder.button(
         text="🗓️ {:s}".format(curr_day_str),
-        callback_data=SwitchDayCallback(where="menu").pack()
+        callback_data=SwitchDayCallback(where="menu", ctx=context).pack()
     )
     builder.button(text="▶️", callback_data=SwitchDayCallback(
-        where=str(right_day)).pack()
+        where=str(right_day), ctx=context).pack()
     )
 
     return builder.as_markup()
 
 
-def day_switch_kb(curr_day: int) -> InlineKeyboardMarkup:
-    kb = create_wd_arrows_kb(curr_day)
+def day_switch_kb(curr_day: int, context: str = "sch") -> InlineKeyboardMarkup:
+    kb = create_wd_arrows_kb(curr_day, context)
     return kb
 
 
@@ -115,6 +122,40 @@ def create_select_degree_pdf() -> InlineKeyboardMarkup:
     builder.button(text="аспиранты", callback_data=SelectDegreeForPdfCB(
         degree="asp").pack()
     )
+    return builder.as_markup()
+
+
+def faculty_kb1(next_: str = "allnow", curr_day: int = 0) -> InlineKeyboardMarkup:
+    builder = InlineKeyboardBuilder()
+    if next_ == "my":
+        if curr_day == 6:
+            left_day, right_day = 5, 0
+        else:
+            left_day = (curr_day - 1) % 6
+            right_day = (curr_day + 1) % 6
+        curr_day_str = weeknum_to_short_weekday(curr_day)
+
+        builder = InlineKeyboardBuilder()
+        builder.button(text="◀️", callback_data=SwitchDayCallback(
+            where=str(left_day), ctx="fac").pack()
+        )
+        builder.button(
+            text="🗓️ {:s}".format(curr_day_str),
+            callback_data=SwitchDayCallback(where="menu", ctx="fac").pack()
+        )
+        builder.button(text="▶️", callback_data=SwitchDayCallback(
+            where=str(right_day), ctx="fac").pack()
+        )
+        builder.button(
+            text="все мои преподы",
+            callback_data=FacultyCallback(curr="allnow").pack()
+        )
+        builder.adjust(3, 1)
+    elif next_ == "allnow":
+        builder.button(
+            text="кто где сегодня",
+            callback_data=FacultyCallback(curr="my").pack()
+        )
     return builder.as_markup()
 
 

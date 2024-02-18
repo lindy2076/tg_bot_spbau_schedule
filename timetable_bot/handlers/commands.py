@@ -49,7 +49,7 @@ async def get_current_class(message: types.Message):
     """
     group = await utils.get_user_group(message.from_user.id)
     result = utils.get_current_class(group, message.date + TD)
-    await message.reply(result)
+    await message.reply(result, reply_markup=kb.smile_kb)
 
 
 @main_router.message(Command('next'))
@@ -59,7 +59,7 @@ async def get_next_class(message: types.Message):
     """
     group = await utils.get_user_group(message.from_user.id)
     result = utils.get_next_class(group, message.date + TD)
-    await message.reply(result)
+    await message.reply(result, reply_markup=kb.smile_kb)
 
 
 def get_weekday_for_group(user_group, user_datetime):
@@ -148,19 +148,13 @@ async def serve_pdf(message: types.Message, bot: Bot):
 async def send_faculty_info(message: types.Message):
     group = await utils.get_user_group(message.from_user.id)
     if group is None:
-        await message.answer(TextResponse.CHOOSE_GROUP,
-                             reply_markup=kb.group_sel_kb)
+        await message.answer(
+            TextResponse.CHOOSE_GROUP,
+            reply_markup=kb.group_sel_kb
+        )
         return
-    user_profs = utils.get_user_profs(group)
-    # user_profs = utils.get_all_profs()
-    s = ''.join([f"{repr(v)}\n" for _, v in user_profs.items()])
-    if len(s) > 4096:
-        for x in range(0, len(s), 4096):
-            print(x)
-            await message.answer(s[x:x+4096])
-            await asyncio.sleep(1)
-    else:
-        await message.answer(s)
+    user_profs = utils.get_user_profs_resp(group)
+    await message.answer(user_profs, reply_markup=kb.faculty_kb1())
 
 
 @main_router.message(F.text)

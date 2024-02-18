@@ -1,7 +1,8 @@
 from .inline import (
     group_sel_kb, day_sel_kb, day_switch_kb, select_degree_pdf,
     SelectGroupCallback, SelectDayCallback, SwitchDayCallback, 
-    SelectDegreeForPdfCB
+    SelectDegreeForPdfCB, faculty_kb1, FacultyCallback,
+    create_weekday_sel_kb
 )
 from .reply import smile_kb, nothing, yes_or_no_kb
 

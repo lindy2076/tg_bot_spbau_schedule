@@ -106,3 +106,7 @@ class TextResponse(str):
     @classmethod
     def prepend_emoji(cls, msg: str, emoji: str) -> str:
         return f"{emoji} {msg}"
+
+    @classmethod
+    def no_one_works_today(cls, daytitle: str) -> str:
+        return f"🍂 в {daytitle} никто не работает"
