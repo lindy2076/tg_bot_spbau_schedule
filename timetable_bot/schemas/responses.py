@@ -28,6 +28,7 @@ class TextResponse(str):
     MESSAGE_SENT_SUCCESSFULLY = "🌽 сообщение отправлено!"
     MESSAGE_WASNT_SENT = "🏔 ничего не отправлено"
     WRITE_MESSAGE_FOR_ADMIN = "что мне передать админу?"
+    ENTER_KEYWORDS = "введи через пробел какие-нибудь ключевые слова, по которым можно найти препода/ов, например фамилию или её часть (поиск по точным совпадениям):\n<i>симонов матан</i>\n<i>симонов ngs</i>\n<i>био</i>"
     SPECIAL_STICKER_FILE_ID = "CAACAgIAAxkBAAINPmXOezeSpDrrcpaYkrk4tO3YgoOsAAJDNAACSzfASfFXoCOxFpenNAQ"
 
     POLICY = "\n\nя храню только жизненно необходимую информацию, а именно: " + \
@@ -106,3 +107,7 @@ class TextResponse(str):
     @classmethod
     def prepend_emoji(cls, msg: str, emoji: str) -> str:
         return f"{emoji} {msg}"
+
+    @classmethod
+    def no_one_works_today(cls, daytitle: str) -> str:
+        return f"🍂 в {daytitle} никто не работает"

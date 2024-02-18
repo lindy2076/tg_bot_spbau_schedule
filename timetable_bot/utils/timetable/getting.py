@@ -1,5 +1,6 @@
 import json
 import datetime
+from dataclasses import dataclass
 import logging
 from typing import Tuple
 
@@ -8,7 +9,7 @@ from sqlalchemy import delete, select
 from aiogram import types
 
 from timetable_bot.config import DefaultSettings
-from timetable_bot.schemas import Week, User, Day
+from timetable_bot.schemas import Week, User, Day, Professor
 from timetable_bot.schemas import (
     Groups, DayTitles, ErrorMessages, TextResponse
 )
@@ -55,9 +56,7 @@ def get_week(user_group: Groups) -> str:
     week, err = load_week_from_file(user_group)
     if err is not None:
         return err
-
-    activities = [repr(day) + "\n" for day in week.week_activities]
-    return " ".join(activities)
+    return repr(week)
 
 
 def get_day_obj(week: Week, user_day: DayTitles) -> Tuple[Day, TextResponse]:
@@ -87,13 +86,12 @@ def get_day(
     day, err = get_day_obj(week, user_day)
     if err is not None:
         return err
-    activities = [" "*4 + repr(x) + "\n" for x in day.activities]
-    activities_str = ' '.join(activities)
-    response = f"{user_day.value}:\n\n{activities_str}"
+
+    response = repr(day)
     if week_is_odd is None:
         return response
 
-    if "чет" in activities_str or "нечет" in activities_str:
+    if "чет" in response or "нечет" in response:
         response += f"<i>{TextResponse.curr_week_odd_even(week_is_odd)}</i>"
 
     return response
@@ -247,14 +245,18 @@ async def get_users_ids():
     return ids
 
 
-def get_pdf_id() -> Tuple[str, ErrorMessages]:
+def get_pdf_id(degree: int = 0) -> Tuple[str, ErrorMessages]:
     """
     Получить file_id пдфки с расписанием.
     """
     filename = config.FILE_FOR_PDF_FILE_ID
     try:
         with open(filename, 'r') as f:
-            file_id = f.readline()
+            for _ in range(degree + 1):
+                file_id = f.readline().strip()
+                if not file_id:
+                    raise Exception("no value")
+
     except Exception as e:
         logging.info(f"ошибка чтения file_id. {e}")
         return None, "ошипка чтения. возможно его ещё не загрузили"
@@ -270,3 +272,117 @@ def get_chat_and_msg_id(msg: types.Message) -> Tuple[Tuple[int, int], ErrorMessa
     if chat_id.isnumeric() and msg_id.isnumeric():
         return (int(chat_id), int(msg_id)), None
     return None, ErrorMessages.CANT_PARSE_CHATANDMSG_IDS
+
+
+def get_all_profs() -> dict[str, Professor]:
+    """
+    Получить словарь всех преподов в алфавитном порядке.
+    Ключ - ФИО, значение - класс Professor
+    """
+    profs = {}
+    notes = []
+    for group in Groups:
+        week, err = load_week_from_file(group)
+        if err is not None:
+            notes.append(f"group week err: {err}")
+            continue
+        for day in DayTitles:
+            day, err = get_day_obj(week, day)
+            if err is not None:
+                notes.append(f"day err: {err}")
+                continue
+            for subj in day.activities:
+                prof = subj.professor
+                if prof in ["--", "...", "Разные всякие..", "Разные всякие...", "idk..", "не знаю...", "разные.."]:
+                    continue
+                if prof not in profs:
+                    profs[prof] = Professor(name=prof, groups=[], days={}, subjects={})
+                profs[prof].groups.add(group)
+                if day.title not in profs[prof].days:
+                    profs[prof].days[day.title] = set()
+                timings = f"{subj.starts}-{get_class_ends_time(subj.starts, subj.lasts)} ({subj.auditory})"
+                profs[prof].days[day.title].add(timings)
+                if subj.name not in profs[prof].subjects:
+                    profs[prof].subjects[subj.name] = set()
+                profs[prof].subjects[subj.name].add(group)
+    profs_sorted = {n: profs[n] for n in sorted(profs)}
+    return profs_sorted
+
+
+def get_user_profs(user_group: Groups) -> dict[str, Professor]:
+    """
+    Получить словарь преподов юзера
+    """
+    user_profs = {n: p for n, p in get_all_profs().items() if user_group in p.groups}
+    return user_profs
+
+
+def get_user_profs_resp(user_group: Groups) -> str:
+    """
+    Получить список преподов юзера в готовом виде
+    """
+    user_profs = get_user_profs(user_group)
+    return ''.join([f"{repr(v)}\n" for _, v in user_profs.items()]) + "\n<i>это твои преподы</i>"
+
+
+def get_all_profs_in_day_resp(user_day: DayTitles) -> str:
+    """
+    Получить список всех преподов на какой-то день в готовом виде
+    """
+    # user_day = weekday_from_date(user_datetime)
+    profs = get_all_profs()
+    today_profs = {n: p for n, p in profs.items() if user_day in p.days}
+    if not today_profs:
+        return TextResponse.no_one_works_today(user_day.value.lower())
+
+    response = ''.join([f"{v.repr_for_day(user_day)}\n" for _, v in today_profs.items()])
+    return response + f"\n<i>преподы, которые в вузе в этот день ({user_day.value})</i>"
+
+
+def get_all_profs_today_resp(user_datetime: datetime.datetime) -> str:
+    """
+    Получить список всех преподов на сегодня в готовом виде
+    """
+    today = weekday_from_date(user_datetime)
+    return get_all_profs_in_day_resp(today)
+
+
+def search_profs_by_keywords(msg_str: str) -> Tuple[str, ErrorMessages]:
+    """
+    Отфильтровать преподов по ключевым словам
+    """
+    profs = get_all_profs()
+    keywords = list({k.lower() for k in msg_str.split()[:2]})
+    if len(keywords) == 1:
+        keywords.append("а")
+    word1, word2 = keywords
+    filtered_profs_res_q1 = set()
+    filtered_profs_res_q2 = set()
+    q1_len, q2_len = 0, 0
+    for prof_name in profs:
+        prof_repr = repr(profs[prof_name]).lower()
+        if word1 in prof_repr:
+            filtered_profs_res_q1.add(prof_name)
+            q1_len += len(prof_repr) + 5
+        if word2 in prof_repr:
+            filtered_profs_res_q2.add(prof_name)
+            q2_len += len(prof_repr) + 5
+    if q1_len < 4000 or q2_len < 4000:
+        filtered_profs_res = [
+            repr(profs[x]) for x in filtered_profs_res_q1 & filtered_profs_res_q2
+        ]
+        if not filtered_profs_res:
+            filtered_profs_res = [
+                repr(profs[x]) for x in filtered_profs_res_q1
+            ]
+    else:
+        filtered_profs_res = [
+            repr(profs[x]) for x in filtered_profs_res_q1 & filtered_profs_res_q2
+        ]
+
+    if not filtered_profs_res:
+        return None, f"по таким ключевым словам ничего не найдено... попробуй другие"
+    r = '\n'.join(filtered_profs_res)
+    if len(r) > 4096 - 20:
+        return None, "поиск по таким ключевым словам слишком широкий. Преподов получилось слишком много и они не помещаются в одно сообщение"
+    return f"вот что я нашёл:\n{r}", None

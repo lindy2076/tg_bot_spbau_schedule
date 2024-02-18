@@ -1,4 +1,4 @@
-from .timetables import Subject, Day, Week, User
+from .timetables import Subject, Day, Week, User, Professor
 from .enums import Groups, DayTitles
 from .responses import ErrorMessages, TextResponse
 from .log import LogMessage

@@ -1,11 +1,14 @@
+import asyncio
 from aiogram import types, Router, Bot, F
 from aiogram.filters import Command
+from aiogram.fsm.context import FSMContext
 from datetime import timedelta
 
 import timetable_bot.keyboards as kb
 import timetable_bot.utils as utils
 from timetable_bot.config import DefaultSettings
 from timetable_bot.schemas import TextResponse
+from .states import SearchProfessor
 
 
 config = DefaultSettings()
@@ -48,7 +51,7 @@ async def get_current_class(message: types.Message):
     """
     group = await utils.get_user_group(message.from_user.id)
     result = utils.get_current_class(group, message.date + TD)
-    await message.reply(result)
+    await message.reply(result, reply_markup=kb.smile_kb)
 
 
 @main_router.message(Command('next'))
@@ -58,7 +61,7 @@ async def get_next_class(message: types.Message):
     """
     group = await utils.get_user_group(message.from_user.id)
     result = utils.get_next_class(group, message.date + TD)
-    await message.reply(result)
+    await message.reply(result, reply_markup=kb.smile_kb)
 
 
 def get_weekday_for_group(user_group, user_datetime):
@@ -136,9 +139,40 @@ async def del_me_from_db(message: types.Message):
 async def serve_pdf(message: types.Message, bot: Bot):
     file_id, err = utils.get_pdf_id()
     if err is not None:
-        await message.reply(err)
+        await message.reply(err, reply_markup=kb.smile_kb)
         return
-    await bot.send_document(message.chat.id, file_id)
+    await bot.send_document(message.chat.id, file_id,
+                            reply_markup=kb.select_degree_pdf,
+                            caption="это бакалаврское расписание")
+
+
+@main_router.message(Command('faculty'))
+async def send_faculty_info(message: types.Message):
+    group = await utils.get_user_group(message.from_user.id)
+    if group is None:
+        await message.answer(
+            TextResponse.CHOOSE_GROUP,
+            reply_markup=kb.group_sel_kb
+        )
+        return
+    user_profs = utils.get_user_profs_resp(group)
+    await message.answer(user_profs, reply_markup=kb.faculty_kb1())
+
+
+@main_router.message(SearchProfessor.search)
+async def handle_search_professor(message: types.Message, state: FSMContext):
+    """
+    Вытащить ключевые слова и попытаться найти кого-нибудь из преподов...
+    """
+    if not message.text:
+        await message.reply("нужен текст...")
+        return
+    result, err = utils.search_profs_by_keywords(message.text)
+    if err is not None:
+        await message.reply(err + "\nдля выхода из поиска нажмите /cancel")
+        return
+    await message.reply(result, reply_markup=kb.faculty_kb1("allnow", after_search=True))
+    await state.clear()
 
 
 @main_router.message(F.text)
@@ -160,6 +194,8 @@ async def send_echo(message: types.Message, bot: Bot):
             await set_user_group(message)
         case "неделя":
             await send_week_schedule(message)
+        case "преподы":
+            await send_faculty_info(message)
         case "🤠 help":
             await get_user_group(message)
         case "pdf":
