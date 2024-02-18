@@ -1,11 +1,13 @@
 import datetime as dt
-from aiogram import types, Router, Bot
 import logging
+from aiogram import types, Router, Bot
+from aiogram.fsm.context import FSMContext
 
 import timetable_bot.utils as utils
 import timetable_bot.keyboards as kb
 from timetable_bot.config import DefaultSettings
 from timetable_bot.schemas import TextResponse, DayTitles
+from .states import SearchProfessor
 
 
 callback_router = Router(name="callback_router")
@@ -117,7 +119,7 @@ async def handle_degree_pdf_select(call: types.CallbackQuery,
 
 @callback_router.callback_query(kb.FacultyCallback.filter())
 async def handle_faculty_kb_sel(call: types.CallbackQuery,
-                                callback_data: kb.FacultyCallback):
+                                callback_data: kb.FacultyCallback, state: FSMContext):
     """
     Ответ на колбек клавы kb.faculty_kb1
     """
@@ -138,5 +140,8 @@ async def handle_faculty_kb_sel(call: types.CallbackQuery,
         else:
             res = utils.get_user_profs_resp(group)
             await call.message.edit_text(res, reply_markup=kb.faculty_kb1("allnow"))
+    elif state_curr == "search":
+        await call.message.answer(TextResponse.ENTER_KEYWORDS)
+        await state.set_state(SearchProfessor.search)
 
     await call.answer()

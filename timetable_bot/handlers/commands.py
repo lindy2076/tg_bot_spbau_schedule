@@ -1,12 +1,14 @@
 import asyncio
 from aiogram import types, Router, Bot, F
 from aiogram.filters import Command
+from aiogram.fsm.context import FSMContext
 from datetime import timedelta
 
 import timetable_bot.keyboards as kb
 import timetable_bot.utils as utils
 from timetable_bot.config import DefaultSettings
 from timetable_bot.schemas import TextResponse
+from .states import SearchProfessor
 
 
 config = DefaultSettings()
@@ -155,6 +157,22 @@ async def send_faculty_info(message: types.Message):
         return
     user_profs = utils.get_user_profs_resp(group)
     await message.answer(user_profs, reply_markup=kb.faculty_kb1())
+
+
+@main_router.message(SearchProfessor.search)
+async def handle_search_professor(message: types.Message, state: FSMContext):
+    """
+    Вытащить ключевые слова и попытаться найти кого-нибудь из преподов...
+    """
+    if not message.text:
+        await message.reply("нужен текст...")
+        return
+    result, err = utils.search_profs_by_keywords(message.text)
+    if err is not None:
+        await message.reply(err + "\nдля выхода из поиска нажмите /cancel")
+        return
+    await message.reply(result, reply_markup=kb.faculty_kb1("allnow", after_search=True))
+    await state.clear()
 
 
 @main_router.message(F.text)

@@ -4,6 +4,7 @@ from aiogram.types import (
 from aiogram.filters.callback_data import CallbackData
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
+
 from timetable_bot.schemas import Groups
 from timetable_bot.utils import weeknum_to_short_weekday, weeknum_to_weekday
 
@@ -125,7 +126,7 @@ def create_select_degree_pdf() -> InlineKeyboardMarkup:
     return builder.as_markup()
 
 
-def faculty_kb1(next_: str = "allnow", curr_day: int = 0) -> InlineKeyboardMarkup:
+def faculty_kb1(next_: str = "allnow", curr_day: int = 0, after_search: bool = False) -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
     if next_ == "my":
         if curr_day == 6:
@@ -156,6 +157,10 @@ def faculty_kb1(next_: str = "allnow", curr_day: int = 0) -> InlineKeyboardMarku
             text="кто где сегодня",
             callback_data=FacultyCallback(curr="my").pack()
         )
+    builder.button(
+        text=["поискать..", "поискать ещё..."][after_search],
+        callback_data=FacultyCallback(curr="search").pack()
+    )
     return builder.as_markup()
 
 

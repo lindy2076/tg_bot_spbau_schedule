@@ -1,36 +1,20 @@
 import logging
 
-from aiogram import Router, types, Bot, F, BaseMiddleware
+from aiogram import Router, types, Bot, F
 from aiogram.filters import Command
-from aiogram.fsm.state import State, StatesGroup
 from aiogram.fsm.context import FSMContext
 
 import timetable_bot.keyboards as kb
 from timetable_bot.config import DefaultSettings
 from timetable_bot.schemas import TextResponse, LogMessage
 from timetable_bot import utils
+from .states import SendAdminForm, EditForm, PdfUpdForm
 
 
 admin_router = Router(name='admin_router')
 config = DefaultSettings()
 
 F_from_admin = F.from_user.id == int(config.ADMIN_ID)
-
-
-class EditForm(StatesGroup):
-    group = State()
-    day = State()
-    edit = State()
-
-
-class PdfUpdForm(StatesGroup):
-    select_degree = State()
-    wait_for_pdf = State()
-
-
-class SendAdminForm(StatesGroup):
-    wait_for_message = State()
-    confirm = State()
 
 
 @admin_router.message(Command('cancel'))

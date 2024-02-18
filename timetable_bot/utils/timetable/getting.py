@@ -345,3 +345,44 @@ def get_all_profs_today_resp(user_datetime: datetime.datetime) -> str:
     """
     today = weekday_from_date(user_datetime)
     return get_all_profs_in_day_resp(today)
+
+
+def search_profs_by_keywords(msg_str: str) -> Tuple[str, ErrorMessages]:
+    """
+    Отфильтровать преподов по ключевым словам
+    """
+    profs = get_all_profs()
+    keywords = list({k.lower() for k in msg_str.split()[:2]})
+    if len(keywords) == 1:
+        keywords.append("а")
+    word1, word2 = keywords
+    filtered_profs_res_q1 = set()
+    filtered_profs_res_q2 = set()
+    q1_len, q2_len = 0, 0
+    for prof_name in profs:
+        prof_repr = repr(profs[prof_name]).lower()
+        if word1 in prof_repr:
+            filtered_profs_res_q1.add(prof_name)
+            q1_len += len(prof_repr) + 5
+        if word2 in prof_repr:
+            filtered_profs_res_q2.add(prof_name)
+            q2_len += len(prof_repr) + 5
+    if q1_len < 4000 or q2_len < 4000:
+        filtered_profs_res = [
+            repr(profs[x]) for x in filtered_profs_res_q1 & filtered_profs_res_q2
+        ]
+        if not filtered_profs_res:
+            filtered_profs_res = [
+                repr(profs[x]) for x in filtered_profs_res_q1
+            ]
+    else:
+        filtered_profs_res = [
+            repr(profs[x]) for x in filtered_profs_res_q1 & filtered_profs_res_q2
+        ]
+
+    if not filtered_profs_res:
+        return None, f"по таким ключевым словам ничего не найдено... попробуй другие"
+    r = '\n'.join(filtered_profs_res)
+    if len(r) > 4096 - 20:
+        return None, "поиск по таким ключевым словам слишком широкий. Преподов получилось слишком много и они не помещаются в одно сообщение"
+    return f"вот что я нашёл:\n{r}", None
