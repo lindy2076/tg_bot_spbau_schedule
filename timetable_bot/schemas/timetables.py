@@ -84,7 +84,7 @@ class Professor(BaseModel):
     def repr_for_day(self, day: DayTitles) -> str:
         sg = [f"    • {s} у {', '.join(sorted(gs))}\n" for s, gs in self.subjects.items()]
         ds = '; '.join(self.days[day])
-        return f"🎩 <b>{self.name}</b> ведёт предметы:\n{''.join(sg)}🕰 Ведёт пары в это время:\n     <b>{ds}</b>\n"
+        return f"🎩 <b>{self.name}</b> в целом ведёт предметы:\n{''.join(sg)}🕰 Сегодня ведёт пары в это время:\n     <b>{ds}</b>\n"
 
     class Config:
         use_enum_value = True

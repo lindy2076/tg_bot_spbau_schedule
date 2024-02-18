@@ -335,7 +335,8 @@ def get_all_profs_in_day_resp(user_day: DayTitles) -> str:
     if not today_profs:
         return TextResponse.no_one_works_today(user_day.value.lower())
 
-    return ''.join([f"{v.repr_for_day(user_day)}\n" for _, v in today_profs.items()])
+    response = ''.join([f"{v.repr_for_day(user_day)}\n" for _, v in today_profs.items()])
+    return response + f"\n<i>преподы, которые в вузе в этот день ({user_day.value})</i>"
 
 
 def get_all_profs_today_resp(user_datetime: datetime.datetime) -> str:
