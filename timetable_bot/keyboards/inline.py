@@ -15,7 +15,7 @@ BIO_EMOJI = " 🧬"
 
 def determine_emoji(group: Groups):
     if group.value[0] == "5":
-        return ""
+        return " 🧙"
     if group.value.split(".")[0][-1] == "1":
         return PHY_EMOJI
     return BIO_EMOJI
@@ -87,7 +87,7 @@ def create_weekday_sel_kb(context: str = "sch") -> InlineKeyboardMarkup:
     return builder.as_markup()
 
 
-def create_wd_arrows_kb(curr_day: int, context: str = "sch") -> InlineKeyboardMarkup:
+def create_wd_arrows_kb_builder(curr_day: int, context: str = "sch") -> InlineKeyboardBuilder:
     if curr_day == 6:
         left_day, right_day = 5, 0
     else:
@@ -107,11 +107,11 @@ def create_wd_arrows_kb(curr_day: int, context: str = "sch") -> InlineKeyboardMa
         where=str(right_day), ctx=context).pack()
     )
 
-    return builder.as_markup()
+    return builder
 
 
 def day_switch_kb(curr_day: int, context: str = "sch") -> InlineKeyboardMarkup:
-    kb = create_wd_arrows_kb(curr_day, context)
+    kb = create_wd_arrows_kb_builder(curr_day, context).as_markup()
     return kb
 
 
@@ -129,24 +129,7 @@ def create_select_degree_pdf() -> InlineKeyboardMarkup:
 def faculty_kb1(next_: str = "allnow", curr_day: int = 0, after_search: bool = False) -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
     if next_ == "my":
-        if curr_day == 6:
-            left_day, right_day = 5, 0
-        else:
-            left_day = (curr_day - 1) % 6
-            right_day = (curr_day + 1) % 6
-        curr_day_str = weeknum_to_short_weekday(curr_day)
-
-        builder = InlineKeyboardBuilder()
-        builder.button(text="◀️", callback_data=SwitchDayCallback(
-            where=str(left_day), ctx="fac").pack()
-        )
-        builder.button(
-            text="🗓️ {:s}".format(curr_day_str),
-            callback_data=SwitchDayCallback(where="menu", ctx="fac").pack()
-        )
-        builder.button(text="▶️", callback_data=SwitchDayCallback(
-            where=str(right_day), ctx="fac").pack()
-        )
+        builder = create_wd_arrows_kb_builder(curr_day, context="fac")
         builder.button(
             text="все мои преподы",
             callback_data=FacultyCallback(curr="allnow").pack()
