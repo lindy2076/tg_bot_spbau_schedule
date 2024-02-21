@@ -6,7 +6,7 @@ from aiogram.fsm.context import FSMContext
 import timetable_bot.utils as utils
 import timetable_bot.keyboards as kb
 from timetable_bot.config import DefaultSettings
-from timetable_bot.schemas import TextResponse, DayTitles
+from timetable_bot.schemas import TextResponse, DayTitles, LogMessage
 from .states import SearchProfessor
 
 
@@ -51,7 +51,7 @@ async def handle_day_select(call: types.CallbackQuery,
                     result, reply_markup=kb.day_switch_kb(day_for_button)
                 )
             except Exception as e:
-                logging.debug(f"same text, didn't edit. {e}")
+                logging.debug(LogMessage.same_msg_didnt_edit(e))
         elif callback_data.ctx == "fac":
             res = utils.get_all_profs_in_day_resp(DayTitles.from_str(day_str=day))
             await call.message.edit_text(res, reply_markup=kb.faculty_kb1("my"))
@@ -91,11 +91,10 @@ async def handle_day_switch(call: types.CallbackQuery,
                 reply_kb = kb.faculty_kb1("my", new_day)
                 msg = utils.get_all_profs_in_day_resp(utils.weeknum_to_weekday(new_day))
 
-
         try:
             await call.message.edit_text(msg, reply_markup=reply_kb)
         except Exception as e:
-            logging.debug(f"same text, didn't edit. {e}")
+            logging.debug(LogMessage.same_msg_didnt_edit(e))
     await call.answer()
 
 

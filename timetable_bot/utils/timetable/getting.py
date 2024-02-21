@@ -1,6 +1,5 @@
 import json
 import datetime
-from dataclasses import dataclass
 import logging
 from typing import Tuple
 
@@ -258,8 +257,8 @@ def get_pdf_id(degree: int = 0) -> Tuple[str, ErrorMessages]:
                     raise Exception("no value")
 
     except Exception as e:
-        logging.info(f"ошибка чтения file_id. {e}")
-        return None, "ошипка чтения. возможно его ещё не загрузили"
+        logging.info(ErrorMessages.failed_to_read(e))
+        return None, ErrorMessages.NO_PDF_AVAILABLE
     return file_id, None
 
 

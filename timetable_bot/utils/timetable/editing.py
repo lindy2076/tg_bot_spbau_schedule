@@ -4,7 +4,7 @@ import logging
 from pydantic import ValidationError
 
 from timetable_bot.schemas import (
-    DayTitles, Groups, Day, ErrorMessages, TextResponse
+    DayTitles, Groups, Day, ErrorMessages, TextResponse, LogMessage
 )
 from timetable_bot import utils
 from timetable_bot.config import DefaultSettings
@@ -81,20 +81,20 @@ def replace_day_json(
     try:
         day_json = json.loads(day_json_str.replace("'", "\""))
     except Exception as e:
-        logging.info(f"failed to load json. {e}")
-        return None, f"failed to load json. {e}"
+        logging.info(ErrorMessages.json_load_failed(e))
+        return None, ErrorMessages.json_load_failed(e)
 
     try:
         Day(**day_json)
     except ValidationError:
-        return None, "failed to validate json."
+        return None, ErrorMessages.INVALID_JSON
 
     day_title = day_json["title"]
     for day in week_json['week_activities']:
         if day['title'] == day_title:
             break
     else:
-        return None, "странно однако этого дня нет"
+        return None, ErrorMessages.IMPOSSIBLE_DAY_NOT_FOUND
     day["activities"] = day_json["activities"]
 
     filename = "schedule_json/" + user_group + ".json"
@@ -103,8 +103,8 @@ def replace_day_json(
             json.dump(week_json, wsch, indent=4, ensure_ascii=False)
             wsch.write("\n")
     except Exception as e:
-        return None, f"ошибка во время записи: {e}"
-    logging.info(f"расписание {user_group.value} обновлено")
+        return None, ErrorMessages.failed_to_write(e)
+    logging.info(LogMessage.schedule_updated(user_group.value))
     return week_json, None
 
 
@@ -123,6 +123,6 @@ def update_pdf_id(file_id: str, degree: int = 0) -> ErrorMessages:
             f.writelines(lines)
 
     except Exception as e:
-        logging.info(f"ошибка записи file_id. {e}")
-        return "ошипка записи"
+        logging.info(ErrorMessages.failed_to_write(e))
+        return ErrorMessages.failed_to_write(e)
     return None
