@@ -40,7 +40,7 @@ def get_week_json(user_group: Groups) -> Tuple[dict, ErrorMessages]:
     """
     Выдаёт json недели в виде словаря
     """
-    filename = filename = "schedule_json/" + user_group + ".json"
+    filename = "schedule_json/" + user_group + ".json"
     try:
         with open(filename) as wsch:
             loaded = json.load(wsch)
