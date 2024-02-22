@@ -65,7 +65,7 @@ def get_day_json(user_group: Groups, user_day: DayTitles) -> str:
     else:
         return TextResponse.NO_SCHEDULE_FOR_DAY
 
-    return f"<pre><code class='language-json'>{day}</code></pre>"
+    return f"{day}"
 
 
 def replace_day_json(

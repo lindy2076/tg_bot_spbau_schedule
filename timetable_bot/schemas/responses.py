@@ -133,7 +133,7 @@ class TextResponse(str):
     @classmethod
     def group_day_and_day_json(cls, group: str, day: str, day_json: str):
         """выдает день, группу и словарь расписания дня"""
-        return f"{group} {day} {day_json}\nОтправьте новый словарь. Или пишите /cancel для отмены"
+        return f"{group} {day} <pre><code class='language-json'>{day_json}</code></pre>\nОтправьте новый словарь. Или пишите /cancel для отмены"
 
     @classmethod
     def curr_week_odd_even(cls, week_is_odd: bool):
