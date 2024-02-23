@@ -1,12 +1,12 @@
 import datetime as dt
 import logging
-from aiogram import types, Router, Bot
+from aiogram import types, Router, Bot, F
 from aiogram.fsm.context import FSMContext
 
 import timetable_bot.utils as utils
 import timetable_bot.keyboards as kb
 from timetable_bot.config import DefaultSettings
-from timetable_bot.schemas import TextResponse, DayTitles
+from timetable_bot.schemas import TextResponse, DayTitles, LogMessage
 from .states import SearchProfessor
 
 
@@ -14,7 +14,7 @@ callback_router = Router(name="callback_router")
 config = DefaultSettings()
 
 
-@callback_router.callback_query(kb.SelectGroupCallback.filter())
+@callback_router.callback_query(kb.SelectGroupCallback.filter(F.ctx == "own"))
 async def handle_user_group(call: types.CallbackQuery,
                             callback_data: kb.SelectGroupCallback):
     """
@@ -25,9 +25,27 @@ async def handle_user_group(call: types.CallbackQuery,
     await call.answer()
 
 
-@callback_router.callback_query(kb.SelectDayCallback.filter())
-async def handle_day_select(call: types.CallbackQuery,
-                            callback_data: kb.SelectDayCallback):
+@callback_router.callback_query(kb.SelectGroupCallback.filter(F.ctx == "other"))
+async def handle_user_group2(call: types.CallbackQuery,
+                             callback_data: kb.SelectGroupCallback):
+    """
+    Отвечаем на нажатие инлайн клавы с выбором группы (меняем группу)
+    """
+    group = callback_data.id
+    user_dt = dt.datetime.now(
+        dt.timezone(dt.timedelta(hours=config.TIMEZONE_OFFSET))
+    )
+    day4button = utils.weekday_to_weeknum(utils.weekday_from_date(user_dt))
+    result = TextResponse.schedule_for_another_group(
+        utils.get_today(group, user_dt), group
+    )
+    await call.message.edit_text(result, reply_markup=kb.day_switch_kb(day4button, group))  #TODO
+    await call.answer()
+
+
+@callback_router.callback_query(kb.SelectDayCallback.filter(F.ctx == "sch"))
+async def handle_day_select_sch(call: types.CallbackQuery,
+                                callback_data: kb.SelectDayCallback):
     """
     Отвечаем на нажатие инлайн клавы с выбором дня недели
     """
@@ -41,21 +59,54 @@ async def handle_day_select(call: types.CallbackQuery,
         user_dt = dt.datetime.now(
             dt.timezone(dt.timedelta(hours=config.TIMEZONE_OFFSET))
         )
-        if callback_data.ctx == "sch":
-            result = utils.get_day(
-                group, DayTitles.from_str(day_str=day), utils.week_is_odd(user_dt)
-            )
-            day_for_button = utils.weekday_to_weeknum(day)
-            try:
-                await call.message.edit_text(
-                    result, reply_markup=kb.day_switch_kb(day_for_button)
-                )
-            except Exception as e:
-                logging.debug(f"same text, didn't edit. {e}")
-        elif callback_data.ctx == "fac":
-            res = utils.get_all_profs_in_day_resp(DayTitles.from_str(day_str=day))
-            await call.message.edit_text(res, reply_markup=kb.faculty_kb1("my"))
+        result = utils.get_day(
+            group, DayTitles.from_str(day_str=day), utils.week_is_odd(user_dt)
+        )
+        day_for_button = utils.weekday_to_weeknum(day)
+        await call.message.edit_text(
+            result, reply_markup=kb.day_switch_kb(day_for_button)
+        )
 
+    await call.answer()
+
+
+@callback_router.callback_query(kb.SelectDayCallback.filter(F.ctx == "fac"))
+async def handle_day_select_fac(call: types.CallbackQuery,
+                                callback_data: kb.SelectDayCallback):
+    """
+    Отвечаем на нажатие инлайн клавы с выбором дня недели
+    """
+    group = await utils.get_user_group(call.from_user.id)
+    if not group:
+        await call.message.answer(
+            TextResponse.CHOOSE_GROUP, reply_markup=kb.group_sel_kb
+        )
+    else:
+        day = callback_data.id
+        res = utils.get_all_profs_in_day_resp(DayTitles.from_str(day_str=day))
+        await call.message.edit_text(res, reply_markup=kb.faculty_kb1("my"))
+    await call.answer()
+
+
+@callback_router.callback_query(kb.SelectDayCallback.filter())
+async def handle_day_select_group(call: types.CallbackQuery,
+                                callback_data: kb.SelectDayCallback):
+    """
+    Отвечаем на нажатие инлайн клавы с выбором дня недели
+    """
+    group = callback_data.ctx
+    user_dt = dt.datetime.now(
+            dt.timezone(dt.timedelta(hours=config.TIMEZONE_OFFSET))
+    )
+    result = utils.get_day(
+        group, DayTitles.from_str(day_str=callback_data.id), utils.week_is_odd(user_dt)
+    )
+    day_for_button = utils.weekday_to_weeknum(callback_data.id)
+
+    await call.message.edit_text(
+        TextResponse.schedule_for_another_group(result, group),
+        reply_markup=kb.day_switch_kb(day_for_button, context=group)
+    )
     await call.answer()
 
 
@@ -75,8 +126,11 @@ async def handle_day_switch(call: types.CallbackQuery,
         if button_pressed == "menu":
             reply_kb = kb.create_weekday_sel_kb(context=callback_data.ctx)
             msg = TextResponse.CHOOSE_DAY
+        elif button_pressed == "groups":
+            reply_kb = kb.group_sel_kb_other
+            msg = TextResponse.CHOOSE_GROUP_TO_LOOK
         else:
-            new_day = int(button_pressed)
+            new_day = button_pressed
             if callback_data.ctx == "sch":
                 reply_kb = kb.day_switch_kb(new_day)
                 user_dt = dt.datetime.now(
@@ -90,12 +144,23 @@ async def handle_day_switch(call: types.CallbackQuery,
             elif callback_data.ctx == "fac":
                 reply_kb = kb.faculty_kb1("my", new_day)
                 msg = utils.get_all_profs_in_day_resp(utils.weeknum_to_weekday(new_day))
-
-
+            else:  # callback_data.ctx is a group number
+                user_dt = dt.datetime.now(
+                    dt.timezone(dt.timedelta(hours=config.TIMEZONE_OFFSET))
+                )
+                reply_kb = kb.day_switch_kb(new_day, callback_data.ctx)
+                msg = TextResponse.schedule_for_another_group(
+                    utils.get_day(
+                        callback_data.ctx,
+                        utils.weeknum_to_weekday(new_day),
+                        utils.week_is_odd(user_dt)
+                    ),
+                    callback_data.ctx
+                )
         try:
             await call.message.edit_text(msg, reply_markup=reply_kb)
         except Exception as e:
-            logging.debug(f"same text, didn't edit. {e}")
+            logging.debug(LogMessage.same_msg_didnt_edit(e))
     await call.answer()
 
 

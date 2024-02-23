@@ -143,17 +143,14 @@ async def serve_pdf(message: types.Message, bot: Bot):
         return
     await bot.send_document(message.chat.id, file_id,
                             reply_markup=kb.select_degree_pdf,
-                            caption="это бакалаврское расписание")
+                            caption=TextResponse.THIS_IS_BACH_SCHEDULE)
 
 
 @main_router.message(Command('faculty'))
 async def send_faculty_info(message: types.Message):
     group = await utils.get_user_group(message.from_user.id)
     if group is None:
-        await message.answer(
-            TextResponse.CHOOSE_GROUP,
-            reply_markup=kb.group_sel_kb
-        )
+        await set_user_group(message)
         return
     user_profs = utils.get_user_profs_resp(group)
     await message.answer(user_profs, reply_markup=kb.faculty_kb1())
@@ -165,11 +162,11 @@ async def handle_search_professor(message: types.Message, state: FSMContext):
     Вытащить ключевые слова и попытаться найти кого-нибудь из преподов...
     """
     if not message.text:
-        await message.reply("нужен текст...")
+        await message.reply(TextResponse.MSG_IS_NOT_TEXT)
         return
     result, err = utils.search_profs_by_keywords(message.text)
     if err is not None:
-        await message.reply(err + "\nдля выхода из поиска нажмите /cancel")
+        await message.reply(err + "\nдля выхода из поиска /cancel")
         return
     await message.reply(result, reply_markup=kb.faculty_kb1("allnow", after_search=True))
     await state.clear()

@@ -1,7 +1,6 @@
 from .timetables import Subject, Day, Week, User, Professor
 from .enums import Groups, DayTitles
-from .responses import ErrorMessages, TextResponse
-from .log import LogMessage
+from .responses import ErrorMessages, TextResponse, LogMessage
 
 
 __all__ = [

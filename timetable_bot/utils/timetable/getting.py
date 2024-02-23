@@ -1,6 +1,5 @@
 import json
 import datetime
-from dataclasses import dataclass
 import logging
 from typing import Tuple
 
@@ -16,7 +15,8 @@ from timetable_bot.schemas import (
 from timetable_bot.db.models import User as DbUser
 from timetable_bot.db.connection import get_session
 from .time import (
-    weekday_from_date, get_curr_time, get_class_ends_time, week_is_odd
+    weekday_from_date, get_curr_time, get_class_ends_time, week_is_odd,
+    weekday_accusative
 )
 
 
@@ -258,8 +258,8 @@ def get_pdf_id(degree: int = 0) -> Tuple[str, ErrorMessages]:
                     raise Exception("no value")
 
     except Exception as e:
-        logging.info(f"ошибка чтения file_id. {e}")
-        return None, "ошипка чтения. возможно его ещё не загрузили"
+        logging.info(ErrorMessages.failed_to_read(e))
+        return None, ErrorMessages.NO_PDF_AVAILABLE
     return file_id, None
 
 
@@ -325,7 +325,7 @@ def get_user_profs_resp(user_group: Groups) -> str:
     return ''.join([f"{repr(v)}\n" for _, v in user_profs.items()]) + "\n<i>это твои преподы</i>"
 
 
-def get_all_profs_in_day_resp(user_day: DayTitles) -> str:
+def get_all_profs_in_day_resp(user_day: DayTitles, is_today: bool = False) -> str:
     """
     Получить список всех преподов на какой-то день в готовом виде
     """
@@ -333,10 +333,10 @@ def get_all_profs_in_day_resp(user_day: DayTitles) -> str:
     profs = get_all_profs()
     today_profs = {n: p for n, p in profs.items() if user_day in p.days}
     if not today_profs:
-        return TextResponse.no_one_works_today(user_day.value.lower())
+        return TextResponse.no_one_works_today(weekday_accusative(user_day, True).lower())
 
-    response = ''.join([f"{v.repr_for_day(user_day)}\n" for _, v in today_profs.items()])
-    return response + f"\n<i>преподы, которые в вузе в этот день ({user_day.value})</i>"
+    response = ''.join([f"{v.repr_for_day(user_day, is_today)}\n" for _, v in today_profs.items()])
+    return response + f"\n<i>преподы, которые в вузе {weekday_accusative(user_day, True).lower()}</i>"
 
 
 def get_all_profs_today_resp(user_datetime: datetime.datetime) -> str:
@@ -344,7 +344,7 @@ def get_all_profs_today_resp(user_datetime: datetime.datetime) -> str:
     Получить список всех преподов на сегодня в готовом виде
     """
     today = weekday_from_date(user_datetime)
-    return get_all_profs_in_day_resp(today)
+    return get_all_profs_in_day_resp(today, is_today=True)
 
 
 def search_profs_by_keywords(msg_str: str) -> Tuple[str, ErrorMessages]:
@@ -381,8 +381,8 @@ def search_profs_by_keywords(msg_str: str) -> Tuple[str, ErrorMessages]:
         ]
 
     if not filtered_profs_res:
-        return None, f"по таким ключевым словам ничего не найдено... попробуй другие"
+        return None, ErrorMessages.NOTHING_FOUND
     r = '\n'.join(filtered_profs_res)
     if len(r) > 4096 - 20:
-        return None, "поиск по таким ключевым словам слишком широкий. Преподов получилось слишком много и они не помещаются в одно сообщение"
+        return None, ErrorMessages.RESULT_TOO_LARGE
     return f"вот что я нашёл:\n{r}", None

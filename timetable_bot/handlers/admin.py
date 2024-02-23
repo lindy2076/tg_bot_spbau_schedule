@@ -6,7 +6,7 @@ from aiogram.fsm.context import FSMContext
 
 import timetable_bot.keyboards as kb
 from timetable_bot.config import DefaultSettings
-from timetable_bot.schemas import TextResponse, LogMessage
+from timetable_bot.schemas import TextResponse, LogMessage, ErrorMessages
 from timetable_bot import utils
 from .states import SendAdminForm, EditForm, PdfUpdForm
 
@@ -24,11 +24,11 @@ async def cancel_state(message: types.Message, state: FSMContext):
     """
     curr_state = await state.get_state()
     if curr_state is None:
-        await message.reply("нет состояний.")
+        await message.reply(TextResponse.NO_STATES, reply_markup=kb.smile_kb)
         return
 
     await state.clear()
-    await message.reply("отмена", reply_markup=kb.smile_kb)
+    await message.reply(TextResponse.STATE_CLEARED, reply_markup=kb.smile_kb)
 
 
 @admin_router.message(Command('send_all'), F_from_admin)
@@ -44,12 +44,13 @@ async def send_all(message: types.Message, bot: Bot):
     for user_id in id_list:
         try:
             await bot.send_message(
-                chat_id=int(user_id), text=message.text[10:]
+                chat_id=int(user_id), text=message.text[10:],
+                reply_markup=kb.smile_kb
             )
             send_to_count += 1
         except Exception as e:
             logging.info(LogMessage.err_send_all(e))
-            await message.answer(f"{user_id} меня заблочил.")
+            await message.answer(ErrorMessages.cant_send_msg(user_id))
     await message.reply(TextResponse.sent_successfully_to(send_to_count))
 
 
@@ -137,11 +138,11 @@ async def process_new_dict(message: types.Message, state: FSMContext):
     day_json_str = message.text
     res, err = utils.replace_day_json(day_json_str, group)
     if err is not None:
-        await message.reply(f"произошла ошипка. {err}")
+        await message.reply(ErrorMessages.error_happened(err))
         return
 
     await state.clear()
-    await message.reply(f"ok. {str(res)}")
+    await message.reply(TextResponse.schedule_json_changed(res))
 
 
 @admin_router.message(Command('pdfupd'), F_from_admin)
@@ -149,20 +150,20 @@ async def update_pdf(message: types.Message, state: FSMContext):
     """
     Инициация загрузки pdf
     """
-    await message.reply("выберите степень: 0 - bak, 1 - mag, 2 - asp")
+    await message.reply(TextResponse.ADMIN_SELECT_DEGREE)
     await state.set_state(PdfUpdForm.select_degree)
 
 
 @admin_router.message(PdfUpdForm.select_degree)
 async def update_pdf(message: types.Message, state: FSMContext):
     """
-    Инициация загрузки pdf
+    Проверка, что выбрана степень (0/1/2) для загрузки
     """
     if message.text not in ["0", "1", "2"]:
-        await message.reply("эээ")
+        await message.reply(TextResponse.ADMIN_NUM_NOT_IN_RANGE)
         return
     await state.update_data(select_degree=message.text)
-    await message.reply("прикрепите pdf")
+    await message.reply(TextResponse.ATTACH_PDF)
     await state.set_state(PdfUpdForm.wait_for_pdf)
 
 
@@ -172,7 +173,7 @@ async def process_new_pdf(message: types.Message, state: FSMContext, bot: Bot):
     Обработка загрузки pdf
     """
     if not message.document:
-        await message.reply("нужен pdf!")
+        await message.reply(ErrorMessages.FILE_IS_NOT_PDF)
         return
     data = await state.get_data()
 
@@ -182,7 +183,7 @@ async def process_new_pdf(message: types.Message, state: FSMContext, bot: Bot):
         await message.reply(f"{err}")
         return
     await state.clear()
-    await message.reply("ok")
+    await message.reply(TextResponse.PDF_UPDATED)
     await bot.send_document(message.chat.id, file_id)
 
 
@@ -193,13 +194,14 @@ async def reply_user(message: types.Message, bot: Bot):
     """
     params, err = utils.get_chat_and_msg_id(message.reply_to_message)
     if err is not None:
-        await message.reply(f"ошипка: {err}. не могу ответить")
+        await message.reply(ErrorMessages.cant_answer(err))
+        return
     chat_id, msg_id = params
     try:
         await bot.send_message(
                 chat_id=chat_id, text=TextResponse.echo_msg_from_admin(message.text),
                 reply_to_message_id=msg_id
             )
-        await message.reply("ответил")
+        await message.reply(TextResponse.ADMIN_REPLIED)
     except Exception as e:
-        await message.reply(f"ошипка отправки: {e}")
+        await message.reply(ErrorMessages.error_happened(str(e)))

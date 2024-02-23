@@ -5,10 +5,40 @@ class ErrorMessages(str):
     EDIT_MISSING_PARAMS = "чего-то не хватает. /edit group day"
     EDIT_WRONG_DAY = "день введён неправильно. можно 0-6"
     CANT_PARSE_CHATANDMSG_IDS = "не могу спарсить айдишники"
+    NOTHING_FOUND = "по таким ключевым словам ничего не найдено... попробуй другие."
+    RESULT_TOO_LARGE = "поиск по таким ключевым словам слишком широкий. Преподов получилось слишком много и они не помещаются в одно сообщение"
+    FILE_IS_NOT_PDF = "нужен pdf!"
+    IMPOSSIBLE_DAY_NOT_FOUND = "странно однако этого дня нет"
+    INVALID_JSON = "failed to validate json"
+    NO_PDF_AVAILABLE = "о нет pdf ещё не загрузили"
 
     @classmethod
-    def no_such_group(group: str):
+    def no_such_group(cls, group: str):
         return f"группы {group} нет."
+
+    @classmethod
+    def cant_send_msg(cls, user_id: int):
+        return f"{user_id} меня заблочил."
+
+    @classmethod
+    def error_happened(cls, err_msg: str):
+        return f"произошла ошипка. {err_msg}"
+
+    @classmethod
+    def cant_answer(cls, err_msg: str):
+        return f"ошипка: {err_msg}. не могу ответить"
+    
+    @classmethod
+    def json_load_failed(cls, e: Exception):
+        return f"failed to load json. {e}"
+    
+    @classmethod
+    def failed_to_write(cls, e: Exception):
+        return f"ошибка во время записи: {e}"
+    
+    @classmethod
+    def failed_to_read(cls, e: Exception):
+        return f"ошибка чтения file_id. {e}"
 
 
 class TextResponse(str):
@@ -29,6 +59,18 @@ class TextResponse(str):
     MESSAGE_WASNT_SENT = "🏔 ничего не отправлено"
     WRITE_MESSAGE_FOR_ADMIN = "что мне передать админу?"
     ENTER_KEYWORDS = "введи через пробел какие-нибудь ключевые слова, по которым можно найти препода/ов, например фамилию или её часть (поиск по точным совпадениям):\n<i>симонов матан</i>\n<i>симонов ngs</i>\n<i>био</i>"
+    CHOOSE_GROUP_TO_LOOK = "Выбери группу, для которой подсмотреть расписание:"
+
+    ADMIN_SELECT_DEGREE = "выберите степень: 0 - bak, 1 - mag, 2 - asp"
+    ADMIN_NUM_NOT_IN_RANGE = "эээ"
+    ADMIN_REPLIED = "ответил"
+    ATTACH_PDF = "прикрепите pdf"
+    PDF_UPDATED = "расписание обновлено"
+    MSG_IS_NOT_TEXT = "нужен текст..."
+    THIS_IS_BACH_SCHEDULE = "это бакалаврское расписание"
+
+    STATE_CLEARED = "окэй"
+    NO_STATES = "нет состояний."
     SPECIAL_STICKER_FILE_ID = "CAACAgIAAxkBAAINPmXOezeSpDrrcpaYkrk4tO3YgoOsAAJDNAACSzfASfFXoCOxFpenNAQ"
 
     POLICY = "\n\nя храню только жизненно необходимую информацию, а именно: " + \
@@ -90,9 +132,9 @@ class TextResponse(str):
         return f"вроде отправилось. Всего {count}"
     
     @classmethod
-    def group_day_and_day_json(cls, group: str, day: str, day_json: dict):
+    def group_day_and_day_json(cls, group: str, day: str, day_json: str):
         """выдает день, группу и словарь расписания дня"""
-        return f"{group} {day} {day_json}\nОтправьте новый словарь. Или пишите /cancel для отмены"
+        return f"{group} {day} <pre><code class='language-json'>{day_json}</code></pre>\nОтправьте новый словарь. Или пишите /cancel для отмены"
 
     @classmethod
     def curr_week_odd_even(cls, week_is_odd: bool):
@@ -109,5 +151,31 @@ class TextResponse(str):
         return f"{emoji} {msg}"
 
     @classmethod
-    def no_one_works_today(cls, daytitle: str) -> str:
-        return f"🍂 в {daytitle} никто не работает"
+    def no_one_works_today(cls, daytitle_accusative: str) -> str:
+        return f"🍂 {daytitle_accusative} никто не работает"
+    
+    @classmethod
+    def schedule_json_changed(cls, dict: dict) -> str:
+        return f"ok. <pre><code class='language-json'>{str(dict)}</code></pre>"
+    
+    @classmethod
+    def schedule_for_another_group(cls, sch: str, group: str) -> str:
+        return f"{sch}\n<i>ℹ️ это расписание группы {group}</i>"
+
+
+class LogMessage(str):
+    @classmethod
+    def sent_msg2admin(cls, message: object) -> str:
+        return f"send_admin ({message.from_user.id}), {message.from_user.full_name}"
+
+    @classmethod
+    def err_send_all(cls, err: Exception) -> str:
+        return f"error during send_all. {err}"
+
+    @classmethod
+    def same_msg_didnt_edit(cls, e: Exception) -> str:
+        return f"same text, didn't edit. {e}"
+
+    @classmethod
+    def schedule_updated(cls, group: str) -> str:
+        return f"расписание {group} обновлено"
