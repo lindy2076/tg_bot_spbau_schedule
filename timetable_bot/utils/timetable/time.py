@@ -89,11 +89,9 @@ def parse_day_switch_data(data: str) -> int | str:
     Парсим данные callback запроса клавы day_switch_kb.
     Возвращаем номер дня или "menu"
     """
-    try:
-        d = int(data)
-    except ValueError:
-        return "menu"
-    return d % 7
+    if data.isnumeric():
+        return int(data) % 7
+    return data
 
 
 def weekday_from_date(user_datetime: datetime.datetime) -> DayTitles:

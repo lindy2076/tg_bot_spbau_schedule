@@ -59,6 +59,7 @@ class TextResponse(str):
     MESSAGE_WASNT_SENT = "🏔 ничего не отправлено"
     WRITE_MESSAGE_FOR_ADMIN = "что мне передать админу?"
     ENTER_KEYWORDS = "введи через пробел какие-нибудь ключевые слова, по которым можно найти препода/ов, например фамилию или её часть (поиск по точным совпадениям):\n<i>симонов матан</i>\n<i>симонов ngs</i>\n<i>био</i>"
+    CHOOSE_GROUP_TO_LOOK = "Выбери группу, для которой подсмотреть расписание:"
 
     ADMIN_SELECT_DEGREE = "выберите степень: 0 - bak, 1 - mag, 2 - asp"
     ADMIN_NUM_NOT_IN_RANGE = "эээ"
@@ -156,6 +157,10 @@ class TextResponse(str):
     @classmethod
     def schedule_json_changed(cls, dict: dict) -> str:
         return f"ok. <pre><code class='language-json'>{str(dict)}</code></pre>"
+    
+    @classmethod
+    def schedule_for_another_group(cls, sch: str, group: str) -> str:
+        return f"{sch}\n<i>ℹ️ это расписание группы {group}</i>"
 
 
 class LogMessage(str):

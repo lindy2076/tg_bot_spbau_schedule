@@ -23,6 +23,7 @@ def determine_emoji(group: Groups):
 
 class SelectGroupCallback(CallbackData, prefix="setgr"):
     id: str
+    ctx: str
 
 
 class SelectDayCallback(CallbackData, prefix="day"):
@@ -43,30 +44,34 @@ class FacultyCallback(CallbackData, prefix="fc"):
     curr: str
 
 
-def add_group_button(builder: InlineKeyboardBuilder, year: list[Groups]):
+def add_group_button(
+    builder: InlineKeyboardBuilder, year: list[Groups], context: str
+) -> None:
     for group in year:
         builder.button(
             text=group.value + determine_emoji(group),
-            callback_data=SelectGroupCallback(id=group.value).pack()
+            callback_data=SelectGroupCallback(
+                id=group.value, ctx=context
+            ).pack()
         )
 
 
-def create_group_sel_inline_kb() -> InlineKeyboardMarkup:
+def create_group_sel_inline_kb(context: str) -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
     year1 = [Groups.f1_1, Groups.f1_2, Groups.b1_1]
-    add_group_button(builder, year1)
+    add_group_button(builder, year1, context=context)
 
     year2 = [Groups.f2_1, Groups.f2_2, Groups.b2_1]
-    add_group_button(builder, year2)
+    add_group_button(builder, year2, context=context)
 
     year3 = [Groups.f3_1, Groups.f3_2, Groups.f3_3, Groups.b3_1, Groups.b3_2]
-    add_group_button(builder, year3)
+    add_group_button(builder, year3, context=context)
 
     year4 = [Groups.f4_1, Groups.f4_2, Groups.f4_3, Groups.b4]
-    add_group_button(builder, year4)
+    add_group_button(builder, year4, context=context)
 
     year5 = [Groups.m1, Groups.m2, Groups.m3, Groups.m4]
-    add_group_button(builder, year5)
+    add_group_button(builder, year5, context=context)
 
     builder.adjust(len(year1), len(year2), 3, 2, len(year4), len(year5))
     return builder.as_markup()
@@ -111,8 +116,20 @@ def create_wd_arrows_kb_builder(curr_day: int, context: str = "sch") -> InlineKe
 
 
 def day_switch_kb(curr_day: int, context: str = "sch") -> InlineKeyboardMarkup:
-    kb = create_wd_arrows_kb_builder(curr_day, context).as_markup()
-    return kb
+    kb = create_wd_arrows_kb_builder(curr_day, context)
+    if context == "sch" or context in {g.value for g in Groups}:
+        kb.button(
+            text="👀 что там у других групп...",
+            callback_data=SwitchDayCallback(where="groups", ctx=context)
+        )
+        kb.adjust(3, 1)
+        if context != "sch":
+            kb.button(
+                text="моё расписание",
+                callback_data=SwitchDayCallback(where=str(curr_day), ctx="sch")
+            )
+            kb.adjust(3, 2)
+    return kb.as_markup()
 
 
 def create_select_degree_pdf() -> InlineKeyboardMarkup:
@@ -147,6 +164,7 @@ def faculty_kb1(next_: str = "allnow", curr_day: int = 0, after_search: bool = F
     return builder.as_markup()
 
 
-group_sel_kb = create_group_sel_inline_kb()
+group_sel_kb = create_group_sel_inline_kb(context="own")
+group_sel_kb_other = create_group_sel_inline_kb(context="other")
 day_sel_kb = create_weekday_sel_kb()
 select_degree_pdf = create_select_degree_pdf()
