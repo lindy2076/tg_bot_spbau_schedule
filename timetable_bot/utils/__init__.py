@@ -14,7 +14,7 @@ from .timetable.time import (
     parse_day_switch_data,
     weekday_from_date,
     weekday_to_weeknum, weeknum_to_weekday,
-    weeknum_to_short_weekday,
+    weeknum_to_short_weekday, weekday_accusative,
     get_curr_time,
     get_class_ends_time,
     week_is_odd

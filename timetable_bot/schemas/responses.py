@@ -150,8 +150,8 @@ class TextResponse(str):
         return f"{emoji} {msg}"
 
     @classmethod
-    def no_one_works_today(cls, daytitle: str) -> str:
-        return f"🍂 в {daytitle} никто не работает"
+    def no_one_works_today(cls, daytitle_accusative: str) -> str:
+        return f"🍂 {daytitle_accusative} никто не работает"
     
     @classmethod
     def schedule_json_changed(cls, dict: dict) -> str:

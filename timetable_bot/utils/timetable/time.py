@@ -61,6 +61,29 @@ def weeknum_to_short_weekday(weeknum: int) -> str:
             return "Вс"
 
 
+def weekday_accusative(weekday: DayTitles, preposition: bool = False) -> str:
+    """Винительный падеж"""
+    res = ""
+    if preposition:
+        res += "В " if weekday != DayTitles.tue else "Во "
+    match weekday:
+        case DayTitles.mon.value:
+            res += "понедельник"
+        case DayTitles.tue.value:
+            res += "вторник"
+        case DayTitles.wed.value:
+            res += "среду"
+        case DayTitles.thu.value:
+            res += "четверг"
+        case DayTitles.fri.value:
+            res += "пятницу"
+        case DayTitles.sat.value:
+            res += "субботу"
+        case DayTitles.sun.value:
+            res += "воскресенье"
+    return res
+
+
 def parse_day_switch_data(data: str) -> int | str:
     """
     Парсим данные callback запроса клавы day_switch_kb.

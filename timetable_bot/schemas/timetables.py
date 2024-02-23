@@ -81,10 +81,31 @@ class Professor(BaseModel):
         ds = [f"    - {d}: {'; '.join(sorted(ts))}\n" for d, ts in self.days.items()]
         return f"🎩 <b>{self.name}</b> ведёт предметы:\n{''.join(sg)}🕰 Ведёт пары в это время:\n{''.join(ds)}"
 
-    def repr_for_day(self, day: DayTitles) -> str:
+    def repr_for_day(self, day: DayTitles, is_today: bool = False) -> str:
         sg = [f"    • {s} у {', '.join(sorted(gs))}\n" for s, gs in self.subjects.items()]
         ds = '; '.join(self.days[day])
-        return f"🎩 <b>{self.name}</b> в целом ведёт предметы:\n{''.join(sg)}🕰 Сегодня ведёт пары в это время:\n     <b>{ds}</b>\n"
+        if is_today:
+            second_msg = "🕰 Сегодня ведёт пары в это время:"
+        else:
+            second_msg = f"🕰 {self._accusative(day)} ведёт пары в это время:"
+        return f"🎩 <b>{self.name}</b> в целом ведёт предметы:\n{''.join(sg)}{second_msg}\n     <b>{ds}</b>\n"
+
+    def _accusative(self, day: DayTitles) -> str:
+        match day:
+            case DayTitles.mon.value:
+                return "В понедельник"
+            case DayTitles.tue.value:
+                return "Во вторник"
+            case DayTitles.wed.value:
+                return "В среду"
+            case DayTitles.thu.value:
+                return "В четверг"
+            case DayTitles.fri.value:
+                return "В пятницу"
+            case DayTitles.sat.value:
+                return "В субботу"
+            case DayTitles.sun.value:
+                return "В воскресенье"
 
     class Config:
         use_enum_value = True
