@@ -73,7 +73,7 @@ def create_group_sel_inline_kb(context: str) -> InlineKeyboardMarkup:
     # year5 = [Groups.m1, Groups.m2, Groups.m3, Groups.m4]
     # add_group_button(builder, year5, context=context)
 
-    builder.adjust(len(year1), len(year2), 3, 2, len(year4))
+    builder.adjust(len(year1), len(year2), len(year3), len(year4))
     return builder.as_markup()
 
 
