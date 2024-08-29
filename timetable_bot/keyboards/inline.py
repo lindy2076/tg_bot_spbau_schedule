@@ -58,22 +58,22 @@ def add_group_button(
 
 def create_group_sel_inline_kb(context: str) -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
-    year1 = [Groups.f1_1, Groups.f1_2, Groups.b1_1]
+    year1 = [Groups.f1_1, Groups.f1_2, Groups.b1_1, Groups.b1_2]
     add_group_button(builder, year1, context=context)
 
-    year2 = [Groups.f2_1, Groups.f2_2, Groups.b2_1]
+    year2 = [Groups.f2_1, Groups.f2_2, Groups.b2]
     add_group_button(builder, year2, context=context)
 
-    year3 = [Groups.f3_1, Groups.f3_2, Groups.f3_3, Groups.b3_1, Groups.b3_2]
+    year3 = [Groups.f3_1, Groups.f3_2, Groups.f3_3, Groups.b3]
     add_group_button(builder, year3, context=context)
 
-    year4 = [Groups.f4_1, Groups.f4_2, Groups.f4_3, Groups.b4]
+    year4 = [Groups.f4_1, Groups.f4_2, Groups.f4_3, Groups.b4_1, Groups.b4_2]
     add_group_button(builder, year4, context=context)
 
-    year5 = [Groups.m1, Groups.m2, Groups.m3, Groups.m4]
-    add_group_button(builder, year5, context=context)
+    # year5 = [Groups.m1, Groups.m2, Groups.m3, Groups.m4]
+    # add_group_button(builder, year5, context=context)
 
-    builder.adjust(len(year1), len(year2), 3, 2, len(year4), len(year5))
+    builder.adjust(len(year1), len(year2), 3, 2, len(year4))
     return builder.as_markup()
 
 
