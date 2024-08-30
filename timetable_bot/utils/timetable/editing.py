@@ -1,7 +1,8 @@
 import json
-from typing import Tuple
 import logging
+from pathlib import Path
 from pydantic import ValidationError
+from typing import Tuple
 
 from timetable_bot.schemas import (
     DayTitles, Groups, Day, ErrorMessages, TextResponse, LogMessage
@@ -114,6 +115,7 @@ def update_pdf_id(file_id: str, degree: int = 0) -> ErrorMessages:
     """
     filename = config.FILE_FOR_PDF_FILE_ID
     try:
+        Path.touch(filename)
         with open(filename, 'r') as f:
             lines = f.readlines()
         while len(lines) < 3:
