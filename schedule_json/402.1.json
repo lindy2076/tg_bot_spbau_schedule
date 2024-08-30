@@ -36,14 +36,14 @@
             "title": "Среда",
             "activities": [
                 {
-                    "starts": "10:00",
+                    "starts": "12:00",
                     "lasts": "1.5",
                     "name": "Генетика",
                     "auditory": "431 СЛК",
                     "professor": "Рогоза Татьяна Михайловна"
                 },
                 {
-                    "starts": "12:00",
+                    "starts": "14:00",
                     "lasts": "1.5",
                     "name": "Машинное обучение",
                     "auditory": "204 СЛК",

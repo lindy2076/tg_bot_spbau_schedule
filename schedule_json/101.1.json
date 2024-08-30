@@ -56,14 +56,14 @@
                     "lasts": "2.25", 
                     "name": "Алгебра (практика)", 
                     "auditory": "313 СЛК", 
-                    "professor": "непонятно"
+                    "professor": "Голубь Н. И."
                 },
                 {
                     "starts": "16:30", 
                     "lasts": "1.5", 
                     "name": "Адаптационный курс", 
                     "auditory": "204 СЛК", 
-                    "professor": "непонятно"
+                    "professor": "не знаю..."
                 }
             ]
         },
@@ -167,7 +167,7 @@
                     "lasts": "1.5", 
                     "name": "Python", 
                     "auditory": "432 СЛК", 
-                    "professor": "Сухайр М."
+                    "professor": "Сухайр Мсукар"
                 }
             ]
         }
