@@ -82,7 +82,7 @@
                     "lasts": "1.5", 
                     "name": "Алгебра (практика)", 
                     "auditory": "204 СЛК", 
-                    "professor": "непонятно"
+                    "professor": "Голубь Н. И."
                 },
                 {
                     "starts": "14:30",
@@ -167,7 +167,7 @@
                     "lasts": "1.5", 
                     "name": "Python", 
                     "auditory": "432 СЛК", 
-                    "professor": "Сухайр М."
+                    "professor": "Сухайр Мсукар"
                 }
             ]
         }
