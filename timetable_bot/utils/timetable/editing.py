@@ -115,7 +115,7 @@ def update_pdf_id(file_id: str, degree: int = 0) -> ErrorMessages:
     """
     filename = config.FILE_FOR_PDF_FILE_ID
     try:
-        Path.touch(filename)
+        Path.touch(Path(filename))
         with open(filename, 'r') as f:
             lines = f.readlines()
         while len(lines) < 3:
