@@ -1,5 +1,5 @@
 from .timetables import Subject, Day, Week, User, Professor
-from .enums import Groups, DayTitles
+from .enums import Groups, DayTitles, Degree
 from .responses import ErrorMessages, TextResponse, LogMessage
 
 
@@ -9,6 +9,7 @@ __all__ = [
     "Week",
     "Groups",
     "DayTitles",
+    "Degree",
     "User",
     "ErrorMessages",
     "TextResponse"

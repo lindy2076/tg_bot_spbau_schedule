@@ -1,4 +1,3 @@
-import asyncio
 from aiogram import types, Router, Bot, F
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
@@ -137,7 +136,7 @@ async def del_me_from_db(message: types.Message):
 
 @main_router.message(Command('pdf'))
 async def serve_pdf(message: types.Message, bot: Bot):
-    file_id, err = utils.get_pdf_id()
+    file_id, err = await utils.get_pdf_id()
     if err is not None:
         await message.reply(err, reply_markup=kb.smile_kb)
         return

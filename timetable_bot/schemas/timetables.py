@@ -1,5 +1,5 @@
 from pydantic import BaseModel, validator
-from typing import List, Dict, Set, Optional
+from typing import List, Dict, Set
 
 from .enums import DayTitles, Groups
 

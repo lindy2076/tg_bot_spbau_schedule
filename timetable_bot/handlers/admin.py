@@ -7,6 +7,7 @@ from aiogram.fsm.context import FSMContext
 import timetable_bot.keyboards as kb
 from timetable_bot.config import DefaultSettings
 from timetable_bot.schemas import TextResponse, LogMessage, ErrorMessages
+from timetable_bot.schemas import Degree
 from timetable_bot import utils
 from .states import SendAdminForm, EditForm, PdfUpdForm
 
@@ -15,6 +16,14 @@ admin_router = Router(name='admin_router')
 config = DefaultSettings()
 
 F_from_admin = F.from_user.id == int(config.ADMIN_ID)
+
+
+@admin_router.message(Command('admin_help'))
+async def admin_help(message: types.Message):
+    """
+    Админский хэлп со списком команд
+    """
+    await message.reply(TextResponse.ADMIN_HELP, reply_markup=kb.smile_kb)
 
 
 @admin_router.message(Command('cancel'))
@@ -155,11 +164,11 @@ async def update_pdf(message: types.Message, state: FSMContext):
 
 
 @admin_router.message(PdfUpdForm.select_degree)
-async def update_pdf(message: types.Message, state: FSMContext):
+async def update_pdf_check(message: types.Message, state: FSMContext):
     """
-    Проверка, что выбрана степень (0/1/2) для загрузки
+    Проверка, что выбрана валидная степень (Degree) для загрузки
     """
-    if message.text not in ["0", "1", "2"]:
+    if message.text not in [d.value for d in Degree]:
         await message.reply(TextResponse.ADMIN_NUM_NOT_IN_RANGE)
         return
     await state.update_data(select_degree=message.text)
@@ -178,10 +187,10 @@ async def process_new_pdf(message: types.Message, state: FSMContext, bot: Bot):
     data = await state.get_data()
 
     file_id = message.document.file_id
-    err = utils.update_pdf_id(file_id, int(data["select_degree"]))
-    if err is not None:
-        await message.reply(f"{err}")
-        return
+    description = message.caption or ""
+    logging.error(description)
+    await utils.update_by_pdf_id(file_id, data["select_degree"], description)
+
     await state.clear()
     await message.reply(TextResponse.PDF_UPDATED)
     await bot.send_document(message.chat.id, file_id)

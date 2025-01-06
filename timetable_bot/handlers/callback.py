@@ -29,7 +29,7 @@ async def handle_user_group(call: types.CallbackQuery,
 async def handle_user_group2(call: types.CallbackQuery,
                              callback_data: kb.SelectGroupCallback):
     """
-    Отвечаем на нажатие инлайн клавы с выбором группы (меняем группу)
+    Отвечаем на нажатие инлайн клавы с выбором группы (не меняем группу)
     """
     group = callback_data.id
     user_dt = dt.datetime.now(
@@ -39,7 +39,7 @@ async def handle_user_group2(call: types.CallbackQuery,
     result = TextResponse.schedule_for_another_group(
         utils.get_today(group, user_dt), group
     )
-    await call.message.edit_text(result, reply_markup=kb.day_switch_kb(day4button, group))  #TODO
+    await call.message.edit_text(result, reply_markup=kb.day_switch_kb(day4button, group))  # TODO
     await call.answer()
 
 
@@ -47,7 +47,7 @@ async def handle_user_group2(call: types.CallbackQuery,
 async def handle_day_select_sch(call: types.CallbackQuery,
                                 callback_data: kb.SelectDayCallback):
     """
-    Отвечаем на нажатие инлайн клавы с выбором дня недели
+    Отвечаем на нажатие инлайн клавы с выбором дня недели (для своего расписания)
     """
     group = await utils.get_user_group(call.from_user.id)
     if not group:
@@ -74,7 +74,7 @@ async def handle_day_select_sch(call: types.CallbackQuery,
 async def handle_day_select_fac(call: types.CallbackQuery,
                                 callback_data: kb.SelectDayCallback):
     """
-    Отвечаем на нажатие инлайн клавы с выбором дня недели
+    Отвечаем на нажатие инлайн клавы с выбором дня недели (для поиска преподов)
     """
     group = await utils.get_user_group(call.from_user.id)
     if not group:
@@ -90,9 +90,9 @@ async def handle_day_select_fac(call: types.CallbackQuery,
 
 @callback_router.callback_query(kb.SelectDayCallback.filter())
 async def handle_day_select_group(call: types.CallbackQuery,
-                                callback_data: kb.SelectDayCallback):
+                                  callback_data: kb.SelectDayCallback):
     """
-    Отвечаем на нажатие инлайн клавы с выбором дня недели
+    Отвечаем на нажатие инлайн клавы с выбором дня недели (не для своего расписания)
     """
     group = callback_data.ctx
     user_dt = dt.datetime.now(
@@ -169,16 +169,15 @@ async def handle_degree_pdf_select(call: types.CallbackQuery,
                                    callback_data: kb.SelectDegreeForPdfCB,
                                    bot: Bot):
     """
-    Ответ на колбек с инлайн клавы для выбора пдфки 
+    Ответ на колбек с инлайн клавы для выбора пдфки
     """
     selected_degree = callback_data.degree
-    int_degree = 1 if selected_degree == "mag" else 2
-    file_id, err = utils.get_pdf_id(degree=int_degree)
+    file_id, err = await utils.get_pdf_id(degree=selected_degree)
     if err is not None:
         await call.message.answer(err)
     else:
         await bot.send_document(call.message.chat.id, file_id,
-                            reply_markup=kb.smile_kb)
+                                reply_markup=kb.smile_kb)
     await call.answer()
 
 

@@ -6,6 +6,7 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 
 from timetable_bot.schemas import Groups
+from timetable_bot.schemas import Degree
 from timetable_bot.utils import weeknum_to_short_weekday, weeknum_to_weekday
 
 
@@ -135,10 +136,10 @@ def day_switch_kb(curr_day: int, context: str = "sch") -> InlineKeyboardMarkup:
 def create_select_degree_pdf() -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
     builder.button(text="магистры", callback_data=SelectDegreeForPdfCB(
-        degree="mag").pack()
+        degree=Degree.mag).pack()
     )
     builder.button(text="аспиранты", callback_data=SelectDegreeForPdfCB(
-        degree="asp").pack()
+        degree=Degree.phd).pack()
     )
     return builder.as_markup()
 

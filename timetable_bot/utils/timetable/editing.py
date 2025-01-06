@@ -1,14 +1,18 @@
 import json
 import logging
-from pathlib import Path
 from pydantic import ValidationError
+from sqlalchemy import select
 from typing import Tuple
 
-from timetable_bot.schemas import (
-    DayTitles, Groups, Day, ErrorMessages, TextResponse, LogMessage
-)
 from timetable_bot import utils
 from timetable_bot.config import DefaultSettings
+
+from timetable_bot.db.connection import get_session
+from timetable_bot.db.models import Schedule as DbSchedule
+
+from timetable_bot.schemas import (
+    DayTitles, Groups, Day, ErrorMessages, TextResponse, LogMessage, Degree
+)
 
 
 config = DefaultSettings()
@@ -109,22 +113,23 @@ def replace_day_json(
     return week_json, None
 
 
-def update_pdf_id(file_id: str, degree: int = 0) -> ErrorMessages:
+async def update_by_pdf_id(
+    file_id: str, degree: Degree, description: str = ""
+) -> None:
     """
-    Обновляет file_id пдфки с расписанием в файле pdffileid
+    Добавляет новую запись в таблицу shedule или обновляет старую по file_id
     """
-    filename = config.FILE_FOR_PDF_FILE_ID
-    try:
-        Path.touch(Path(filename))
-        with open(filename, 'r') as f:
-            lines = f.readlines()
-        while len(lines) < 3:
-            lines.append("\n")
-        lines[degree] = f"{file_id}\n"
-        with open(filename, 'w') as f:
-            f.writelines(lines)
-
-    except Exception as e:
-        logging.info(ErrorMessages.failed_to_write(e))
-        return ErrorMessages.failed_to_write(e)
-    return None
+    session = await get_session()
+    q = select(DbSchedule).where(DbSchedule.tg_id == file_id)
+    existing_schedule_info = await session.scalar(q)
+    if not existing_schedule_info:
+        new_schedule_info = DbSchedule(
+            tg_id=file_id, degree=degree, description=description
+        )
+        session.add(new_schedule_info)
+    else:
+        existing_schedule_info.degree = degree
+        existing_schedule_info.description = description
+        session.add(existing_schedule_info)
+    await session.commit()
+    await session.close()
