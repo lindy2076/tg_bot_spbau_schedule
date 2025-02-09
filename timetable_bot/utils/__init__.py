@@ -21,7 +21,7 @@ from .timetable.time import (
 )
 from .timetable.editing import (
     parse_edit_params, get_day_json, get_week_json,
-    replace_day_json, update_pdf_id
+    replace_day_json, update_by_pdf_id
 )
 
 
@@ -47,6 +47,6 @@ __all__ = [
     "get_day_json", "get_week_json",
     "week_is_odd",
     "replace_day_json",
-    "update_pdf_id",
+    "update_by_pdf_id",
     "get_pdf_id"
 ]

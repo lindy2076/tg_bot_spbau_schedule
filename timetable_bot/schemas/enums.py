@@ -46,3 +46,16 @@ class Groups(str, Enum):
             if v == day_str:
                 return cls[k]
         return None
+
+
+class Degree(str, Enum):
+    bac = "bac"
+    mag = "mag"
+    phd = "phd"
+
+    @classmethod
+    def from_str(cls, day_str):
+        for k, v in cls.__members__.items():
+            if v == day_str:
+                return cls[k]
+        return None

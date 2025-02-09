@@ -10,9 +10,10 @@ from aiogram import types
 from timetable_bot.config import DefaultSettings
 from timetable_bot.schemas import Week, User, Day, Professor
 from timetable_bot.schemas import (
-    Groups, DayTitles, ErrorMessages, TextResponse
+    Groups, DayTitles, Degree, ErrorMessages, TextResponse
 )
 from timetable_bot.db.models import User as DbUser
+from timetable_bot.db.models import Schedule as DbSchedule
 from timetable_bot.db.connection import get_session
 from .time import (
     weekday_from_date, get_curr_time, get_class_ends_time, week_is_odd,
@@ -245,22 +246,20 @@ async def get_users_ids():
     return ids
 
 
-def get_pdf_id(degree: int = 0) -> Tuple[str, ErrorMessages]:
+async def get_pdf_id(degree: Degree = Degree.bac) -> Tuple[str, ErrorMessages]:
     """
-    Получить file_id пдфки с расписанием.
+    Получить file_id пдфки с расписанием для степени degree.
     """
-    filename = config.FILE_FOR_PDF_FILE_ID
-    try:
-        with open(filename, 'r') as f:
-            for _ in range(degree + 1):
-                file_id = f.readline().strip()
-                if not file_id:
-                    raise Exception("no value")
-
-    except Exception as e:
-        logging.info(ErrorMessages.failed_to_read(e))
+    session = await get_session()
+    q = select(DbSchedule) \
+        .where(DbSchedule.degree == degree) \
+        .order_by(DbSchedule.dt_created.desc())
+    schedule = await session.scalar(q)
+    await session.close()
+    if not schedule:
         return None, ErrorMessages.NO_PDF_AVAILABLE
-    return file_id, None
+
+    return schedule.tg_id, None
 
 
 def get_chat_and_msg_id(msg: types.Message) -> Tuple[Tuple[int, int], ErrorMessages]:

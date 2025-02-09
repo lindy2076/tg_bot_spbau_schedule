@@ -30,7 +30,6 @@ class DefaultSettings:
 
     TIMEZONE_OFFSET: int = 3
     NEW_SEMESTER_STARTS: str = "2024-09-02"
-    FILE_FOR_PDF_FILE_ID: str = "pdffileid"
 
     @property
     def database_settings(self) -> dict:

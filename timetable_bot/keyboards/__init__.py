@@ -1,6 +1,6 @@
 from .inline import (
     group_sel_kb, day_sel_kb, day_switch_kb, select_degree_pdf,
-    SelectGroupCallback, SelectDayCallback, SwitchDayCallback, 
+    SelectGroupCallback, SelectDayCallback, SwitchDayCallback,
     SelectDegreeForPdfCB, faculty_kb1, FacultyCallback,
     create_weekday_sel_kb, group_sel_kb_other
 )
