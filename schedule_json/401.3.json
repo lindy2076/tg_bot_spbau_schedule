@@ -1,0 +1,131 @@
+{
+    "group": "401.3",
+    "week_activities": [
+        {
+            "title": "Понедельник",
+            "activities": [
+                {
+                    "starts": "12:00",
+                    "lasts": "1.5",
+                    "name": "Стат физика (практика)",
+                    "auditory": "430 СЛК",
+                    "professor": "Мартюкова Д. С."
+                },
+                {
+                    "starts": "14:00",
+                    "lasts": "1.5",
+                    "name": "Английский",
+                    "auditory": "(см доску у кафедры)",
+                    "professor": "..."
+                }
+            ]
+        },
+        {
+            "title": "Вторник",
+            "activities": [
+                {
+                    "starts": "10:00",
+                    "lasts": "1.5",
+                    "name": "Стат физика",
+                    "auditory": "422 ФТШ",
+                    "professor": "Мартюкова Д. С."
+                },
+                {
+                    "starts": "12:00",
+                    "lasts": "1.5",
+                    "name": "Физика пп пр. приборов",
+                    "auditory": "522 СЛК",
+                    "professor": "Берт Н. А."
+                },
+                {
+                    "starts": "14:00",
+                    "lasts": "1.5",
+                    "name": "Оптика пп",
+                    "auditory": "522 СЛК",
+                    "professor": "Смирнов Д. С."
+                }
+            ]
+        },
+        {
+            "title": "Среда",
+            "activities": [
+                {
+                    "starts": "12:00",
+                    "lasts": "2.25",
+                    "name": "ОТО",
+                    "auditory": "206 СЛК",
+                    "professor": "Иванчик А. В."
+                },
+                {
+                    "starts": "15:00",
+                    "lasts": "1.5",
+                    "name": "Семинар по СПФ",
+                    "auditory": "432 СЛК",
+                    "professor": "Качаровский В. Ю."
+                }
+            ]
+        },
+        {
+            "title": "Четверг",
+            "activities": [
+                {
+                    "starts": "10:00",
+                    "lasts": "1.5",
+                    "name": "Фунд ФРЗ",
+                    "auditory": "517 СЛК",
+                    "professor": "Чугунов А. И."
+                },
+                {
+                    "starts": "12:00",
+                    "lasts": "1.5",
+                    "name": "Физика МЗС",
+                    "auditory": "517 СЛК",
+                    "professor": "Балашев С. А."
+                },
+                {
+                    "starts": "14:00",
+                    "lasts": "4",
+                    "name": "диплом",
+                    "auditory": "--",
+                    "professor": "--"
+                }
+            ]
+        },
+        {
+            "title": "Пятница",
+            "activities": [
+                {
+                    "starts": "10:00",
+                    "lasts": "8",
+                    "name": "диплом",
+                    "auditory": "--",
+                    "professor": "--"
+                }
+            ]
+        },
+        {
+            "title": "Суббота",
+            "activities": [
+                {
+                    "starts": "10:00",
+                    "lasts": "8",
+                    "name": "диплом",
+                    "auditory": "--",
+                    "professor": "--"
+                }
+            ]
+        },
+        {
+            "title": "Воскресенье",
+            "activities": [
+                {
+                    "starts": "10:00",
+                    "lasts": "8",
+                    "name": "диплом",
+                    "auditory": "--",
+                    "professor": "--"
+                }
+            ]
+        }
+    ]
+}
