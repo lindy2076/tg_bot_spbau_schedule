@@ -1,0 +1,114 @@
+{
+    "group": "301.1",
+    "week_activities": [    
+        {
+            "title": "Понедельник",
+            "activities": [
+                {   
+                    "starts": "12:00",
+                    "lasts": "1.5", 
+                    "name": "Теория групп", 
+                    "auditory": "518 СЛК", 
+                    "professor": "Антоненко П. В."
+                },
+                {   
+                    "starts": "14:00",
+                    "lasts": "1.5", 
+                    "name": "Теория групп (практика)", 
+                    "auditory": "518 СЛК", 
+                    "professor": "Конюх Д."
+                },
+                {   
+                    "starts": "16:00",
+                    "lasts": "1.5", 
+                    "name": "Строение и ЭЗ", 
+                    "auditory": "518 СЛК", 
+                    "professor": "Штерин П. С."
+                }
+            ]
+        },
+        {
+            "title": "Вторник",
+            "activities": [
+                {
+                    "starts": "10:00",
+                    "lasts": "1.5",
+                    "name": "ФКС",
+                    "auditory": "204 СЛК",
+                    "professor": "Глазов М. М."
+                },
+                {
+                    "starts": "12:00",
+                    "lasts": "1.5",
+                    "name": "Квантовая механика",
+                    "auditory": "204 СЛК",
+                    "professor": "Тарасенко С. А."
+                }
+            ]
+        },
+        {
+            "title": "Среда",
+            "activities": [
+                {
+                    "starts": "10:00",
+                    "lasts": "8",
+                    "name": "НИР",
+                    "auditory": "--",
+                    "professor": "--"
+                }
+            ]
+        },
+        {
+            "title": "Четверг",
+            "activities": [
+                {
+                    "starts": "11:00", 
+                    "lasts": "2.25", 
+                    "name": "Квантовая механика (практика)", 
+                    "auditory": "208 СЛК", 
+                    "professor": "Авдеев И. Д."
+                },
+                {
+                    "starts": "14:00", 
+                    "lasts": "1.5", 
+                    "name": "Введение в современную АФ", 
+                    "auditory": "517 СЛК",
+                    "professor": "Куричин О. А."
+                }
+            ]
+        },
+        {
+            "title": "Пятница",
+            "activities": [
+                {
+                    "starts": "10:00",
+                    "lasts": "1.5",
+                    "name": "Симметрия кристаллов и ФП",
+                    "auditory": "204 СЛК",
+                    "professor": "Аверкиев Н. С."
+                },
+                {
+                    "starts": "12:00",
+                    "lasts": "1.5",
+                    "name": "Английский",
+                    "auditory": "(см доску у кафедры)",
+                    "professor": "..."
+                },
+                {
+                    "starts": "14:00",
+                    "lasts": "1.5",
+                    "name": "Мат методы в ТФ",
+                    "auditory": "422 СЛК",
+                    "professor": "Щербак А. С."
+                },
+                {
+                    "starts": "16:00",
+                    "lasts": "1.5",
+                    "name": "Функан факультатив",
+                    "auditory": "204 СЛК",
+                    "professor": "Симонов Сергей Александрович"
+                }
+            ]
+        }
+    ]
+}
